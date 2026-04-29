@@ -1,0 +1,161 @@
+{
+    "extracted_skills": [
+        "analysis",
+        "communication",
+        "data analysis",
+        "machine learning",
+        "python",
+        "reporting",
+        "sql",
+        "tensorflow"
+    ],
+    "ai_predictions": [
+        {
+            "job_role": "data scientist",
+            "model_confidence": 99.47
+        },
+        {
+            "job_role": "data analyst",
+            "model_confidence": 0.1
+        },
+        {
+            "job_role": "python developer",
+            "model_confidence": 0.08
+        },
+        {
+            "job_role": "fitness manager",
+            "model_confidence": 0.06
+        },
+        {
+            "job_role": "business analyst",
+            "model_confidence": 0.06
+        }
+    ],
+    "career_recommendations": [
+        {
+            "job_role": "data scientist",
+            "category": "technology",
+            "match_percentage": 85.87,
+            "rule_based_score": 81.33,
+            "ai_confidence": 99.47,
+            "matched_skills": [
+                "data analysis",
+                "machine learning",
+                "python",
+                "sql",
+                "tensorflow"
+            ],
+            "missing_skills": [
+                "statistics"
+            ],
+            "required_skills": [
+                "data analysis",
+                "machine learning",
+                "python",
+                "sql",
+                "statistics",
+                "tensorflow"
+            ]
+        },
+        {
+            "job_role": "bi analyst",
+            "category": "data analytics",
+            "match_percentage": 39.75,
+            "rule_based_score": 53.0,
+            "ai_confidence": 0,
+            "matched_skills": [
+                "data analysis",
+                "reporting",
+                "sql"
+            ],
+            "missing_skills": [
+                "excel",
+                "power bi",
+                "tableau"
+            ],
+            "required_skills": [
+                "data analysis",
+                "excel",
+                "power bi",
+                "reporting",
+                "sql",
+                "tableau"
+            ]
+        },
+        {
+            "job_role": "python developer",
+            "category": "technology",
+            "match_percentage": 32.52,
+            "rule_based_score": 43.33,
+            "ai_confidence": 0.08,
+            "matched_skills": [
+                "python",
+                "sql"
+            ],
+            "missing_skills": [
+                "django",
+                "flask",
+                "problem solving",
+                "rest api"
+            ],
+            "required_skills": [
+                "django",
+                "flask",
+                "problem solving",
+                "python",
+                "rest api",
+                "sql"
+            ]
+        },
+        {
+            "job_role": "performance tester",
+            "category": "technology",
+            "match_percentage": 32.5,
+            "rule_based_score": 43.33,
+            "ai_confidence": 0,
+            "matched_skills": [
+                "analysis",
+                "reporting"
+            ],
+            "missing_skills": [
+                "jmeter",
+                "load testing",
+                "performance testing",
+                "problem solving"
+            ],
+            "required_skills": [
+                "analysis",
+                "jmeter",
+                "load testing",
+                "performance testing",
+                "problem solving",
+                "reporting"
+            ]
+        },
+        {
+            "job_role": "spark developer",
+            "category": "data analytics",
+            "match_percentage": 32.5,
+            "rule_based_score": 43.33,
+            "ai_confidence": 0,
+            "matched_skills": [
+                "python",
+                "sql"
+            ],
+            "missing_skills": [
+                "apache spark",
+                "big data",
+                "distributed computing",
+                "scala"
+            ],
+            "required_skills": [
+                "apache spark",
+                "big data",
+                "distributed computing",
+                "python",
+                "scala",
+                "sql"
+            ]
+        }
+    ]
+}
