@@ -1,44 +1,49 @@
-/* RESET GLOBAL */
-/* RESET & GLOBAL BASE */
+/* 1. RESET DASAR & BOX MODEL */
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
-html,
+html {
+  scroll-behavior: smooth;
+  width: 100%;
+}
+
+/* 2. CONFIG BODY & BACKGROUND GRADIENT */
 body {
   width: 100%;
   min-height: 100vh;
   margin: 0;
   padding: 0;
-  font-family: "Inter", sans-serif;
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
   color: #0f172a;
   -webkit-font-smoothing: antialiased;
-  scroll-behavior: smooth;
-}
+  overflow-x: hidden;
 
-body {
-  background: 
-    /* Spot Ungu Keabuan - Dibuat lebih pekat sedikit */
+  /* Gabungan Gradasi sesuai permintaanmu */
+  background:
     radial-gradient(
       80% 80% at 56% 63%,
       rgba(122, 149, 255, 0.25) 0%,
       rgba(122, 149, 255, 0) 60%
     ),
-    /* Spot Biru Cyan - Dibuat lebih lebar */
     radial-gradient(
-        70% 70% at 37% 68%,
-        rgba(31, 221, 255, 0.2) 0%,
-        rgba(31, 221, 255, 0) 70%
-      ),
-    /* Spot Pink Halus - Untuk menyelaraskan suhu warna */
+      70% 70% at 37% 68%,
+      rgba(31, 221, 255, 0.2) 0%,
+      rgba(31, 221, 255, 0) 70%
+    ),
     radial-gradient(
-        60% 60% at 68% 50%,
-        rgba(255, 180, 190, 0.2) 0%,
-        rgba(255, 219, 222, 0) 60%
-      ),
-    /* Background Dasar - Jangan gunakan murni putih agar gradasi muncul */
+      60% 60% at 68% 50%,
+      rgba(255, 180, 190, 0.2) 0%,
+      rgba(255, 219, 222, 0) 60%
+    ),
     linear-gradient(135deg, #f8f9ff 0%, #f0f4f8 100%);
 
   background-attachment: fixed;
@@ -46,35 +51,29 @@ body {
   background-repeat: no-repeat;
 }
 
+/* 3. ROOT WRAPPER - Memastikan konten memanjang ke bawah */
 #root {
   display: flex;
   flex-direction: column;
+  width: 100%;
   min-height: 100vh;
 }
 
+/* 4. ELEMENT DEFAULTS */
 a {
   text-decoration: none;
   color: inherit;
 }
+
 button {
   font-family: inherit;
+  border: none;
+  background: none;
   cursor: pointer;
 }
 
-/* BOX MODEL RESET */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-/* LINK RESET */
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
-/* BUTTON RESET */
-button {
-  font-family: inherit;
+/* Memastikan gambar responsif */
+img {
+  max-width: 100%;
+  display: block;
 }

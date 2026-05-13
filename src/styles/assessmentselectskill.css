@@ -1,0 +1,171 @@
+/* src/styles/skillDropdown.css */
+
+.skill-dropdown-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.skill-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+/* --- SKILL SELECT (CHIPS) --- */
+.selected-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-height: 42px;
+  padding: 4px 0;
+}
+
+.empty-skill {
+  font-size: 13px;
+  color: #94a3b8;
+  font-style: italic;
+  padding: 8px 0;
+}
+
+.skill-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #eff6ff; /* Biru muda soft */
+  color: #2563eb;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid #dbeafe;
+  transition: all 0.2s ease;
+}
+
+.skill-chip:hover {
+  background: #dbeafe;
+  transform: translateY(-1px);
+}
+
+.remove-skill-btn {
+  background: none;
+  border: none;
+  color: #2563eb;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 2px;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+
+.remove-skill-btn:hover {
+  background: rgba(37, 99, 235, 0.1);
+}
+
+/* --- SEARCH INPUT WRAPPER --- */
+.skill-search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 0 16px;
+  transition: all 0.2s ease;
+}
+
+.skill-search-wrapper:focus-within {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+}
+
+.search-icon {
+  color: #94a3b8;
+  font-size: 18px;
+}
+
+.skill-search-wrapper input {
+  width: 100%;
+  padding: 12px 12px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  color: #1e293b;
+}
+
+.dropdown-toggle {
+  background: none;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  padding: 4px;
+}
+
+/* --- DROPDOWN MENU --- */
+.skills-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  z-index: 100;
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 8px;
+}
+
+/* Scrollbar Styling */
+.skills-dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+.skills-dropdown::-webkit-scrollbar-thumb {
+  background: #e2e8f0;
+  border-radius: 10px;
+}
+
+.skill-option {
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.skill-option:hover {
+  background: #f1f5f9;
+  color: #2563eb;
+  padding-left: 16px;
+}
+
+.no-skill {
+  padding: 12px;
+  font-size: 13px;
+  color: #94a3b8;
+  text-align: center;
+}
+
+.skill-counter {
+  margin-top: 6px;
+
+  font-size: 13px;
+  font-weight: 500;
+
+  color: #64748b;
+
+  display: flex;
+  justify-content: flex-end;
+}

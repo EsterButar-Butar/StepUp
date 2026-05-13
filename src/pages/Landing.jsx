@@ -9,10 +9,23 @@ export default function Landing() {
   return (
     <>
       <Navbar />
-      <Hero />
-      <HowItWorks />
-      <Benefits />
-      <Illustration />
+
+      <div id="home">
+        <Hero />
+      </div>
+
+      <div id="how-it-works">
+        <HowItWorks />
+      </div>
+
+      <div id="features">
+        <Benefits />
+      </div>
+
+      <div id="illustration">
+        <Illustration />
+      </div>
+
       <Footer />
     </>
   );

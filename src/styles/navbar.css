@@ -1,69 +1,91 @@
+/* src/styles/navbar.css */
+
 .nv-navbar-fixed {
   width: 100%;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.8); /* Efek kaca transparan */
+  backdrop-filter: blur(12px); /* Blur mewah */
+  -webkit-backdrop-filter: blur(12px);
   z-index: 9999;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid rgba(241, 245, 249, 0.7);
 }
 
 .nv-main-wrapper {
-  max-width: 1280px;
+  max-width: 1200px;
   margin: 0 auto;
-  height: 80px;
+  height: 72px; /* Tinggi yang lebih elegan */
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 40px;
-  box-sizing: border-box;
+  padding: 0 24px;
+}
+
+.nv-brand-area {
+  display: flex;
+  align-items: center;
+  transition: transform 0.2s ease;
+}
+
+.nv-brand-area:hover {
+  transform: scale(1.05);
+}
+
+.nv-logo-image {
+  height: 38px; /* Ukuran yang pas agar terlihat jelas */
+  width: auto;
+  object-fit: contain;
 }
 
 .nv-nav-links {
   display: flex;
-  gap: 8px;
+  gap: 12px;
+  background: #f8fafc; /* Background pill untuk menu */
+  padding: 6px;
+  border-radius: 99px;
 }
 
 .nv-link-item {
   text-decoration: none;
   color: #64748b;
-  padding: 10px 18px;
+  padding: 8px 18px;
   font-size: 14px;
   font-weight: 500;
-  border-radius: 99px; /* Pill style */
-  transition: 0.2s ease;
+  border-radius: 99px;
+  transition: all 0.2s ease;
 }
 
 .nv-link-item:hover {
-  background: #f1f5f9;
-  color: #0f172a;
+  background: white;
+  color: #2563eb;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .nv-action-area {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 20px;
 }
 
 .nv-signin-text {
   font-size: 14px;
   font-weight: 600;
-  color: #64748b;
+  color: #475569;
   cursor: pointer;
   transition: color 0.2s;
 }
 
 .nv-signin-text:hover {
-  color: #0f172a;
+  color: #2563eb;
 }
 
 .nv-btn-dark {
   background: #0f172a;
   color: white;
   border: none;
-  padding: 12px 22px;
+  padding: 10px 20px;
   border-radius: 12px;
   font-size: 14px;
   font-weight: 600;
@@ -71,17 +93,17 @@
   align-items: center;
   gap: 8px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .nv-btn-dark:hover {
-  background: #1e293b;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+  background: #2563eb; /* Berubah jadi biru saat hover agar konsisten dengan brand */
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.2);
 }
 
-/* Responsive */
-@media (max-width: 1024px) {
+/* Responsive: Sembunyikan menu di HP */
+@media (max-width: 900px) {
   .nv-nav-links {
     display: none;
   }

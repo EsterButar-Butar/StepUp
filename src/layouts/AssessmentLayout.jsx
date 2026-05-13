@@ -9,10 +9,8 @@ export default function AssessmentLayout({ children, currentStep }) {
 
       <main className="assessment-main">
         <div className="assessment-card">
-          {/* SIDEBAR */}
           <AssessmentSidebar currentStep={currentStep} />
 
-          {/* CONTENT DINAMIS */}
           <section className="form-content">{children}</section>
         </div>
       </main>

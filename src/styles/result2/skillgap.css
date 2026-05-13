@@ -1,4 +1,4 @@
-/* Menggunakan prefix rcs- agar sesuai JSX */
+/* CONTAINER */
 .rcs-container {
   background: white;
   border-radius: 16px;
@@ -7,11 +7,12 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
 }
 
+/* HEADER */
 .rcs-header {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   padding-bottom: 16px;
   border-bottom: 1px solid #f1f5f9;
 }
@@ -34,17 +35,27 @@
   margin: 2px 0 0 0;
 }
 
-.rcs-section {
-  margin-bottom: 24px;
+/* BODY */
+.rcs-body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
+/* SECTION */
+.rcs-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* TITLE */
 .rcs-section-title {
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 12px;
   font-weight: 700;
-  margin-bottom: 12px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -59,7 +70,7 @@
   color: #ef4444;
 }
 
-/* TAGS STYLE */
+/* TAGS */
 .rcs-tag-container {
   display: flex;
   flex-wrap: wrap;
@@ -74,27 +85,31 @@
   border: 1px solid transparent;
 }
 
+/* GREEN */
 .rcs-tag.success {
   background: #f0fdf4;
   color: #166534;
   border-color: #dcfce7;
 }
 
+/* RED */
 .rcs-tag.danger {
   background: #fef2f2;
   color: #991b1b;
   border-color: #fee2e2;
 }
 
-/* PROGRESS BAR STYLE */
+/* PROGRESS ITEM */
 .rcs-progress-item {
-  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
+/* PROGRESS INFO */
 .rcs-progress-info {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 6px;
   font-size: 12px;
 }
 
@@ -102,24 +117,27 @@
   font-weight: 600;
   color: #334155;
 }
+
 .rcs-progress-info .level {
   color: #94a3b8;
 }
 
+/* BAR */
 .rcs-progress-bg {
   height: 6px;
   background: #f1f5f9;
-  border-radius: 10px;
+  border-radius: 999px;
   overflow: hidden;
 }
 
 .rcs-progress-fill {
   height: 100%;
-  background: #f59e0b; /* Warna progres oranye sesuai demo */
-  border-radius: 10px;
-  transition: width 0.3s ease;
+  background: #f59e0b;
+  border-radius: 999px;
+  transition: width 0.4s ease;
 }
 
+/* OPTIONAL PROMO SPACE */
 .rcs-promo-wrapper {
   margin-top: 20px;
 }

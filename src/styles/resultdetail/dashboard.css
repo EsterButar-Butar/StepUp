@@ -1,0 +1,73 @@
+/* Dashboard Wrapper untuk memberi ruang Navbar/Footer */
+.dashboard-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.dashboard-content {
+  flex: 1; /* Mengisi ruang sisa agar footer tetap di bawah */
+  padding: 40px 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px; /* Sesuai standar desain web modern */
+  display: flex;
+  flex-direction: column;
+  gap: 32px; /* Jarak antar section */
+}
+
+/* Breadcrumb Styling */
+.breadcrumb-section {
+  display: flex;
+  align-items: center;
+}
+
+.btn-back {
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #6b7280;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.btn-back:hover {
+  color: #111827;
+}
+
+/* Grid System untuk menyelaraskan kartu */
+.analysis-grid,
+.insights-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Default 2 kolom */
+  gap: 24px;
+}
+
+/* Responsive: Tumpuk menjadi 1 kolom di layar kecil (Tablet/HP) */
+@media (max-width: 992px) {
+  .analysis-grid,
+  .insights-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-content {
+    padding: 20px 16px;
+  }
+}
+
+/* Base Card Styling (Untuk di-extend di komponen lain seperti SkillGap/Industry) */
+.card-container {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  padding: 24px;
+  height: 100%;
+}

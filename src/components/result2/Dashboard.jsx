@@ -1,6 +1,6 @@
 import React from "react";
 import TopMatches from "./MatchCard";
-import SkillGap from "./SkillGap";
+import SkillGap from "../SkillGap.jsx";
 import PromoCard from "./PromoCard";
 import Footer from "../../components/Footer.jsx";
 
@@ -43,7 +43,7 @@ export default function Dashboard() {
             {/* Sisi Kanan (Sidebar): Analisis & Promo */}
             <aside className="ds-content-secondary">
               <h3 className="ds-section-label">Skill Gap Analysis</h3>
-              <SkillGap />
+              <SkillGap showHeader={false} />
               <PromoCard />
             </aside>
           </div>

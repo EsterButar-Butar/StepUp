@@ -66,28 +66,6 @@
   justify-content: center;
 }
 
-.hero-btn {
-  background: white;
-  color: #2563eb;
-  padding: 16px 36px;
-  border-radius: 99px;
-  font-weight: 700;
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-}
-
-.hero-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-  background: #f8fafc;
-}
-
 .hero-btn img {
   width: 18px;
   /* Jika panah aslinya hitam, ini membuatnya biru senada teks */

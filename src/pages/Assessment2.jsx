@@ -1,84 +1,101 @@
 // src/pages/Assessment2.jsx
 
-import { useState } from "react";
-import {
-  FiArrowRight,
-  FiArrowLeft,
-  FiChevronDown,
-  FiCode,
-  FiCpu,
-} from "react-icons/fi";
+import { useState, useEffect } from "react";
+import { FiArrowRight, FiArrowLeft } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import AssessmentLayout from "../layouts/AssessmentLayout";
+import SkillDropdown from "../components/assessmentselectskill/SkillDropdown";
+import { technicalSkills, softSkills } from "../data/skillsData";
 import "../styles/assessment2.css";
 
 export default function Assessment2() {
-  const [level, setLevel] = useState("intermediate");
   const navigate = useNavigate();
+
+  const [selectedTechnicalSkills, setSelectedTechnicalSkills] = useState(() => {
+    const saved = localStorage.getItem("assessment2-tech");
+
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const [selectedSoftSkills, setSelectedSoftSkills] = useState(() => {
+    const saved = localStorage.getItem("assessment2-soft");
+
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const [level, setLevel] = useState(() => {
+    const savedLevel = localStorage.getItem("assessment2-level");
+
+    return savedLevel || "intermediate";
+  });
+
+  const [loading, setLoading] = useState(false);
+
+  const handleContinue = async () => {
+    try {
+      setLoading(true);
+
+      // SIMULASI LOADING
+      await new Promise((resolve) => setTimeout(resolve, 1200));
+
+      navigate("/assessment3");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const isFormValid =
+    selectedTechnicalSkills.length > 0 && selectedSoftSkills.length > 0;
+
+  useEffect(() => {
+    localStorage.setItem("assessment2-level", level);
+  }, [level]);
+
+  useEffect(() => {
+    localStorage.setItem(
+      "assessment2-tech",
+      JSON.stringify(selectedTechnicalSkills),
+    );
+  }, [selectedTechnicalSkills]);
+
+  useEffect(() => {
+    localStorage.setItem(
+      "assessment2-soft",
+      JSON.stringify(selectedSoftSkills),
+    );
+  }, [selectedSoftSkills]);
 
   return (
     <AssessmentLayout currentStep={2}>
-      {/* TOP NAVIGATION */}
-      <div className="top-nav">
-        <button
-          type="button"
-          className="btn-back"
-          onClick={() => navigate("/assessment")}
-        >
-          <FiArrowLeft /> Back
-        </button>
-
-        <button
-          type="button"
-          className="btn-continue"
-          onClick={() => navigate("/Assessment3")}
-        >
-          Continue <FiArrowRight />
-        </button>
-      </div>
-
       {/* HEADER */}
       <div className="form-header">
         <h1>Select your skills</h1>
+
         <p>
           Choose the technical and soft skills that best represent your
-          expertise. This helps us tailor your assessment.
+          expertise.
         </p>
       </div>
 
       {/* FORM BODY */}
       <div className="form-body">
-        {/* TECH */}
-        <div className="input-field">
-          <label>
-            <FiCode className="label-icon" /> Technical Skills
-          </label>
-          <div className="select-wrapper">
-            <select>
-              <option>Select your technical skills</option>
-              <option>JavaScript</option>
-              <option>Python</option>
-              <option>React</option>
-            </select>
-            <FiChevronDown className="select-icon" />
-          </div>
-        </div>
+        {/* TECHNICAL */}
+        <SkillDropdown
+          label="Technical Skills"
+          skills={technicalSkills}
+          selectedSkills={selectedTechnicalSkills}
+          setSelectedSkills={setSelectedTechnicalSkills}
+        />
 
         {/* SOFT */}
-        <div className="input-field">
-          <label>
-            <FiCpu className="label-icon" /> Soft Skills
-          </label>
-          <div className="select-wrapper">
-            <select>
-              <option>Select your soft skills</option>
-              <option>Communication</option>
-              <option>Leadership</option>
-              <option>Problem Solving</option>
-            </select>
-            <FiChevronDown className="select-icon" />
-          </div>
-        </div>
+        <SkillDropdown
+          label="Soft Skills"
+          skills={softSkills}
+          selectedSkills={selectedSoftSkills}
+          setSelectedSkills={setSelectedSoftSkills}
+        />
 
         {/* LEVEL */}
         <div className="experience-level-container">
@@ -111,6 +128,34 @@ export default function Assessment2() {
               Advanced
             </button>
           </div>
+        </div>
+
+        {/* NAVIGATION */}
+        <div className="foot-nav">
+          <button
+            type="button"
+            className="btn-back"
+            onClick={() => navigate("/assessment")}
+          >
+            <FiArrowLeft />
+            Back
+          </button>
+
+          <button
+            type="button"
+            className="btn-continue"
+            disabled={!isFormValid || loading}
+            onClick={handleContinue}
+          >
+            {loading ? (
+              "Saving..."
+            ) : (
+              <>
+                Continue
+                <FiArrowRight />
+              </>
+            )}
+          </button>
         </div>
       </div>
     </AssessmentLayout>

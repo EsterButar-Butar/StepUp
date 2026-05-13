@@ -1,6 +1,6 @@
 import TopMatches from "./TopMatchesGrid.jsx";
 import SkillGap from "./SkillGap.jsx";
-import { RefreshCcw } from "lucide-react"; // Menggunakan lucide-react
+import { RefreshCcw } from "lucide-react";
 import "../../styles/result/dashboard.css";
 
 export default function DashboardContent() {

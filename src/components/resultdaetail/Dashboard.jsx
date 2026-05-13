@@ -1,34 +1,48 @@
-import Breadcrumb from "./Breadcrumb";
+import React from "react";
+import { FiArrowLeft } from "react-icons/fi"; // Menggunakan react-icons
 import CareerHeader from "./CareerHeader";
 import MatchBreakdown from "./MatchBreakdown";
 import SkillGap from "./SkillGap";
 import LearningPath from "./LearningPath";
 import IndustryBenchmark from "./IndustryBenchmark";
+import "./dashboard.css";
 
 export default function Dashboard() {
   return (
-    <div className="result-detail-container">
-      <Breadcrumb />
+    <div className="dashboard-wrapper">
+      {/* Navbar diimpor di App.js atau layout utama, di sini kita fokus ke konten */}
+      
+      <main className="dashboard-content">
+        <div className="container">
+          
+          {/* Breadcrumb Section */}
+          <section className="breadcrumb-section">
+            <button className="btn-back">
+              <FiArrowLeft /> Back to Results
+            </button>
+          </section>
 
-      <CareerHeader />
+          {/* Header Section */}
+          <section className="header-section">
+            <CareerHeader />
+          </section>
 
-      <div className="grid-2">
-        <MatchBreakdown />
-        <SkillGap />
-      </div>
+          {/* Analysis Grid: Breakdown & Skill Gap */}
+          <section className="analysis-grid">
+            <MatchBreakdown />
+            <SkillGap />
+          </section>
 
-      <div className="grid-2">
-        <LearningPath />
-        <IndustryBenchmark />
-      </div>
-    </div>
-  );
-}
+          {/* Insights Grid: Learning Path & Benchmark */}
+          <section className="insights-grid">
+            <LearningPath />
+            <IndustryBenchmark />
+          </section>
 
-export default function Breadcrumb() {
-  return (
-    <div className="breadcrumb">
-      ← Back to Results
+        </div>
+      </main>
+
+      {/* Footer diimpor di App.js atau layout utama */}
     </div>
   );
 }

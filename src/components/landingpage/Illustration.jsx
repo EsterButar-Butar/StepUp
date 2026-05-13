@@ -20,8 +20,7 @@ export default function Illustration() {
               in their career choices with StepUp.
             </p>
             <button className="cta-button">
-              <span>Begin Assessment</span>
-              <FiArrowRight className="cta-icon" />
+              <span>Your Journey Starts Here</span>
             </button>
           </div>
 

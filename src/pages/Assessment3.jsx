@@ -1,92 +1,97 @@
 // src/pages/Assessment3.jsx
 
-import {
-  FiArrowLeft,
-  FiCheck,
-  FiDownloadCloud,
-  FiUploadCloud,
-} from "react-icons/fi";
+import { useState } from "react";
+
+import { FiArrowLeft, FiCheck } from "react-icons/fi";
+
 import { useNavigate } from "react-router-dom";
+
 import AssessmentLayout from "../layouts/AssessmentLayout";
+
+import ProjectSection from "../components/assessment3/ProjectSection";
+import InternshipSection from "../components/assessment3/InternshipSection";
+import OrganizationSection from "../components/assessment3/OrganizationSection";
+import CertificationSection from "../components/assessment3/CertificationSection";
+
 import "../styles/assessment3.css";
 
 export default function Assessment3() {
   const navigate = useNavigate();
 
+  const [projects, setProjects] = useState([
+    {
+      projectName: "",
+      role: "",
+      issuesSolved: "",
+      description: "",
+    },
+  ]);
+
+  const isProjectValid = projects.some(
+    (project) => project.projectName.trim() !== "",
+  );
+
   return (
     <AssessmentLayout currentStep={3}>
       {/* HEADER */}
       <div className="form-header">
-        <h1>Your experience</h1>
+        <h1>Your Experience</h1>
+
         <p>
-          Tell us about your background to help us tailor your assessment
-          journey.
+          Tell us more about your projects, internships, organizations, and
+          certifications.
         </p>
       </div>
 
       {/* BODY */}
       <div className="form-body">
-        {/* PROJECT */}
-        <div className="input-group">
-          <label>
-            Project experience <span className="required">*</span>
-          </label>
-          <textarea placeholder="Describe a significant project you've worked on, your role, and the outcomes..." />
-          <div className="input-info">Minimum 100 characters</div>
-        </div>
+        <ProjectSection items={projects} setItems={setProjects} />
 
-        {/* INTERNSHIP */}
-        <div className="input-group">
-          <div className="label-row">
-            <label>Internship experience</label>
-            <span className="optional-badge">Optional</span>
-          </div>
-          <textarea placeholder="Briefly detail any relevant internships or work placements..." />
-        </div>
+        <InternshipSection />
 
-        {/* CV */}
-        <div className="cv-section">
-          <h3>Curriculum Vitae (CV)</h3>
+        <OrganizationSection />
 
-          <div className="upload-item">
-            <div className="upload-info">
-              <FiDownloadCloud className="upload-icon" />
-              <p>Download template CV</p>
-            </div>
-            <button type="button" className="text-link">
-              Download
-            </button>
-          </div>
+        <CertificationSection />
 
-          <div className="upload-item">
-            <div className="upload-info">
-              <FiUploadCloud className="upload-icon" />
-              <div>
-                <p>
-                  Upload CV / Resume{" "}
-                  <span className="text-muted">(Optional)</span>
-                </p>
-                <small>PDF, DOCX up to 5MB</small>
-              </div>
-            </div>
-            <button type="button" className="text-link">
-              Browse
-            </button>
+        {/* ANALYSIS CARD */}
+        <div className="analysis-ready-card">
+          <h3>Your profile is ready for analysis</h3>
+
+          <p>
+            We will analyze your profile to generate personalized career
+            insights and an ATS-ready CV.
+          </p>
+
+          <div className="analysis-points">
+            <div className="analysis-item">✓ Career Recommendations</div>
+
+            <div className="analysis-item">✓ Skills Analysis</div>
+
+            <div className="analysis-item">✓ ATS-ready CV</div>
+
+            <div className="analysis-item">✓ Strength Insights</div>
           </div>
         </div>
 
-        {/* ACTION */}
+        {/* FOOTER */}
         <div className="form-footer">
           <button
             type="button"
             className="btn-back"
             onClick={() => navigate("/assessment2")}
           >
-            <FiArrowLeft /> Back
+            <FiArrowLeft />
+            Back
           </button>
 
-          <button type="button" className="btn-submit">
-            Submit Assessment <FiCheck />
+          <button
+            disabled={!isProjectValid}
+            onClick={() => navigate("/analyzing")}
+            type="button"
+            className="btn-submit"
+          >
+            Start AI Analysis
+            <FiCheck />
           </button>
         </div>
       </div>

@@ -32,14 +32,6 @@ export default function Hero() {
           interests, and experience to match you with career paths where you’ll
           thrive.
         </p>
-
-        {/* ACTION */}
-        <div className="hero-bottom">
-          <button className="hero-btn">
-            Start Analysis
-            <FiArrowRight />
-          </button>
-        </div>
       </div>
     </div>
   );
