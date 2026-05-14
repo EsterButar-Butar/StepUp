@@ -1,12 +1,28 @@
-import { FiMonitor, FiHeart, FiBriefcase, FiAward, FiInfo } from "react-icons/fi";
-import "./matchbreakdown.css";
+import {
+  FiMonitor,
+  FiHeart,
+  FiBriefcase,
+  FiAward,
+  FiInfo,
+} from "react-icons/fi";
+import "../../styles/resultdetail/matchbreakdown.css";
 
 export default function MatchBreakdown() {
   const stats = [
-    { label: "Technical Skills", value: 92, icon: <FiMonitor />, color: "#2563eb" },
+    {
+      label: "Technical Skills",
+      value: 92,
+      icon: <FiMonitor />,
+      color: "#2563eb",
+    },
     { label: "Interests", value: 95, icon: <FiHeart />, color: "#ec4899" },
     { label: "Experience", value: 85, icon: <FiBriefcase />, color: "#475569" },
-    { label: "Academic Alignment", value: 100, icon: <FiAward />, color: "#0f172a" },
+    {
+      label: "Academic Alignment",
+      value: 100,
+      icon: <FiAward />,
+      color: "#0f172a",
+    },
   ];
 
   return (
@@ -15,7 +31,7 @@ export default function MatchBreakdown() {
         <h3>Match Breakdown</h3>
         <FiInfo className="info-icon" />
       </div>
-      
+
       <div className="mb-list">
         {stats.map((item, i) => (
           <div key={i} className="mb-item">
@@ -26,8 +42,8 @@ export default function MatchBreakdown() {
               <span className="mb-value">{item.value}%</span>
             </div>
             <div className="progress-bg">
-              <div 
-                className="progress-fill" 
+              <div
+                className="progress-fill"
                 style={{ width: `${item.value}%`, backgroundColor: item.color }}
               ></div>
             </div>

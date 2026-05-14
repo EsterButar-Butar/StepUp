@@ -1,4 +1,4 @@
-/* Dashboard Wrapper untuk memberi ruang Navbar/Footer */
+/* Container Utama */
 .dashboard-wrapper {
   display: flex;
   flex-direction: column;
@@ -6,21 +6,21 @@
 }
 
 .dashboard-content {
-  flex: 1; /* Mengisi ruang sisa agar footer tetap di bawah */
-  padding: 40px 20px;
+  flex: 1;
+  padding: 48px 80px; /* Padding luas sesuai desain profesional */
   display: flex;
   justify-content: center;
 }
 
 .container {
   width: 100%;
-  max-width: 1200px; /* Sesuai standar desain web modern */
+  max-width: 1280px;
   display: flex;
   flex-direction: column;
-  gap: 32px; /* Jarak antar section */
+  gap: 32px;
 }
 
-/* Breadcrumb Styling */
+/* Breadcrumb & Tombol Back */
 .breadcrumb-section {
   display: flex;
   align-items: center;
@@ -33,41 +33,33 @@
   align-items: center;
   gap: 8px;
   color: #6b7280;
+  font-family: "Inter", sans-serif;
   font-size: 14px;
   cursor: pointer;
   padding: 0;
-  transition: color 0.2s;
+  transition: color 0.2s ease;
 }
 
 .btn-back:hover {
   color: #111827;
 }
 
-/* Grid System untuk menyelaraskan kartu */
+/* Sistem Grid untuk Komponen Analisis */
 .analysis-grid,
 .insights-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* Default 2 kolom */
+  grid-template-columns: 1fr 1fr; /* Membagi layar menjadi 2 kolom */
   gap: 24px;
 }
 
-/* Responsive: Tumpuk menjadi 1 kolom di layar kecil (Tablet/HP) */
-@media (max-width: 992px) {
+/* Penyesuaian untuk layar Tablet/Mobile */
+@media (max-width: 1024px) {
+  .dashboard-content {
+    padding: 32px 24px;
+  }
+
   .analysis-grid,
   .insights-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* Menumpuk komponen secara vertikal */
   }
-
-  .dashboard-content {
-    padding: 20px 16px;
-  }
-}
-
-/* Base Card Styling (Untuk di-extend di komponen lain seperti SkillGap/Industry) */
-.card-container {
-  background: #ffffff;
-  border-radius: 16px;
-  border: 1px solid #e5e7eb;
-  padding: 24px;
-  height: 100%;
 }

@@ -7,7 +7,7 @@ import PasswordField from "../components/login/PasswordField";
 import Button from "../components/login/Button";
 import ErrorMessage from "../components/login/ErrorMessage";
 
-import { loginUser } from "../services/authService";
+import { loginUser } from "../services/authService.js";
 
 import "../styles/login.css";
 

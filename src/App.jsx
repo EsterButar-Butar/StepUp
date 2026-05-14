@@ -12,7 +12,8 @@ import Register from "./pages/Register.jsx";
 import ForgotPassword from "./pages/ForgotPassword.jsx";
 import Analyzing from "./pages/Analyzing";
 import Result from "./pages/Result";
-import Result2 from "./pages/Result2";
+import Profile from "./pages/Profile";
+import ResultDetail from "./pages/ResultDetail";
 
 function App() {
   return (
@@ -28,7 +29,8 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/analyzing" element={<Analyzing />} />
         <Route path="/result" element={<Result />} />
-        <Route path="/result2" element={<Result2 />} />
+        <Route path="/result-detail" element={<ResultDetail />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </Router>
   );

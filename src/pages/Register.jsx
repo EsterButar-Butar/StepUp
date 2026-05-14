@@ -10,7 +10,7 @@ import RegisterButton from "../components/register/RegisterButton";
 import Divider from "../components/register/Divider";
 import GoogleButton from "../components/register/GoogleButton";
 
-import { registerUser } from "../services/authService";
+import { registerUser } from "../services/authService.js";
 
 import "../styles/register.css";
 

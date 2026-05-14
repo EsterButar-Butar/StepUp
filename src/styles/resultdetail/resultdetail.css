@@ -1,0 +1,43 @@
+.result-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  /* Background diambil dari index.css global Anda */
+}
+
+.result-container {
+  flex: 1;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 40px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px; /* Jarak antar baris grid */
+}
+
+/* Grid untuk Match Breakdown & Skill Gap */
+.analysis-grid {
+  display: grid;
+  grid-template-columns: 350px 1fr; /* Sesuai gambar: kiri lebih kecil */
+  gap: 24px;
+}
+
+/* Grid untuk Learning Path & Industry Benchmark */
+.insight-grid {
+  display: grid;
+  grid-template-columns: 1fr 350px; /* Sesuai gambar: kanan lebih kecil */
+  gap: 24px;
+}
+
+/* Responsive Tablet & Mobile */
+@media (max-width: 1024px) {
+  .result-container {
+    padding: 24px 20px;
+  }
+
+  .analysis-grid,
+  .insight-grid {
+    grid-template-columns: 1fr;
+  }
+}
