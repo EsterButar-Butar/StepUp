@@ -2,27 +2,49 @@ const mongoose = require("mongoose");
 
 const assessmentSchema = new mongoose.Schema({
     personalInfo: {
-        name: { type: String, required: true },
+        fullName: { type: String, required: true },
         email: { type: String, required: true },
         phone: { type: String },
         linkedin: { type: String },
-        location: { type: String }
+        location: { type: String },
+        bio: { type: String },
+        careerGoal: { type: String },
+        avatarUrl: { type: String }
     },
     education: {
         major: { type: String, required: true },
         university: { type: String, required: true },
-        currentSemester: { type: String },
+        semester: { type: String },
         gpa: { type: Number }
-    },
-    experience: {
-        internships: { type: [String] },
-        organizations: { type: [String] },
-        projects: { type: [String] },
-        certifications: { type: [String] }
     },
     skills: {
         hardSkills: { type: [String], required: true },
-        softSkills: { type: [String], required: true }
+        softSkills: { type: [String], required: true },
+        experienceLevel: { type: String, enum: ['beginner', 'intermediate', 'advanced'], required: true }
+    },
+    experience: {
+        projects: [{
+            projectName: { type: String },
+            role: { type: String },
+            issuesSolved: { type: String },
+            description: { type: String }
+        }],
+        internships: [{
+            position: { type: String },
+            company: { type: String },
+            duration: { type: String },
+            responsibilities: { type: String }
+        }],
+        organizations: [{
+            organizationName: { type: String },
+            role: { type: String },
+            duration: { type: String }
+        }],
+        certifications: [{
+            certificateName: { type: String },
+            issuer: { type: String },
+            year: { type: String }
+        }]
     }
 }, {
     timestamps: true
