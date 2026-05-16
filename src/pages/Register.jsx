@@ -4,13 +4,13 @@ import { useNavigate } from "react-router-dom";
 import { FiUser, FiMail, FiLock } from "react-icons/fi";
 
 import Logo from "../assets/S.png";
-
+import ErrorMessage from "../components/ErrorMessage";
 import RegisterInput from "../components/register/RegisterInput";
 import RegisterButton from "../components/register/RegisterButton";
 import Divider from "../components/register/Divider";
 import GoogleButton from "../components/register/GoogleButton";
 
-import { registerUser } from "../services/authService.js";
+import { register } from "../services/authService";
 
 import "../styles/register.css";
 
@@ -57,11 +57,9 @@ export default function Register() {
     try {
       setLoading(true);
 
-      const data = await registerUser(formData);
+      await register(formData);
 
-      console.log(data);
-
-      navigate("/landing");
+      navigate("/login");
     } catch (error) {
       setError(error.response?.data?.message || "Registration failed.");
     } finally {
@@ -92,7 +90,7 @@ export default function Register() {
               <p>Create an account to continue</p>
             </header>
 
-            {error && <div className="su-error-message">{error}</div>}
+            <ErrorMessage message={error} />
 
             <form onSubmit={handleSignup} className="su-form">
               <RegisterInput

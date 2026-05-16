@@ -2,7 +2,7 @@
 
 import RepeatableFormCard from "./RepeatableFormCard";
 
-export default function CertificationSection() {
+export default function CertificationSection({ items, setItems }) {
   const fields = [
     {
       name: "certificateName",
@@ -21,5 +21,13 @@ export default function CertificationSection() {
     },
   ];
 
-  return <RepeatableFormCard title="Certification" fields={fields} optional />;
+  return (
+    <RepeatableFormCard
+      title="Certification"
+      fields={fields}
+      optional
+      items={items}
+      setItems={setItems}
+    />
+  );
 }

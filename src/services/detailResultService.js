@@ -1,6 +1,5 @@
-import API from "../api/detailResultApi";
+import { getCareerDetail } from "../api/detailResultApi";
 
-export const getCareerDetail = async (careerId) => {
-  const response = await API.get(`/careers/${careerId}`);
-  return response.data;
+export const fetchCareerDetail = async (careerId) => {
+  return await getCareerDetail(careerId);
 };

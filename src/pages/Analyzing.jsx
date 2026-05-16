@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { GiBrain } from "react-icons/gi"; // Ikon Otak
-import { HiShieldCheck } from "react-icons/hi2"; // Ikon Perisai
+import { GiBrain } from "react-icons/gi";
+import { HiShieldCheck } from "react-icons/hi2";
+import { checkAnalysisStatus } from "../api/analysisApi";
+import ErrorState from "../components/ErrorState";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import "../styles/analyzing.css";
@@ -18,17 +20,40 @@ const Analyzing = () => {
 
   const [step, setStep] = useState(0);
 
+  const [error, setError] = useState(false);
+
+  if (error) {
+    return <ErrorState message="Failed to analyze profile" />;
+  }
+
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      try {
+        const data = await checkAnalysisStatus();
+
+        if (data.status === "completed") {
+          clearInterval(interval);
+
+          navigate("/result");
+        }
+      } catch (error) {
+        console.error(error);
+        setError(true);
+      }
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [navigate]);
+
   useEffect(() => {
     if (step < messages.length - 1) {
-      const timer = setTimeout(() => setStep(step + 1), 2000);
-      return () => clearTimeout(timer);
-    } else {
       const timer = setTimeout(() => {
-        navigate("/dashboard");
-      }, 2500);
+        setStep((prev) => prev + 1);
+      }, 2000);
+
       return () => clearTimeout(timer);
     }
-  }, [step, navigate, messages.length]);
+  }, [step, messages.length]);
 
   return (
     <div className="analyzing-page">

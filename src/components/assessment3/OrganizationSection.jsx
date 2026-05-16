@@ -2,7 +2,7 @@
 
 import RepeatableFormCard from "./RepeatableFormCard";
 
-export default function OrganizationSection() {
+export default function OrganizationSection({ items, setItems }) {
   const fields = [
     {
       name: "organizationName",
@@ -21,5 +21,13 @@ export default function OrganizationSection() {
     },
   ];
 
-  return <RepeatableFormCard title="Organization" fields={fields} optional />;
+  return (
+    <RepeatableFormCard
+      title="Organization"
+      fields={fields}
+      optional
+      items={items}
+      setItems={setItems}
+    />
+  );
 }

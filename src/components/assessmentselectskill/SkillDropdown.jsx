@@ -2,18 +2,20 @@
 
 import { useState, useRef, useEffect } from "react";
 import SkillSelect from "./SkillSelect";
-import { FiSearch, FiX, FiChevronDown } from "react-icons/fi";
+import { FiSearch, FiChevronDown } from "react-icons/fi";
 import "../../styles/assessmentselectskill.css";
 
 export default function SkillDropdown({
   label,
-  skills,
-  selectedSkills,
+  skills = [],
+  selectedSkills = [],
   setSelectedSkills,
+  maxSkills = 5,
 }) {
   const [search, setSearch] = useState("");
-  const dropdownRef = useRef(null);
   const [open, setOpen] = useState(false);
+
+  const dropdownRef = useRef(null);
 
   // FILTERED SKILLS
   const filteredSkills = skills.filter(
@@ -23,17 +25,12 @@ export default function SkillDropdown({
   );
 
   // ADD SKILL
-  const MAX_SKILLS = label === "Technical Skills" ? 10 : 5;
-
   const addSkill = (skill) => {
-    if (selectedSkills.length >= MAX_SKILLS) {
-      return;
-    }
+    if (selectedSkills.length >= maxSkills) return;
 
     setSelectedSkills([...selectedSkills, skill]);
 
     setSearch("");
-
     setOpen(false);
   };
 
@@ -44,6 +41,7 @@ export default function SkillDropdown({
     );
   };
 
+  // CLOSE DROPDOWN OUTSIDE CLICK
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -60,14 +58,19 @@ export default function SkillDropdown({
 
   return (
     <div className="skill-dropdown-container" ref={dropdownRef}>
-      <label className="skill-label">{label}</label>
-      <div className="skill-counter">
-        {selectedSkills.length}/{label === "Technical Skills" ? 10 : 5} skills
-        or less
+      {/* HEADER */}
+      <div className="skill-header-flex">
+        <label className="skill-label">{label}</label>
+
+        <div className="skill-counter">
+          {selectedSkills.length}/{maxSkills} skills or less
+        </div>
       </div>
 
+      {/* SELECTED SKILLS */}
       <SkillSelect selectedSkills={selectedSkills} removeSkill={removeSkill} />
 
+      {/* SEARCH */}
       <div className="skill-search-wrapper">
         <FiSearch className="search-icon" />
 
@@ -77,20 +80,20 @@ export default function SkillDropdown({
           value={search}
           onFocus={() => setOpen(true)}
           onChange={(e) => setSearch(e.target.value)}
-          disabled={selectedSkills.length >= MAX_SKILLS}
+          disabled={selectedSkills.length >= maxSkills}
         />
 
         <button
           type="button"
           className="dropdown-toggle"
-          onClick={() => setOpen(!open)}
+          onClick={() => setOpen((prev) => !prev)}
         >
           <FiChevronDown />
         </button>
       </div>
 
       {/* DROPDOWN */}
-      {open && search.trim() !== "" && (
+      {open && (
         <div className="skills-dropdown">
           {filteredSkills.length > 0 ? (
             filteredSkills.map((skill) => (

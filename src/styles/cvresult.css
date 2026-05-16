@@ -1,0 +1,160 @@
+.cv-page {
+  min-height: 100vh;
+  background: #f8fafc;
+}
+
+.cv-main {
+  padding: 120px 20px 80px;
+  display: flex;
+  justify-content: center;
+}
+
+.cv-layout {
+  width: 100%;
+  max-width: 900px;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 48px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
+}
+
+.cv-export-btn {
+  border: none;
+  background: #111827;
+  color: white;
+  padding: 12px 22px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 28px;
+}
+
+.ats-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 32px;
+  background: #f9fafb;
+}
+
+.ats-card h3 {
+  margin-bottom: 12px;
+}
+
+.ats-score {
+  font-size: 42px;
+  font-weight: 700;
+  color: #2563eb;
+}
+
+.cv-header {
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 24px;
+  margin-bottom: 32px;
+}
+
+.cv-header h1 {
+  margin: 0 0 12px;
+  font-size: 40px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.cv-header p {
+  margin: 6px 0;
+  color: #4b5563;
+  line-height: 1.6;
+}
+
+.cv-section {
+  margin-bottom: 36px;
+}
+
+.cv-section h2 {
+  font-size: 22px;
+  color: #111827;
+  margin-bottom: 18px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.cv-section p {
+  line-height: 1.8;
+  color: #374151;
+}
+
+.cv-skills-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.cv-skill-chip {
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: #eff6ff;
+  color: #2563eb;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.cv-item {
+  margin-bottom: 24px;
+}
+
+.cv-item h3 {
+  margin: 0 0 6px;
+  font-size: 18px;
+  color: #111827;
+}
+
+.cv-item span {
+  display: block;
+  margin-bottom: 10px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.cv-item p {
+  margin: 0;
+  line-height: 1.7;
+  color: #374151;
+}
+
+@media (max-width: 768px) {
+  .cv-layout {
+    padding: 28px;
+  }
+
+  .cv-header h1 {
+    font-size: 30px;
+  }
+
+  .cv-section h2 {
+    font-size: 20px;
+  }
+
+  .ats-score {
+    font-size: 34px;
+  }
+}
+
+@media print {
+  .cv-export-btn,
+  nav,
+  footer {
+    display: none;
+  }
+
+  .cv-layout {
+    box-shadow: none;
+    border-radius: 0;
+    max-width: 100%;
+    padding: 0;
+  }
+
+  .cv-main {
+    padding: 0;
+  }
+}

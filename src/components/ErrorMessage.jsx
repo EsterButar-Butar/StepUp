@@ -1,3 +1,5 @@
+import "../styles/errormessage.css";
+
 export default function ErrorMessage({ message }) {
   if (!message) return null;
 

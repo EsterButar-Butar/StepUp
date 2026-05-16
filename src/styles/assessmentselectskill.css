@@ -1,52 +1,81 @@
-/* src/styles/skillDropdown.css */
+/* src/styles/assessmentselectskill.css */
 
 .skill-dropdown-container {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
+  width: 100%;
+}
+
+.skill-header-flex {
+  display: flex;
+  justify-content: space-between; /* Menendang counter ke kanan */
+  align-items: center; /* Sejajar secara vertikal */
+  margin-bottom: 10px;
   width: 100%;
 }
 
 .skill-label {
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   color: #1e293b;
+  margin: 0; /* Reset margin agar tidak berantakan */
 }
 
-/* --- SKILL SELECT (CHIPS) --- */
+.skill-counter {
+  font-size: 12px;
+  font-weight: 600;
+  color: #94a3b8;
+  background: #f8fafc; /* Background halus agar terlihat seperti tag */
+  padding: 4px 10px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.skill-counter.limit-reached {
+  color: #e11d48;
+  background: #fff1f2;
+}
+
+/* Category Helper Text di bawah grid kategori */
+.category-helper-text {
+  font-size: 13px;
+  color: #64748b;
+  margin-top: 12px;
+  padding: 8px 12px;
+  background: #f0f7ff;
+  border-radius: 8px;
+  border-left: 4px solid #3b82f6; /* Aksen biru informasi */
+}
+
+/* --- SELECTED SKILLS (CHIPS) --- */
 .selected-skills {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  min-height: 42px;
-  padding: 4px 0;
+  min-height: 20px;
 }
 
 .empty-skill {
   font-size: 13px;
   color: #94a3b8;
   font-style: italic;
-  padding: 8px 0;
+  padding: 4px 0;
 }
 
 .skill-chip {
   display: flex;
   align-items: center;
   gap: 6px;
-  background: #eff6ff; /* Biru muda soft */
+  background: #eff6ff;
   color: #2563eb;
   padding: 6px 12px;
   border-radius: 999px;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
   border: 1px solid #dbeafe;
   transition: all 0.2s ease;
-}
-
-.skill-chip:hover {
-  background: #dbeafe;
-  transform: translateY(-1px);
 }
 
 .remove-skill-btn {
@@ -58,19 +87,18 @@
   cursor: pointer;
   padding: 2px;
   border-radius: 50%;
-  transition: background 0.2s;
 }
 
 .remove-skill-btn:hover {
   background: rgba(37, 99, 235, 0.1);
 }
 
-/* --- SEARCH INPUT WRAPPER --- */
+/* --- SEARCH WRAPPER --- */
 .skill-search-wrapper {
   position: relative;
   display: flex;
   align-items: center;
-  background: white;
+  background: #f8fafc;
   border: 1px solid #e2e8f0;
   border-radius: 12px;
   padding: 0 16px;
@@ -79,7 +107,14 @@
 
 .skill-search-wrapper:focus-within {
   border-color: #2563eb;
+  background: white;
   box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+}
+
+/* State ketika input di-disable (saat skill penuh) */
+.skill-search-wrapper input:disabled {
+  cursor: not-allowed;
+  background: transparent;
 }
 
 .search-icon {
@@ -93,6 +128,7 @@
   border: none;
   outline: none;
   font-size: 14px;
+  background: transparent;
   color: #1e293b;
 }
 
@@ -104,32 +140,23 @@
   display: flex;
   align-items: center;
   font-size: 18px;
-  padding: 4px;
 }
 
 /* --- DROPDOWN MENU --- */
 .skills-dropdown {
   position: absolute;
-  top: calc(100% + 8px);
+  top: 100%;
   left: 0;
   right: 0;
   background: white;
   border: 1px solid #e2e8f0;
   border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-  z-index: 100;
-  max-height: 200px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  z-index: 50;
+  max-height: 220px;
   overflow-y: auto;
+  margin-top: 8px;
   padding: 8px;
-}
-
-/* Scrollbar Styling */
-.skills-dropdown::-webkit-scrollbar {
-  width: 6px;
-}
-.skills-dropdown::-webkit-scrollbar-thumb {
-  background: #e2e8f0;
-  border-radius: 10px;
 }
 
 .skill-option {
@@ -156,16 +183,4 @@
   font-size: 13px;
   color: #94a3b8;
   text-align: center;
-}
-
-.skill-counter {
-  margin-top: 6px;
-
-  font-size: 13px;
-  font-weight: 500;
-
-  color: #64748b;
-
-  display: flex;
-  justify-content: flex-end;
 }

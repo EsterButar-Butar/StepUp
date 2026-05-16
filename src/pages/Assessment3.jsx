@@ -1,13 +1,12 @@
 // src/pages/Assessment3.jsx
 
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
 import { FiArrowLeft, FiCheck } from "react-icons/fi";
 
 import { useNavigate } from "react-router-dom";
 
 import AssessmentLayout from "../layouts/AssessmentLayout";
-
+import { submitAssessment3 } from "../api/assessment3Api";
 import ProjectSection from "../components/assessment3/ProjectSection";
 import InternshipSection from "../components/assessment3/InternshipSection";
 import OrganizationSection from "../components/assessment3/OrganizationSection";
@@ -27,9 +26,78 @@ export default function Assessment3() {
     },
   ]);
 
+  useEffect(() => {
+    localStorage.setItem("assessment3-projects", JSON.stringify(projects));
+  }, [projects]);
+
+  const [internships, setInternships] = useState([
+    {
+      company: "",
+      position: "",
+      duration: "",
+      responsibilities: "",
+    },
+  ]);
+
+  useEffect(() => {
+    localStorage.setItem(
+      "assessment3-internships",
+      JSON.stringify(internships),
+    );
+  }, [internships]);
+
+  const [organizations, setOrganizations] = useState([
+    {
+      organizationName: "",
+      role: "",
+      duration: "",
+    },
+  ]);
+
+  useEffect(() => {
+    localStorage.setItem(
+      "assessment3-organizations",
+      JSON.stringify(organizations),
+    );
+  }, [organizations]);
+
+  const [certifications, setCertifications] = useState([
+    {
+      certificateName: "",
+      issuer: "",
+      year: "",
+    },
+  ]);
+
+  useEffect(() => {
+    localStorage.setItem(
+      "assessment3-certifications",
+      JSON.stringify(certifications),
+    );
+  }, [certifications]);
+
   const isProjectValid = projects.some(
     (project) => project.projectName.trim() !== "",
   );
+
+  const handleSubmit = async () => {
+    try {
+      const payload = {
+        projects,
+        internships,
+        organizations,
+        certifications,
+      };
+
+      await submitAssessment3(payload);
+
+      navigate("/analyzing");
+    } catch (error) {
+      console.error(error);
+
+      alert("Failed to submit assessment");
+    }
+  };
 
   return (
     <AssessmentLayout currentStep={3}>
@@ -47,11 +115,17 @@ export default function Assessment3() {
       <div className="form-body">
         <ProjectSection items={projects} setItems={setProjects} />
 
-        <InternshipSection />
+        <InternshipSection items={internships} setItems={setInternships} />
 
-        <OrganizationSection />
+        <OrganizationSection
+          items={organizations}
+          setItems={setOrganizations}
+        />
 
-        <CertificationSection />
+        <CertificationSection
+          items={certifications}
+          setItems={setCertifications}
+        />
 
         {/* ANALYSIS CARD */}
         <div className="analysis-ready-card">
@@ -64,11 +138,8 @@ export default function Assessment3() {
 
           <div className="analysis-points">
             <div className="analysis-item">✓ Career Recommendations</div>
-
             <div className="analysis-item">✓ Skills Analysis</div>
-
             <div className="analysis-item">✓ ATS-ready CV</div>
-
             <div className="analysis-item">✓ Strength Insights</div>
           </div>
         </div>
@@ -86,7 +157,7 @@ export default function Assessment3() {
 
           <button
             disabled={!isProjectValid}
-            onClick={() => navigate("/analyzing")}
+            onClick={handleSubmit}
             type="button"
             className="btn-submit"
           >

@@ -1,0 +1,170 @@
+.topmatches {
+  width: 100%;
+
+  background: white;
+
+  border-radius: 20px;
+  border: 1px solid #e5e7eb;
+
+  padding: 32px;
+
+  display: flex;
+  justify-content: space-between;
+  gap: 32px;
+}
+
+.topmatches-left {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.title-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  flex-wrap: wrap;
+}
+
+.career-icon {
+  width: 48px;
+  height: 48px;
+
+  border-radius: 12px;
+
+  background: #eff6ff;
+  color: #2563eb;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 22px;
+}
+
+.title-row h1 {
+  font-size: 32px;
+  font-weight: 700;
+
+  color: #0f172a;
+}
+
+.top-badge {
+  padding: 6px 14px;
+
+  border-radius: 999px;
+
+  background: #dcfce7;
+  color: #15803d;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  letter-spacing: 0.5px;
+}
+
+.career-description {
+  max-width: 760px;
+
+  color: #64748b;
+
+  line-height: 1.8;
+  font-size: 15px;
+}
+
+.career-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.career-tag {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  background: #f8fafc;
+
+  border: 1px solid #e2e8f0;
+
+  padding: 10px 14px;
+
+  border-radius: 10px;
+
+  font-size: 14px;
+  color: #475569;
+}
+
+.match-card {
+  width: 240px;
+
+  background: #f8fafc;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+
+  padding: 24px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 18px;
+}
+
+.match-score-wrapper {
+  width: 120px;
+  height: 120px;
+}
+
+.overall-text {
+  font-size: 12px;
+  font-weight: 700;
+
+  letter-spacing: 1px;
+
+  color: #64748b;
+}
+
+.save-btn {
+  width: 100%;
+
+  border: none;
+
+  background: #2563eb;
+  color: white;
+
+  padding: 12px;
+
+  border-radius: 10px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.save-btn:hover {
+  background: #1d4ed8;
+}
+
+@media (max-width: 1024px) {
+  .topmatches {
+    flex-direction: column;
+  }
+
+  .match-card {
+    width: 100%;
+  }
+}

@@ -3,7 +3,7 @@
 .ft-main {
   width: 100%;
   background-color: #ffffff;
-  padding: 40px 24px 30px 24px;
+  padding: 60px 24px 30px 24px;
   display: flex;
   justify-content: center;
   border-top: 1px solid #f1f5f9;
@@ -16,34 +16,81 @@
 }
 
 .ft-grid {
-  display: flex;
-  margin-bottom: 30px;
+  display: grid;
+  /* Membuat kolom brand lebih lebar (2 bagian) dibanding kolom link (1 bagian) */
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 50px;
 }
 
+/* BRAND COLUMN */
 .ft-brand-col {
-  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .ft-logo-wrapper {
-  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
 }
 
 .ft-logo-img {
-  height: 35px; /* Tetap menjaga ukuran logo agar teks di dalamnya terbaca */
+  height: 38px;
   width: auto;
   object-fit: contain;
+}
+
+/* Sesuai instruksi sebelumnya: sembunyikan teks StepUp jika logo sudah berteks */
+.ft-logo-text {
+  display: none;
 }
 
 .ft-brand-desc {
   color: #64748b;
   font-size: 14px;
   line-height: 1.6;
-  max-width: 320px;
+  max-width: 280px;
 }
 
+/* LINKS COLUMN (Explore, Assessment, Results) */
+.ft-links-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ft-links-col h3 {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0f172a;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+/* Reset button style agar seperti link navigasi */
+.ft-links-col button {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #64748b;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  font-family: inherit;
+}
+
+.ft-links-col button:hover {
+  color: #2563eb;
+}
+
+/* BOTTOM SECTION */
 .ft-bottom {
   border-top: 1px solid #f1f5f9;
-  padding-top: 25px;
+  padding-top: 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -60,10 +107,22 @@
   font-weight: 500;
 }
 
-/* Responsive */
+/* RESPONSIVE */
+@media (max-width: 968px) {
+  .ft-grid {
+    grid-template-columns: 1fr 1fr; /* Jadi 2 kolom di tablet */
+    gap: 40px;
+  }
+}
+
 @media (max-width: 640px) {
   .ft-grid {
+    grid-template-columns: 1fr; /* 1 kolom di HP */
     text-align: center;
+    gap: 32px;
+  }
+
+  .ft-logo-wrapper {
     justify-content: center;
   }
 
@@ -71,9 +130,13 @@
     margin: 0 auto;
   }
 
+  .ft-links-col button {
+    text-align: center;
+  }
+
   .ft-bottom {
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
     text-align: center;
   }
 }

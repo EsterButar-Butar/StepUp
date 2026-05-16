@@ -7,45 +7,24 @@ import {
 } from "react-icons/fi";
 import "../../styles/result/skillgap.css";
 
-export default function SkillGap() {
-  const skillData = {
-    tech: {
-      title: "Tech Skills",
-      icon: <FiCpu />,
-      have: [
-        { name: "HTML5 & CSS3", level: "Advanced proficiency" },
-        { name: "JavaScript (ES6+)", level: "Intermediate proficiency" },
-      ],
-      improve: [
-        { name: "React.js Framework", desc: "Core requirement" },
-        { name: "API Integration", desc: "Basic knowledge needed" },
-      ],
-    },
-    soft: {
-      title: "Soft Skills",
-      icon: <FiUsers />,
-      have: [{ name: "Problem Solving", level: "Strong analytical skill" }],
-      improve: [
-        {
-          name: "Public Speaking",
-          desc: "Needed for stakeholder presentations",
-        },
-        { name: "Technical Writing", desc: "Documentation skills" },
-      ],
-    },
+export default function SkillGap({ data }) {
+  const iconMap = {
+    tech: <FiCpu />,
+    soft: <FiUsers />,
   };
 
+  if (!data) return null;
   const RenderSection = ({ section }) => (
     <div className="sg-main-section">
       <div className="sg-section-divider">
-        {section.icon} <span>{section.title}</span>
+        {iconMap[section.type]} <span>{section.title}</span>
       </div>
       <div className="sg-content">
         <div className="sg-column">
           <h4 className="sg-status-title success">
             <span className="dot success">●</span> SKILLS YOU HAVE
           </h4>
-          {section.have.map((skill, i) => (
+          {(section.have || []).map((skill, i) => (
             <div key={i} className="sg-item-plain">
               <div className="sg-icon-circle success">
                 <FiCheck size={14} />
@@ -61,7 +40,7 @@ export default function SkillGap() {
           <h4 className="sg-status-title warning">
             <span className="dot warning">●</span> SKILLS TO IMPROVE
           </h4>
-          {section.improve.map((skill, i) => (
+          {(section.improve || []).map((skill, i) => (
             <div key={i} className="sg-card-improve">
               <div className="sg-card-content">
                 <div className="sg-icon-circle warning">
@@ -88,13 +67,13 @@ export default function SkillGap() {
         </div>
         <div className="sg-header-text">
           <h3>Skill Gap Analysis</h3>
-          <p>Based on your top match: Frontend Developer</p>
+          <p>Based on your top match: {data.career}</p>
         </div>
       </div>
 
-      <RenderSection section={skillData.tech} />
+      <RenderSection section={data.tech} />
       <div className="sg-spacer" />
-      <RenderSection section={skillData.soft} />
+      <RenderSection section={data.soft} />
     </div>
   );
 }

@@ -1,20 +1,24 @@
-import { ChevronRight } from "lucide-react";
 import "../../styles/result/matchcard.css";
+import { useNavigate } from "react-router-dom";
+import { ChevronRight, Code2 } from "lucide-react";
 
 export default function MatchCard({
+  careerId,
   title,
   match,
   description,
   readiness,
   progress,
   color,
-  Icon, // Kita terima komponen ikon sebagai prop
+  Icon,
 }) {
+  const navigate = useNavigate();
+  const SafeIcon = Icon || Code2;
   return (
     <div className="tm-match-card">
       <div className="tm-match-header">
         <div className="tm-icon-box" style={{ backgroundColor: color.bg }}>
-          <Icon size={20} color={color.text} />
+          <SafeIcon size={20} color={color.text} />
         </div>
 
         <div
@@ -49,7 +53,10 @@ export default function MatchCard({
       </div>
 
       <div className="tm-card-footer">
-        <button className="tm-btn-view">
+        <button
+          className="tm-btn-view"
+          onClick={() => navigate(`/detail-result/${careerId}`)}
+        >
           View Details <ChevronRight size={14} />
         </button>
       </div>

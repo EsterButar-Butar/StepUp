@@ -1,17 +1,23 @@
-import axios from "axios";
+import {
+  loginUser,
+  registerUser,
+} from "../api/authApi";
 
-const API_URL = "http://localhost:5000/api/auth";
+export const login = async (userData) => {
+  const data = await loginUser(userData);
 
-// REGISTER
-export const registerUser = async (userData) => {
-  const response = await axios.post(`${API_URL}/register`, userData);
+  localStorage.setItem("token", data.token);
 
-  return response.data;
+  localStorage.setItem("user", JSON.stringify(data.user));
+
+  return data;
 };
 
-// LOGIN
-export const loginUser = async (userData) => {
-  const response = await axios.post(`${API_URL}/login`, userData);
+export const register = async (userData) => {
+  return await registerUser(userData);
+};
 
-  return response.data;
+export const logout = () => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
 };

@@ -1,7 +1,7 @@
-import axios from "axios";
+import api from "../services/api";
 
-const API = axios.create({
-    baseURL: import.meta.env.VITE_API_URL,
-});
+export const getCareerDetail = async (careerId) => {
+    const response = await api.get(`/careers/${careerId}`);
 
-export default API;
+    return response.data;
+};

@@ -13,14 +13,15 @@ import ForgotPassword from "./pages/ForgotPassword.jsx";
 import Analyzing from "./pages/Analyzing";
 import Result from "./pages/Result";
 import Profile from "./pages/Profile";
-import ResultDetail from "./pages/ResultDetail";
+import DetailResult from "./pages/DetailResult.jsx";
+import CVResult from "./pages/CVResult.jsx";
 
 function App() {
   return (
     <Router>
       <Routes>
         {/* LOGIN */}
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/landing" element={<Landing />} />
         <Route path="/assessment" element={<Assessment />} />
@@ -29,8 +30,9 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/analyzing" element={<Analyzing />} />
         <Route path="/result" element={<Result />} />
-        <Route path="/result-detail" element={<ResultDetail />} />
+        <Route path="/detail-result" element={<DetailResult />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/cv-result" element={<CVResult />} />
       </Routes>
     </Router>
   );

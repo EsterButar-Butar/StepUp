@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiMail } from "react-icons/fi";
-
 import InputField from "../components/login/InputField";
 import PasswordField from "../components/login/PasswordField";
 import Button from "../components/login/Button";
-import ErrorMessage from "../components/login/ErrorMessage";
+import ErrorMessage from "../components/ErrorMessage";
 
-import { loginUser } from "../services/authService.js";
+import { login } from "../services/authService";
 
 import "../styles/login.css";
 
@@ -41,13 +40,9 @@ export default function Login() {
     try {
       setLoading(true);
 
-      const data = await loginUser(email, password);
+      const data = await login({ email, password });
 
       console.log(data);
-
-      localStorage.setItem("token", data.token);
-
-      localStorage.setItem("user", JSON.stringify(data.user));
 
       navigate("/landing");
     } catch (err) {

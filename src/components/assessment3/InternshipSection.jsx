@@ -2,7 +2,7 @@
 
 import RepeatableFormCard from "./RepeatableFormCard";
 
-export default function InternshipSection() {
+export default function InternshipSection({ items, setItems }) {
   const fields = [
     {
       name: "company",
@@ -27,5 +27,13 @@ export default function InternshipSection() {
     },
   ];
 
-  return <RepeatableFormCard title="Internship" fields={fields} optional />;
+  return (
+    <RepeatableFormCard
+      title="Internship"
+      fields={fields}
+      optional
+      items={items}
+      setItems={setItems}
+    />
+  );
 }

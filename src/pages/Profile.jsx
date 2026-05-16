@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import NavbarDashboard from "../components/NavbarDashboard";
+import NavbarDashboard from "../components/NavbarResult";
 import Footer from "../components/Footer";
 
 import ProfileHeader from "../components/profile/ProfileHeader";

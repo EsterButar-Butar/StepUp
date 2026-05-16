@@ -1,19 +1,15 @@
 // src/pages/Assessment.jsx
 
-import { useState, useEffect, useRef } from "react";
-import Navbar from "../components/NavbarDashboard";
+import { useState, useEffect } from "react";
+import Navbar from "../components/NavbarAssessment";
 import Footer from "../components/Footer";
 import AssessmentSidebar from "../components/AssessmentSidebar";
 import ImageCropModal from "../components/assessmentcrop/ImageCropModal";
 import UploadPreview from "../components/assessmentcrop/UploadPreview";
 
-import {
-  FiChevronDown,
-  FiArrowRight,
-  FiCamera,
-  FiUpload,
-  FiX,
-} from "react-icons/fi";
+import { submitAssessment } from "../api/assessmentApi";
+
+import { FiChevronDown, FiArrowRight } from "react-icons/fi";
 
 import "../styles/assessment.css";
 
@@ -42,7 +38,6 @@ export default function Assessment() {
         };
   });
 
-  const [profileImage, setProfileImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(() => {
     return localStorage.getItem("assessmentProfileImage");
   });
@@ -50,7 +45,6 @@ export default function Assessment() {
   const [tempImage, setTempImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
-  const timeoutRef = useRef(null);
 
   const isFormValid =
     isInitialized &&
@@ -75,12 +69,6 @@ export default function Assessment() {
     setLoading(false);
 
     setIsInitialized(true);
-
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
   }, []);
 
   useEffect(() => {
@@ -131,18 +119,16 @@ export default function Assessment() {
   };
 
   const removeImage = () => {
-    setProfileImage(null);
-
     setPreviewImage(null);
+
+    localStorage.removeItem("assessmentProfileImage");
   };
 
   const handleSaveCroppedImage = (croppedImage) => {
     setPreviewImage(croppedImage);
-
-    setProfileImage(croppedImage);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!formData.fullName.trim()) {
@@ -157,17 +143,34 @@ export default function Assessment() {
 
     if (formData.gpa) {
       const gpa = parseFloat(formData.gpa);
+
       if (Number.isNaN(gpa) || gpa < 0 || gpa > 4) {
         alert("GPA must be between 0 and 4");
         return;
       }
     }
 
-    setLoading(true);
+    try {
+      setLoading(true);
 
-    timeoutRef.current = setTimeout(() => {
+      const payload = {
+        ...formData,
+        profileImage: previewImage,
+      };
+
+      await submitAssessment(payload);
+
+      localStorage.removeItem("assessmentStep1");
+      localStorage.removeItem("assessmentProfileImage");
+
       navigate("/assessment2");
-    }, 1200);
+    } catch (error) {
+      console.error(error);
+
+      alert("Failed to save assessment");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

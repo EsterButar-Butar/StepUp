@@ -1,0 +1,105 @@
+/* src/styles/navbardashboard.css */
+
+.db-navbar-fixed {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.8); /* Efek kaca transparan */
+  backdrop-filter: blur(12px); /* Blur mewah */
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 9999;
+  border-bottom: 1px solid rgba(241, 245, 249, 0.7);
+}
+
+.db-main-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 72px; /* Tinggi elegan */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+}
+
+.db-brand-area {
+  display: flex;
+  align-items: center;
+  transition: transform 0.2s ease;
+}
+
+.db-brand-area:hover {
+  transform: scale(1.05);
+}
+
+.db-logo-image {
+  height: 38px;
+  width: auto;
+  object-fit: contain;
+}
+
+/* CONTAINER MENU PILL */
+.db-nav-links {
+  display: flex;
+  gap: 8px; /* Gap lebih rapat untuk efek pill */
+  background: #f1f5f9; /* Background abu-abu sangat muda */
+  padding: 6px;
+  border-radius: 99px;
+}
+
+/* BUTTON LINK SEBAGAI PILL ITEM */
+.db-link-item {
+  background: transparent;
+  border: none;
+  text-decoration: none;
+  color: #64748b;
+  padding: 8px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 99px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.db-link-item:hover {
+  background: white; /* Efek tombol yang "pop out" dari pill */
+  color: #2563eb;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.db-action-area {
+  display: flex;
+  align-items: center;
+}
+
+/* TOMBOL SAVE DRAFT */
+.db-btn-primary {
+  background: #0f172a; /* Warna gelap agar kontras */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.db-btn-primary:hover {
+  background: #2563eb; /* Berubah biru saat hover */
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.2);
+}
+
+/* Responsive: Sembunyikan menu pill di layar kecil */
+@media (max-width: 900px) {
+  .db-nav-links {
+    display: none;
+  }
+}
