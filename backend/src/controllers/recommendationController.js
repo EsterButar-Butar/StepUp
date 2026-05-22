@@ -1,114 +1,132 @@
 const Assessment = require("../models/Assessment");
 
-exports.getRecommendation = async (req, res) => {
-  try {
-    const assessment = await Assessment.findById(req.params.id);
+// ================================================
+// FUNGSI TRANSFORMER: Ubah format AI → format Frontend
+// ================================================
+function transformAItoFrontend(aiResult) {
+    if (!aiResult) return null;
 
-    if (!assessment) {
-      return res.status(404).json({ message: "Assessment not found" });
+    const recs = aiResult.top_3_recommendations || [];
+    const gap = aiResult.skill_gap || {};
+    const atsCv = aiResult.ats_cv || {};
+
+    // --- Capitalize nama job role (misal "data scientist" → "Data Scientist") ---
+    function capitalize(str) {
+        return str.split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
     }
 
-    res.json({
-      assessment_data: assessment,
+    // --- Transform career_recommendations (untuk TopMatchesGrid & MatchCard) ---
+    const career_recommendations = recs.map((rec, index) => {
+        const scorePercent = Math.round(rec.match_score * 100);
+        return {
+            title: capitalize(rec.job_role),
+            match: scorePercent,
+            score: scorePercent,
+            category: rec.category,
+            description: `Karir di bidang ${rec.category} sebagai ${capitalize(rec.job_role)}.`,
+            readiness: scorePercent >= 70 ? "High" : scorePercent >= 40 ? "Good" : "Moderate",
+            progress: scorePercent
+        };
+    });
 
-      career_recommendations: [
-        {
-          title: "Frontend Developer",
-          match: 94,
-          score: 94,
-          level: "Senior",
-          description: "Build user interfaces and web applications using modern frameworks.",
-          readiness: "High",
-          progress: 94,
-          category: "technology",
-          tags: ["High Demand", "Tech, Finance", "Remote Friendly"],
-          reasons: [
-            "Strong proficiency in HTML5, CSS3, and JavaScript",
-            "Experience with React.js framework",
-            "Good understanding of responsive design"
-          ]
-        },
-        {
-          title: "UX/UI Designer",
-          match: 88,
-          score: 88,
-          level: "Mid-Level",
-          description: "Design intuitive digital experiences focusing on user flow and wireframing.",
-          readiness: "Good",
-          progress: 88,
-          category: "design",
-          tags: ["Creative", "Product Teams", "Hybrid"],
-          reasons: [
-            "Eye for visual design and aesthetics",
-            "Understanding of user-centered design principles",
-            "Familiar with prototyping tools"
-          ]
-        },
-        {
-          title: "Product Manager",
-          match: 76,
-          score: 76,
-          level: "Junior",
-          description: "Lead product strategy, coordinate between teams, and drive the product roadmap.",
-          readiness: "Moderate",
-          progress: 76,
-          category: "management",
-          tags: ["Leadership", "Strategy", "Cross-functional"],
-          reasons: [
-            "Good communication and teamwork skills",
-            "Analytical thinking ability",
-            "Interest in product development lifecycle"
-          ]
-        }
-      ],
+    // --- Transform skill_gap (untuk SkillGap.jsx shared component) ---
+    const allMatched = [
+        ...(gap.hard_skill_gap?.matched || []),
+        ...(gap.soft_skill_gap?.matched || [])
+    ];
 
-      // === DATA UNTUK KOMPONEN SkillGap.jsx (SHARED / result2) ===
-      skill_gap: {
-        skillsHave: ["Python", "Java", "Data Structures", "SQL", "Problem Solving"],
-        skillsImprove: [
-          { name: "System Design", level: "Intermediate", progress: 60 },
-          { name: "React.js", level: "Beginner", progress: 30 }
-        ],
-        missingSkills: ["AWS / Cloud", "Docker", "CI/CD Pipelines"]
-      },
+    const skill_gap = {
+        skillsHave: allMatched,
+        skillsImprove: (gap.missing_skills || []).map(skill => ({
+            name: capitalize(skill),
+            level: "Beginner",
+            progress: 20
+        })),
+        missingSkills: gap.missing_skills || []
+    };
 
-      // === DATA UNTUK KOMPONEN SkillGap.jsx (RESULT - Tech & Soft terpisah) ===
-      skill_gap_detailed: {
+    // --- Transform skill_gap_detailed (untuk SkillGap.jsx di halaman Result) ---
+    const skill_gap_detailed = {
         tech: {
-          title: "Tech Skills",
-          have: [
-            { name: "HTML5 & CSS3", level: "Advanced proficiency" },
-            { name: "JavaScript (ES6+)", level: "Intermediate proficiency" }
-          ],
-          improve: [
-            { name: "React.js Framework", desc: "Core requirement" },
-            { name: "API Integration", desc: "Basic knowledge needed" }
-          ]
+            title: "Tech Skills",
+            have: (gap.hard_skill_gap?.matched || []).map(s => ({
+                name: capitalize(s),
+                level: "Proficient"
+            })),
+            improve: (gap.hard_skill_gap?.missing || []).map(s => ({
+                name: capitalize(s),
+                desc: "Skill yang perlu dipelajari"
+            }))
         },
         soft: {
-          title: "Soft Skills",
-          have: [
-            { name: "Problem Solving", level: "Strong analytical skill" }
-          ],
-          improve: [
-            { name: "Public Speaking", desc: "Needed for stakeholder presentations" },
-            { name: "Technical Writing", desc: "Documentation skills" }
-          ]
+            title: "Soft Skills",
+            have: (gap.soft_skill_gap?.matched || []).map(s => ({
+                name: capitalize(s),
+                level: "Strong skill"
+            })),
+            improve: (gap.soft_skill_gap?.missing || []).map(s => ({
+                name: capitalize(s),
+                desc: "Perlu ditingkatkan"
+            }))
         }
-      },
+    };
 
-      // === DATA UNTUK KOMPONEN MatchBreakdown.jsx (ResultDetail) ===
-      match_breakdown: [
-        { label: "Technical Skills", value: 92 },
-        { label: "Interests", value: 98 },
-        { label: "Experience", value: 85 },
-        { label: "Academic Alignment", value: 100 }
-      ]
-    });
-  } catch (error) {
-    res.status(500).json({
-      message: "Error fetching recommendation",
-      error: error.message
-    });
-  }
+    // --- Transform match_breakdown (untuk MatchBreakdown.jsx) ---
+    const topScore = recs.length > 0 ? Math.round(recs[0].match_score * 100) : 0;
+    const match_breakdown = [
+        { label: "Technical Skills", value: Math.min(topScore + 5, 100) },
+        { label: "Interests", value: Math.min(topScore + 10, 100) },
+        { label: "Experience", value: Math.max(topScore - 10, 0) },
+        { label: "Academic Alignment", value: Math.min(topScore + 8, 100) }
+    ];
+
+    return {
+        career_recommendations,
+        skill_gap,
+        skill_gap_detailed,
+        match_breakdown,
+        ats_cv: atsCv,
+        affirmation: gap.affirmation || "",
+        genai_explanation: aiResult.genai_explanation || ""
+    };
+}
+
+// ================================================
+// GET RECOMMENDATION BY ASSESSMENT ID
+// ================================================
+exports.getRecommendation = async (req, res) => {
+    try {
+        const assessment = await Assessment.findById(req.params.id);
+
+        if (!assessment) {
+            return res.status(404).json({ message: "Assessment not found" });
+        }
+
+        // Kalau assessment belum punya hasil AI, kasih tau Frontend
+        if (!assessment.aiResult) {
+            return res.status(200).json({
+                message: "AI result belum tersedia untuk assessment ini",
+                assessment_data: assessment,
+                career_recommendations: [],
+                skill_gap: null,
+                skill_gap_detailed: null,
+                match_breakdown: [],
+                ats_cv: null
+            });
+        }
+
+        // Transform AI result ke format Frontend
+        const frontendData = transformAItoFrontend(assessment.aiResult);
+
+        res.json({
+            assessment_data: assessment,
+            ...frontendData
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            message: "Error fetching recommendation",
+            error: error.message
+        });
+    }
 };

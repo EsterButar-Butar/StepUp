@@ -45,6 +45,10 @@ const assessmentSchema = new mongoose.Schema({
             issuer: { type: String },
             year: { type: String }
         }]
+    },
+    aiResult: {
+        type: mongoose.Schema.Types.Mixed,
+        default: null
     }
 }, {
     timestamps: true
