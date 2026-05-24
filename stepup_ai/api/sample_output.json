@@ -1,0 +1,94 @@
+{
+  "top_3_recommendations": [
+    {
+      "job_role": "mechanical engineer",
+      "category": "engineering",
+      "match_score": 0.5226
+    },
+    {
+      "job_role": "aerospace engineer",
+      "category": "engineering",
+      "match_score": 0.3899
+    },
+    {
+      "job_role": "process engineer",
+      "category": "engineering",
+      "match_score": 0.359
+    }
+  ],
+  "skill_gap": {
+    "affirmation": "Kamu sudah memiliki dasar skill yang cukup baik untuk bidang mechanical engineer. Untuk meningkatkan peluang kariermu, kamu bisa mempelajari beberapa skill berikut.",
+    "hard_skill_gap": {
+      "matched": [
+        "matlab"
+      ],
+      "missing": [
+        "cad",
+        "thermal systems"
+      ]
+    },
+    "soft_skill_gap": {
+      "matched": [
+        "problem solving",
+        "teamwork"
+      ],
+      "missing": [
+        "analysis"
+      ]
+    },
+    "missing_skills": [
+      "cad",
+      "thermal systems",
+      "analysis"
+    ]
+  },
+  "ats_cv": {
+    "header": {
+      "name": "Dimas Saputra",
+      "target_role": "mechanical engineer",
+      "location": "Bandung, Indonesia",
+      "email": "dimas.saputra@gmail.com",
+      "phone": "+62 81234567890",
+      "linkedin": "https://linkedin.com/in/dimassaputra"
+    },
+    "professional_summary": "Mechanical Engineering student with experience in autocad, technical drawing, matlab. Passionate about developing professional skills and pursuing a career as mechanical engineer.",
+    "education": {
+      "university": "",
+      "degree": "Bachelor of Mechanical Engineering",
+      "major": "Mechanical Engineering",
+      "semester": 5,
+      "gpa": 3.45
+    },
+    "skills": {
+      "tech_skill": [
+        "autocad",
+        "technical drawing",
+        "matlab"
+      ],
+      "soft_skill": [
+        "problem solving",
+        "teamwork",
+        "communication"
+      ]
+    },
+    "projects": [
+      "mechanical component design project",
+      "vehicle system analysis"
+    ],
+    "internship_experience": [
+      "mechanical engineering intern"
+    ],
+    "organizational_experience": [
+      "engineering student association"
+    ],
+    "certifications": [
+      "AutoCAD basic certification"
+    ],
+    "ats_keywords_to_add": [
+      "cad",
+      "thermal systems",
+      "analysis"
+    ]
+  },
+  "genai_explanation": "Rekomendasi utama adalah mechanical engineer dengan match score 0.5226. Hard skill yang perlu ditingkatkan: cad, thermal systems. Soft skill yang perlu ditingkatkan: analysis."
+}

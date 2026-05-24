@@ -1,0 +1,34 @@
+{
+  "name": "Dimas Saputra",
+  "email": "dimas.saputra@gmail.com",
+  "phone": "+62 81234567890",
+  "linkedin": "https://linkedin.com/in/dimassaputra",
+  "location": "Bandung, Indonesia",
+  "major": "Mechanical Engineering",
+  "education": "Bachelor of Mechanical Engineering",
+  "semester": 5,
+  "gpa": 3.45,
+  "hard_skills": [
+    "autocad",
+    "technical drawing",
+    "matlab"
+  ],
+  "soft_skills": [
+    "problem solving",
+    "teamwork",
+    "communication"
+  ],
+  "projects": [
+    "mechanical component design project",
+    "vehicle system analysis"
+  ],
+  "internships": [
+    "mechanical engineering intern"
+  ],
+  "organizations": [
+    "engineering student association"
+  ],
+  "certifications": [
+    "AutoCAD basic certification"
+  ]
+}
