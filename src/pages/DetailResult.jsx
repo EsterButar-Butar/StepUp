@@ -1,46 +1,97 @@
-// src/pages/DetailResult.jsx
-
+import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "../components/NavbarResult";
-import { useNavigate } from "react-router-dom";
-
+import Footer from "../components/Footer";
 import TopMatches from "../components/resultdetail/TopMatches";
 import MatchBreakdown from "../components/resultdetail/MatchBreakdown";
 import SkillGapAnalysis from "../components/resultdetail/SkillGapAnalysis";
-
-import { mockResultDetail } from "../data/mockDetailResult";
-
+import useCareerDetail from "../hooks/detailResult";
 import "../styles/detailresult/detailresult.css";
 
 export default function DetailResult() {
-  const data = mockResultDetail;
   const navigate = useNavigate();
+
+  const { id } = useParams();
+
+  const { data, loading, error } = useCareerDetail(id);
+  const career = data?.career_recommendations?.[0] || null;
+  const breakdown =
+    data?.match_breakdown?.map((item, index) => ({
+      id: `${item.label || "breakdown"}-${index}`,
+      type: item.type || item.label?.toLowerCase().split(" ")[0],
+      label: item.label || "",
+      score: Number(item.score ?? item.value ?? 0),
+      color: item.color || "#2563eb",
+    })) || [];
+  const normalizeSkills = (items = []) =>
+    items.map((item, index) =>
+      typeof item === "string"
+        ? { id: `${item}-${index}`, name: item }
+        : { id: item.id || `${item.name || "skill"}-${index}`, ...item },
+    );
+  const skills = {
+    technical: {
+      have: normalizeSkills(data?.skill_gap_detailed?.tech?.have),
+      improve: normalizeSkills(data?.skill_gap_detailed?.tech?.improve),
+      missing: normalizeSkills(data?.skill_gap?.missingSkills),
+    },
+    soft: {
+      have: normalizeSkills(data?.skill_gap_detailed?.soft?.have),
+      improve: normalizeSkills(data?.skill_gap_detailed?.soft?.improve),
+      missing: [],
+    },
+  };
+
+  // LOADING
+  if (loading) {
+    return (
+      <div className="detail-loading">
+        <p>Loading result detail...</p>
+      </div>
+    );
+  }
+
+  // ERROR
+  if (error) {
+    return (
+      <div className="detail-error">
+        <p>{error}</p>
+
+        <button onClick={() => navigate("/result")}>Back to Results</button>
+      </div>
+    );
+  }
+
+  // EMPTY
+  if (!data || !career) {
+    return (
+      <div className="detail-error">
+        <p>No detail data found.</p>
+        <button onClick={() => navigate("/result")}>Back to Results</button>
+      </div>
+    );
+  }
 
   return (
     <div className="detail-result">
-      {/* NAVBAR */}
-      <Navbar />
+      <Navbar selectedCareerId={id} />
 
-      {/* MAIN */}
       <main className="detail-main">
-        {/* BACK */}
         <div className="back-wrapper">
           <button className="back-btn" onClick={() => navigate("/result")}>
             ← Back to Results
           </button>
         </div>
 
-        {/* TOP CARD */}
-        <TopMatches career={data} />
+        <TopMatches career={career} />
 
-        {/* BOTTOM GRID */}
         <section className="detail-grid">
-          {/* LEFT CARD */}
-          <MatchBreakdown breakdown={data?.breakdown} />
+          <MatchBreakdown breakdown={breakdown} />
 
-          {/* RIGHT CARD */}
-          <SkillGapAnalysis skills={data?.skillGap} />
+          <SkillGapAnalysis skills={skills} />
         </section>
       </main>
+
+      <Footer />
     </div>
   );
 }

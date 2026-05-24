@@ -1,42 +1,21 @@
-// src/components/NavbarResult.jsx
-
 import "../styles/navbarresult.css";
-import Logo from "../assets/S.png";
-import { useNavigate, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
 
-export default function NavbarResult() {
+import Logo from "../assets/S.png";
+
+import { useNavigate, useLocation } from "react-router-dom";
+
+export default function NavbarResult({ user = {}, selectedCareerId }) {
   const navigate = useNavigate();
+
   const location = useLocation();
 
-  const defaultAvatar = (name) =>
-    `https://ui-avatars.com/api/?name=${encodeURIComponent(
-      name,
-    )}&background=2563eb&color=fff`;
+  const avatarSeed = user?.fullName || "Guest";
 
-  const [user, setUser] = useState({
-    fullName: "Guest User",
-    major: "No Major",
-    profileImage: defaultAvatar("Guest User"),
-  });
-
-  useEffect(() => {
-    const assessmentData = JSON.parse(localStorage.getItem("assessmentStep1"));
-
-    const profileImage = localStorage.getItem("assessmentProfileImage");
-
-    if (assessmentData) {
-      setUser({
-        fullName: assessmentData.fullName || "Guest User",
-
-        major: assessmentData.major || "No Major",
-
-        profileImage:
-          profileImage ||
-          defaultAvatar(assessmentData.fullName || "Guest User"),
-      });
-    }
-  }, []);
+  const profileImage =
+    user?.profileImage ||
+    `https://api.dicebear.com/7.x/personas/svg?seed=${encodeURIComponent(
+      avatarSeed,
+    )}`;
 
   return (
     <nav className="result-navbar-fixed">
@@ -50,36 +29,40 @@ export default function NavbarResult() {
 
         {/* MENU */}
         <div className="result-nav-links">
+          {/* RESULT */}
           <button
             className={`result-link-item ${
-              location.pathname === "/result" ? "active" : ""
+              location.pathname.includes("/result") ? "active" : ""
             }`}
             onClick={() => navigate("/result")}
           >
             Result
           </button>
 
+          {/* DETAIL */}
           <button
             className={`result-link-item ${
-              location.pathname === "/detail-result" ? "active" : ""
+              location.pathname.includes("/detail-result") ? "active" : ""
             }`}
-            onClick={() => navigate("/detail-result")}
+            onClick={() => navigate(`/detail-result/${selectedCareerId}`)}
           >
             Detail Result
           </button>
 
+          {/* CV */}
           <button
             className={`result-link-item ${
-              location.pathname === "/cvresult" ? "active" : ""
+              location.pathname.includes("/cvresult") ? "active" : ""
             }`}
             onClick={() => navigate("/cvresult")}
           >
             CV Result
           </button>
 
+          {/* PROFILE */}
           <button
             className={`result-link-item ${
-              location.pathname === "/profile" ? "active" : ""
+              location.pathname.includes("/profile") ? "active" : ""
             }`}
             onClick={() => navigate("/profile")}
           >
@@ -93,14 +76,15 @@ export default function NavbarResult() {
           onClick={() => navigate("/profile")}
         >
           <img
-            src={user.profileImage}
+            src={profileImage}
             alt="Profile"
             className="result-profile-image"
           />
 
           <div className="result-profile-info">
-            <h4>{user.fullName}</h4>
-            <p>{user.major}</p>
+            <h4>{user?.fullName || "-"}</h4>
+
+            <p>{user?.major || "-"}</p>
           </div>
         </div>
       </div>

@@ -2,7 +2,7 @@ import MatchCard from "./MatchCard.jsx";
 import { Code2, PenTool, BarChart3 } from "lucide-react";
 import "../../styles/result/topmatches.css";
 
-export default function TopMatchesGrid({ data = [] }) {
+export default function TopMatchesGrid({ data = [], assessmentId }) {
   const iconMap = {
     frontend: Code2,
     design: PenTool,
@@ -11,9 +11,18 @@ export default function TopMatchesGrid({ data = [] }) {
   return (
     <section className="tm-grid-container">
       <div className="tm-matches-grid">
-        {data.map((item, index) => (
-          <MatchCard key={index} {...item} Icon={iconMap[item.icon] || Code2} />
-        ))}
+        {data.length === 0 ? (
+          <p>No career recommendations available yet.</p>
+        ) : (
+          data.map((item, index) => (
+            <MatchCard
+              key={`${item.title || "career"}-${index}`}
+              {...item}
+              careerId={item.careerId || assessmentId}
+              Icon={iconMap[item.icon] || Code2}
+            />
+          ))
+        )}
       </div>
     </section>
   );

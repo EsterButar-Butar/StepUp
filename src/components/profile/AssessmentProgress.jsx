@@ -1,5 +1,3 @@
-// src/components/profile/AssessmentProgress.jsx
-
 import {
   FiCheckCircle,
   FiChevronRight,
@@ -11,48 +9,10 @@ import {
 
 import "../../styles/profile/assessment-progress.css";
 
-export default function AssessmentProgress({ progress }) {
-  // FALLBACK DATA
-  const percentage = progress?.percentage || 75;
+export default function AssessmentProgress({ progress = {} }) {
+  const percentage = progress?.percentage || 0;
 
-  // PROGRESS ITEMS
-  const progressItems = [
-    {
-      title: "Personality Assessment",
-
-      description: progress?.personality
-        ? "Completed successfully"
-        : "Not completed yet",
-
-      completed: progress?.personality,
-
-      score: "92%",
-    },
-
-    {
-      title: "Skills & Interests",
-
-      description: progress?.skills
-        ? "Completed successfully"
-        : "Not completed yet",
-
-      completed: progress?.skills,
-
-      score: "88%",
-    },
-
-    {
-      title: "Experience Assessment",
-
-      description: progress?.experience
-        ? "Completed successfully"
-        : "Not completed yet",
-
-      completed: progress?.experience,
-
-      score: "76%",
-    },
-  ];
+  const progressItems = progress?.items || [];
 
   return (
     <section className="assessment-progress-card">
@@ -64,14 +24,13 @@ export default function AssessmentProgress({ progress }) {
           <p>Track your onboarding and assessment journey.</p>
         </div>
 
-        {/* BADGE */}
         <div className="progress-status-badge">
           <FiTrendingUp />
           Active Progress
         </div>
       </div>
 
-      {/* TOP PROGRESS */}
+      {/* TOP */}
       <div className="progress-top-section">
         {/* CIRCLE */}
         <div className="progress-circle-wrapper">
@@ -98,7 +57,7 @@ export default function AssessmentProgress({ progress }) {
             <FiAward />
 
             <div>
-              <h4>3</h4>
+              <h4>{progress?.totalAssessments || 0}</h4>
 
               <p>Assessments</p>
             </div>
@@ -108,7 +67,7 @@ export default function AssessmentProgress({ progress }) {
             <FiBarChart2 />
 
             <div>
-              <h4>85%</h4>
+              <h4>{progress?.averageScore || 0}%</h4>
 
               <p>Avg Score</p>
             </div>
@@ -116,51 +75,57 @@ export default function AssessmentProgress({ progress }) {
         </div>
       </div>
 
-      {/* LIST */}
-      <div className="progress-list">
-        {progressItems.map((item, index) => (
-          <div
-            key={index}
-            className={`progress-item ${
-              item.completed ? "completed" : "pending"
-            }`}
-          >
-            {/* LEFT */}
-            <div className="progress-info">
-              <div
-                className={`progress-icon ${
-                  item.completed ? "done" : "waiting"
-                }`}
-              >
-                {item.completed ? <FiCheckCircle /> : <FiClock />}
-              </div>
-
-              <div className="progress-content">
-                <div className="progress-title-row">
-                  <h4>{item.title}</h4>
-
-                  <span className="progress-score">{item.score}</span>
+      {/* EMPTY */}
+      {progressItems.length === 0 ? (
+        <div className="progress-empty-state">
+          <p>No assessment progress yet.</p>
+        </div>
+      ) : (
+        <div className="progress-list">
+          {progressItems.map((item) => (
+            <div
+              key={item?._id || item?.id}
+              className={`progress-item ${
+                item?.completed ? "completed" : "pending"
+              }`}
+            >
+              {/* LEFT */}
+              <div className="progress-info">
+                <div
+                  className={`progress-icon ${
+                    item?.completed ? "done" : "waiting"
+                  }`}
+                >
+                  {item?.completed ? <FiCheckCircle /> : <FiClock />}
                 </div>
 
-                <p>{item.description}</p>
+                <div className="progress-content">
+                  <div className="progress-title-row">
+                    <h4>{item?.title}</h4>
+
+                    <span className="progress-score">{item?.score || 0}%</span>
+                  </div>
+
+                  <p>{item?.description}</p>
+                </div>
+              </div>
+
+              {/* RIGHT */}
+              <div className="progress-action">
+                <FiChevronRight />
               </div>
             </div>
-
-            {/* RIGHT */}
-            <div className="progress-action">
-              <FiChevronRight />
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
 
       {/* FOOTER */}
       <div className="progress-footer-note">
         <FiTrendingUp />
 
         <p>
-          Completing more assessments helps our AI generate more accurate career
-          recommendations and personalized CV insights.
+          Completing more assessments helps our AI generate more accurate
+          recommendations.
         </p>
       </div>
     </section>

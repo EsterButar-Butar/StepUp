@@ -5,15 +5,12 @@ import CVProjects from "./CVProjects";
 import CVExperience from "./CVExperience";
 import CVOrganizations from "./CVOrganizations";
 import CVCertifications from "./CVCertifications";
-import CVATSScore from "./CVATSScore";
 import CVExportButton from "./CVExportButton";
 
 export default function CVLayout({ data }) {
   return (
     <div className="cv-layout">
       <CVExportButton />
-
-      <CVATSScore score={data.atsScore} />
 
       <CVHeader user={data.user} />
 

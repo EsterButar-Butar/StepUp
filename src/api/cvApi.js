@@ -9,7 +9,6 @@
 
 export const getCVResult = async () => {
     return {
-        atsScore: 92,
 
         user: {
             name: "Safika Safira",

@@ -7,8 +7,6 @@ import AssessmentSidebar from "../components/AssessmentSidebar";
 import ImageCropModal from "../components/assessmentcrop/ImageCropModal";
 import UploadPreview from "../components/assessmentcrop/UploadPreview";
 
-import { submitAssessment } from "../api/assessmentApi";
-
 import { FiChevronDown, FiArrowRight } from "react-icons/fi";
 
 import "../styles/assessment.css";
@@ -18,11 +16,25 @@ import { useNavigate } from "react-router-dom";
 export default function Assessment() {
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState(() => {
+  const parseStoredStep1 = () => {
     const savedData = localStorage.getItem("assessmentStep1");
 
+    if (!savedData) return null;
+
+    try {
+      return JSON.parse(savedData);
+    } catch (error) {
+      console.error(error);
+
+      return null;
+    }
+  };
+
+  const [formData, setFormData] = useState(() => {
+    const savedData = parseStoredStep1();
+
     return savedData
-      ? JSON.parse(savedData)
+      ? savedData
       : {
           fullName: "",
           location: "",
@@ -44,32 +56,14 @@ export default function Assessment() {
   const [showCropModal, setShowCropModal] = useState(false);
   const [tempImage, setTempImage] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [isInitialized, setIsInitialized] = useState(false);
 
   const isFormValid =
-    isInitialized &&
     [
       formData.fullName,
       formData.email,
       formData.university,
       formData.major,
     ].every((field) => field.trim() !== "");
-
-  useEffect(() => {
-    const savedData = localStorage.getItem("assessmentStep1");
-
-    if (savedData) {
-      try {
-        setFormData(JSON.parse(savedData));
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
-    setLoading(false);
-
-    setIsInitialized(true);
-  }, []);
 
   useEffect(() => {
     localStorage.setItem("assessmentStep1", JSON.stringify(formData));
@@ -153,21 +147,18 @@ export default function Assessment() {
     try {
       setLoading(true);
 
-      const payload = {
+      const step1Data = {
         ...formData,
         profileImage: previewImage,
       };
 
-      await submitAssessment(payload);
-
-      localStorage.removeItem("assessmentStep1");
-      localStorage.removeItem("assessmentProfileImage");
+      localStorage.setItem("assessmentStep1", JSON.stringify(step1Data));
 
       navigate("/assessment2");
     } catch (error) {
       console.error(error);
 
-      alert("Failed to save assessment");
+      alert("Failed to save assessment data");
     } finally {
       setLoading(false);
     }

@@ -4,9 +4,8 @@ import { useState, useEffect } from "react";
 import { FiArrowLeft, FiCheck } from "react-icons/fi";
 
 import { useNavigate } from "react-router-dom";
-
+import { createAssessment } from "../services/assessmentService";
 import AssessmentLayout from "../layouts/AssessmentLayout";
-import { submitAssessment3 } from "../api/assessment3Api";
 import ProjectSection from "../components/assessment3/ProjectSection";
 import InternshipSection from "../components/assessment3/InternshipSection";
 import OrganizationSection from "../components/assessment3/OrganizationSection";
@@ -16,28 +15,121 @@ import "../styles/assessment3.css";
 
 export default function Assessment3() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
-  const [projects, setProjects] = useState([
-    {
-      projectName: "",
-      role: "",
-      issuesSolved: "",
-      description: "",
-    },
-  ]);
+  const parseStoredAssessment = (key) => {
+    const value = localStorage.getItem(key);
+
+    if (!value) return null;
+
+    try {
+      return JSON.parse(value);
+    } catch (error) {
+      console.error(error);
+
+      return null;
+    }
+  };
+
+  const handleSubmit = async () => {
+    try {
+      setLoading(true);
+
+      const step1 = parseStoredAssessment("assessmentStep1");
+      const step2 = parseStoredAssessment("assessmentStep2");
+
+      if (!step1 || !step2) {
+        throw new Error(
+          "Assessment data is incomplete. Please review previous steps.",
+        );
+      }
+
+      const experience = {
+        projects,
+        internships,
+        organizations,
+        certifications,
+      };
+
+      const fullAssessment = {
+        personalInfo: {
+          fullName: step1.fullName || "",
+          email: step1.email || "",
+          phone: step1.phone || "",
+          linkedin: step1.linkedin || "",
+          location: step1.location || "",
+          bio: step1.bio || "",
+          careerGoal: step1.careerGoal || "",
+          avatarUrl: step1.profileImage || "",
+        },
+        education: {
+          university: step1.university || "",
+          major: step1.major || "",
+          semester: step1.semester || "",
+          gpa: step1.gpa ? Number(step1.gpa) : undefined,
+        },
+        skills: {
+          hardSkills: step2.technicalSkills || [],
+          softSkills: step2.softSkills || [],
+          experienceLevel: step2.level || "intermediate",
+        },
+        experience,
+      };
+
+      const response = await createAssessment(fullAssessment);
+
+      localStorage.setItem("latestAssessmentId", response.data.data._id);
+
+      localStorage.removeItem("assessmentStep1");
+      localStorage.removeItem("assessmentProfileImage");
+      localStorage.removeItem("assessmentStep2");
+      localStorage.removeItem("assessment2-category");
+      localStorage.removeItem("assessment2-tech");
+      localStorage.removeItem("assessment2-soft");
+      localStorage.removeItem("assessment2-level");
+      localStorage.removeItem("assessment3-projects");
+      localStorage.removeItem("assessment3-internships");
+      localStorage.removeItem("assessment3-organizations");
+      localStorage.removeItem("assessment3-certifications");
+
+      navigate("/analyzing");
+    } catch (error) {
+      console.error(error);
+
+      alert(error.message || "Failed to submit assessment");
+    } finally {
+      setLoading(false);
+    }
+  };
+  const [projects, setProjects] = useState(() => {
+    return (
+      parseStoredAssessment("assessment3-projects") || [
+        {
+          projectName: "",
+          role: "",
+          issuesSolved: "",
+          description: "",
+        },
+      ]
+    );
+  });
 
   useEffect(() => {
     localStorage.setItem("assessment3-projects", JSON.stringify(projects));
   }, [projects]);
 
-  const [internships, setInternships] = useState([
-    {
-      company: "",
-      position: "",
-      duration: "",
-      responsibilities: "",
-    },
-  ]);
+  const [internships, setInternships] = useState(() => {
+    return (
+      parseStoredAssessment("assessment3-internships") || [
+        {
+          company: "",
+          position: "",
+          duration: "",
+          responsibilities: "",
+        },
+      ]
+    );
+  });
 
   useEffect(() => {
     localStorage.setItem(
@@ -46,13 +138,17 @@ export default function Assessment3() {
     );
   }, [internships]);
 
-  const [organizations, setOrganizations] = useState([
-    {
-      organizationName: "",
-      role: "",
-      duration: "",
-    },
-  ]);
+  const [organizations, setOrganizations] = useState(() => {
+    return (
+      parseStoredAssessment("assessment3-organizations") || [
+        {
+          organizationName: "",
+          role: "",
+          duration: "",
+        },
+      ]
+    );
+  });
 
   useEffect(() => {
     localStorage.setItem(
@@ -61,13 +157,17 @@ export default function Assessment3() {
     );
   }, [organizations]);
 
-  const [certifications, setCertifications] = useState([
-    {
-      certificateName: "",
-      issuer: "",
-      year: "",
-    },
-  ]);
+  const [certifications, setCertifications] = useState(() => {
+    return (
+      parseStoredAssessment("assessment3-certifications") || [
+        {
+          certificateName: "",
+          issuer: "",
+          year: "",
+        },
+      ]
+    );
+  });
 
   useEffect(() => {
     localStorage.setItem(
@@ -79,25 +179,6 @@ export default function Assessment3() {
   const isProjectValid = projects.some(
     (project) => project.projectName.trim() !== "",
   );
-
-  const handleSubmit = async () => {
-    try {
-      const payload = {
-        projects,
-        internships,
-        organizations,
-        certifications,
-      };
-
-      await submitAssessment3(payload);
-
-      navigate("/analyzing");
-    } catch (error) {
-      console.error(error);
-
-      alert("Failed to submit assessment");
-    }
-  };
 
   return (
     <AssessmentLayout currentStep={3}>
@@ -156,13 +237,19 @@ export default function Assessment3() {
           </button>
 
           <button
-            disabled={!isProjectValid}
+            disabled={!isProjectValid || loading}
             onClick={handleSubmit}
             type="button"
             className="btn-submit"
           >
-            Start AI Analysis
-            <FiCheck />
+            {loading ? (
+              "Submitting..."
+            ) : (
+              <>
+                Start AI Analysis
+                <FiCheck />
+              </>
+            )}
           </button>
         </div>
       </div>

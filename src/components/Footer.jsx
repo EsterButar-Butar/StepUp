@@ -29,13 +29,11 @@ export default function Footer() {
           <div className="ft-links-col">
             <h3>Explore</h3>
 
-            <button onClick={() => navigate("/")}>Home</button>
+            <button>Home</button>
 
-            <button onClick={() => navigate("/how-it-works")}>
-              How it Works
-            </button>
+            <button>How it Works</button>
 
-            <button onClick={() => navigate("/features")}>Features</button>
+            <button onClick={() => navigate("/landing")}>Features</button>
           </div>
 
           {/* ASSESSMENT NAVBAR */}

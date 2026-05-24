@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../components/NavbarAssessment";
 import AssessmentLayout from "../layouts/AssessmentLayout";
 import SkillDropdown from "../components/assessmentselectskill/SkillDropdown";
-import { submitAssessment2 } from "../api/assessment2Api";
 import "../styles/assessment2.css";
 import {
   categories,
@@ -17,20 +16,32 @@ import {
 export default function Assessment2() {
   const navigate = useNavigate();
 
+  const parseStoredArray = (key) => {
+    const saved = localStorage.getItem(key);
+
+    if (!saved) return [];
+
+    try {
+      const parsed = JSON.parse(saved);
+
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (error) {
+      console.error(error);
+
+      return [];
+    }
+  };
+
   const [category, setCategory] = useState(() => {
     return localStorage.getItem("assessment2-category") || "technology";
   });
 
   const [selectedTechnicalSkills, setSelectedTechnicalSkills] = useState(() => {
-    const saved = localStorage.getItem("assessment2-tech");
-
-    return saved ? JSON.parse(saved) : [];
+    return parseStoredArray("assessment2-tech");
   });
 
   const [selectedSoftSkills, setSelectedSoftSkills] = useState(() => {
-    const saved = localStorage.getItem("assessment2-soft");
-
-    return saved ? JSON.parse(saved) : [];
+    return parseStoredArray("assessment2-soft");
   });
 
   const [level, setLevel] = useState(() => {
@@ -54,18 +65,13 @@ export default function Assessment2() {
         level,
       };
 
-      await submitAssessment2(payload);
-
-      localStorage.removeItem("assessment2-category");
-      localStorage.removeItem("assessment2-tech");
-      localStorage.removeItem("assessment2-soft");
-      localStorage.removeItem("assessment2-level");
+      localStorage.setItem("assessmentStep2", JSON.stringify(payload));
 
       navigate("/assessment3");
     } catch (error) {
       console.error(error);
 
-      alert("Failed to save assessment");
+      alert("Failed to save assessment data");
     } finally {
       setLoading(false);
     }

@@ -10,7 +10,7 @@ export default function SkillDropdown({
   skills = [],
   selectedSkills = [],
   setSelectedSkills,
-  maxSkills = 5,
+  maxSkills = 10,
 }) {
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);

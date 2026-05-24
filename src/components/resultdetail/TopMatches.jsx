@@ -8,7 +8,7 @@ import "react-circular-progressbar/dist/styles.css";
 
 import "../../styles/detailresult/topmatches.css";
 
-export default function TopMatches({ career }) {
+export default function TopMatches({ career = {} }) {
   return (
     <section className="topmatches">
       {/* LEFT */}
@@ -50,8 +50,8 @@ export default function TopMatches({ career }) {
       <div className="match-card">
         <div className="match-score-wrapper">
           <CircularProgressbar
-            value={94}
-            text="94%"
+            value={career?.matchScore || 0}
+            text={`${career?.matchScore || 0}%`}
             strokeWidth={10}
             styles={buildStyles({
               pathColor: "#2563eb",

@@ -1,5 +1,3 @@
-// src/components/profile/RecentActivity.jsx
-
 import {
   FiCheckCircle,
   FiChevronRight,
@@ -14,53 +12,21 @@ import {
 import "../../styles/profile/recent-activity.css";
 
 export default function RecentActivity({ activities = [] }) {
-  // FALLBACK ACTIVITIES
-  const fallbackActivities = [
-    {
-      title: "Completed interest assessment",
+  // USE BACKEND DATA OR FALLBACK
+  const activityData = activities || [];
 
-      description: "Your assessment has been saved successfully.",
+  // FORMAT DATE
+  const formatDate = (date) => {
+    if (!date) return "Unknown date";
 
-      date: "May 15, 2026",
+    return new Date(date).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+  };
 
-      type: "assessment",
-    },
-
-    {
-      title: "Generated career result",
-
-      description: "Your AI-powered career analysis is ready.",
-
-      date: "May 16, 2026",
-
-      type: "result",
-    },
-
-    {
-      title: "Generated ATS-ready CV",
-
-      description: "Your professional CV has been created.",
-
-      date: "May 17, 2026",
-
-      type: "cv",
-    },
-
-    {
-      title: "Completed skills assessment",
-
-      description: "Technical and soft skills updated.",
-
-      date: "May 18, 2026",
-
-      type: "skills",
-    },
-  ];
-
-  // USE REAL DATA OR FALLBACK
-  const activityData = activities.length > 0 ? activities : fallbackActivities;
-
-  // ICONS BY TYPE
+  // ICONS
   const getActivityIcon = (type) => {
     switch (type) {
       case "assessment":
@@ -80,7 +46,7 @@ export default function RecentActivity({ activities = [] }) {
     }
   };
 
-  // COLORS BY TYPE
+  // COLORS
   const getActivityColor = (type) => {
     switch (type) {
       case "assessment":
@@ -119,50 +85,58 @@ export default function RecentActivity({ activities = [] }) {
         </div>
       </div>
 
-      {/* ACTIVITY LIST */}
-      <div className="activity-list">
-        {activityData.map((activity, index) => (
-          <div key={index} className="activity-item">
-            {/* LEFT */}
-            <div className="activity-left">
-              {/* ICON */}
-              <div
-                className={`activity-icon ${getActivityColor(activity.type)}`}
-              >
-                {getActivityIcon(activity.type)}
-              </div>
+      {/* EMPTY STATE */}
+      {activityData.length === 0 ? (
+        <div className="activity-empty-state">
+          <FiActivity />
 
-              {/* CONTENT */}
-              <div className="activity-content">
-                <div className="activity-top-row">
-                  <h4>{activity.title}</h4>
+          <h4>No recent activities</h4>
 
-                  <span className="activity-badge">{activity.type}</span>
+          <p>Your latest activities will appear here.</p>
+        </div>
+      ) : (
+        <div className="activity-list">
+          {activityData.map((activity) => (
+            <div key={activity?._id || activity?.id} className="activity-item">
+              {/* LEFT */}
+              <div className="activity-left">
+                {/* ICON */}
+                <div
+                  className={`activity-icon ${getActivityColor(
+                    activity?.type,
+                  )}`}
+                >
+                  {getActivityIcon(activity?.type)}
                 </div>
 
-                <p>{activity.description}</p>
+                {/* CONTENT */}
+                <div className="activity-content">
+                  <div className="activity-top-row">
+                    <h4>{activity?.title || "Untitled Activity"}</h4>
+
+                    <span className="activity-badge">
+                      {activity?.type || "general"}
+                    </span>
+                  </div>
+
+                  <p>{activity?.description || "No description available."}</p>
+                </div>
+              </div>
+
+              {/* RIGHT */}
+              <div className="activity-right">
+                <span className="activity-date">
+                  {formatDate(activity?.date)}
+                </span>
+
+                <button type="button" className="activity-action-btn">
+                  <FiChevronRight />
+                </button>
               </div>
             </div>
-
-            {/* RIGHT */}
-            <div className="activity-right">
-              <span className="activity-date">{activity.date}</span>
-
-              <button type="button" className="activity-action-btn">
-                <FiChevronRight />
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* FOOTER */}
-      <div className="activity-footer">
-        <button type="button" className="view-all-activity-btn">
-          <FiDownload />
-          Export Activity History
-        </button>
-      </div>
+          ))}
+        </div>
+      )}
     </section>
   );
 }

@@ -11,7 +11,7 @@ import {
 
 import "../../styles/detailresult/skillgapanalysis.css";
 
-export default function SkillGapAnalysis({ skills }) {
+export default function SkillGapAnalysis({ skills = {} }) {
   return (
     <div className="skill-gap-analysis">
       {/* HEADER */}
@@ -40,7 +40,7 @@ export default function SkillGapAnalysis({ skills }) {
             </div>
 
             <div className="skill-list">
-              {skills?.technical?.have?.map((skill) => (
+              {(skills?.technical?.have || []).map((skill) => (
                 <div key={skill.id} className="skill-item">
                   <span>{skill.name}</span>
 
@@ -61,7 +61,7 @@ export default function SkillGapAnalysis({ skills }) {
             </div>
 
             <div className="skill-list">
-              {skills?.technical?.improve?.map((skill) => (
+              {(skills?.technical?.improve || []).map((skill) => (
                 <div key={skill.id} className="skill-item">
                   <span>{skill.name}</span>
 
@@ -82,7 +82,7 @@ export default function SkillGapAnalysis({ skills }) {
             </div>
 
             <div className="skill-list">
-              {skills?.technical?.missing?.map((skill) => (
+              {(skills?.technical?.missing || []).map((skill) => (
                 <div key={skill.id} className="skill-item">
                   <span>{skill.name}</span>
 
@@ -113,7 +113,7 @@ export default function SkillGapAnalysis({ skills }) {
             </div>
 
             <div className="skill-list">
-              {skills?.soft?.have?.map((skill) => (
+              {(skills?.soft?.have || []).map((skill) => (
                 <div key={skill.id} className="skill-item">
                   <span>{skill.name}</span>
 
@@ -134,7 +134,7 @@ export default function SkillGapAnalysis({ skills }) {
             </div>
 
             <div className="skill-list">
-              {skills?.soft?.improve?.map((skill) => (
+              {(skills?.soft?.improve || []).map((skill) => (
                 <div key={skill.id} className="skill-item">
                   <span>{skill.name}</span>
 
@@ -155,7 +155,7 @@ export default function SkillGapAnalysis({ skills }) {
             </div>
 
             <div className="skill-list">
-              {skills?.soft?.missing?.map((skill) => (
+              {(skills?.soft?.missing || []).map((skill) => (
                 <div key={skill.id} className="skill-item">
                   <span>{skill.name}</span>
 

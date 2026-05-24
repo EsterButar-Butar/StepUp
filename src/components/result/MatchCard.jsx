@@ -14,18 +14,26 @@ export default function MatchCard({
 }) {
   const navigate = useNavigate();
   const SafeIcon = Icon || Code2;
+  const safeColor = color || {
+    bg: "#dbeafe",
+    badgeBg: "#eff6ff",
+    text: "#2563eb",
+  };
+  const safeMatch = Number(match || 0);
+  const safeProgress = Math.max(0, Math.min(Number(progress || safeMatch), 100));
+
   return (
     <div className="tm-match-card">
       <div className="tm-match-header">
-        <div className="tm-icon-box" style={{ backgroundColor: color.bg }}>
-          <SafeIcon size={20} color={color.text} />
+        <div className="tm-icon-box" style={{ backgroundColor: safeColor.bg }}>
+          <SafeIcon size={20} color={safeColor.text} />
         </div>
 
         <div
           className="tm-match-badge"
-          style={{ backgroundColor: color.badgeBg, color: color.text }}
+          style={{ backgroundColor: safeColor.badgeBg, color: safeColor.text }}
         >
-          <span className="tm-badge-dot">●</span> {match}% Match
+          <span className="tm-badge-dot">•</span> {safeMatch}% Match
         </div>
       </div>
 
@@ -37,7 +45,7 @@ export default function MatchCard({
       <div className="tm-readiness-section">
         <div className="tm-readiness-label">
           <span>Readiness</span>
-          <span className="tm-readiness-value" style={{ color: color.text }}>
+          <span className="tm-readiness-value" style={{ color: safeColor.text }}>
             {readiness}
           </span>
         </div>
@@ -45,8 +53,8 @@ export default function MatchCard({
           <div
             className="tm-progress-bar"
             style={{
-              width: `${progress}%`,
-              backgroundColor: color.text,
+              width: `${safeProgress}%`,
+              backgroundColor: safeColor.text,
             }}
           />
         </div>
@@ -55,7 +63,12 @@ export default function MatchCard({
       <div className="tm-card-footer">
         <button
           className="tm-btn-view"
-          onClick={() => navigate(`/detail-result/${careerId}`)}
+          disabled={!careerId}
+          onClick={() => {
+            if (!careerId) return;
+
+            navigate(`/detail-result/${careerId}`);
+          }}
         >
           View Details <ChevronRight size={14} />
         </button>

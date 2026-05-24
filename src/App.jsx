@@ -30,9 +30,9 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/analyzing" element={<Analyzing />} />
         <Route path="/result" element={<Result />} />
-        <Route path="/detail-result" element={<DetailResult />} />
+        <Route path="/detail-result/:id" element={<DetailResult />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/cv-result" element={<CVResult />} />
+        <Route path="/cvresult" element={<CVResult />} />
       </Routes>
     </Router>
   );

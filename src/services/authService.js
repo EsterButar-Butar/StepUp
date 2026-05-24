@@ -4,20 +4,51 @@ import {
 } from "../api/authApi";
 
 export const login = async (userData) => {
-  const data = await loginUser(userData);
+  try {
+    const data = await loginUser(userData);
 
-  localStorage.setItem("token", data.token);
+    if (!data?.token || !data?.user) {
+      throw new Error("Invalid login response");
+    }
 
-  localStorage.setItem("user", JSON.stringify(data.user));
+    localStorage.setItem("token", data.token);
 
-  return data;
+    localStorage.setItem(
+      "user",
+      JSON.stringify(data.user)
+    );
+
+    return data;
+
+  } catch (error) {
+    const message =
+      error.response?.data?.message ||
+      error.message ||
+      "Login failed";
+
+    throw new Error(message, { cause: error });
+  }
 };
 
 export const register = async (userData) => {
-  return await registerUser(userData);
+  try {
+
+    const data = await registerUser(userData);
+
+    return data;
+
+  } catch (error) {
+    const message =
+      error.response?.data?.message ||
+      error.message ||
+      "Register failed";
+
+    throw new Error(message, { cause: error });
+  }
 };
 
 export const logout = () => {
   localStorage.removeItem("token");
+
   localStorage.removeItem("user");
 };

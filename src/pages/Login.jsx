@@ -40,13 +40,11 @@ export default function Login() {
     try {
       setLoading(true);
 
-      const data = await login({ email, password });
-
-      console.log(data);
+      await login({ email, password });
 
       navigate("/landing");
     } catch (err) {
-      setError(err.response?.data?.message || "Login failed");
+      setError(err.message || "Login failed");
     } finally {
       setLoading(false);
     }

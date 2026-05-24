@@ -4,9 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { RefreshCcw } from "lucide-react";
 import "../../styles/result/dashboard.css";
 
-export default function DashboardContent({ result }) {
+export default function DashboardContent({ result, assessmentId }) {
   const navigate = useNavigate();
-  const topCareer = result.topMatches?.[0];
+  const recommendations = result?.career_recommendations || [];
+  const topCareer = recommendations[0];
+  const detailId = topCareer?.careerId || assessmentId;
 
   return (
     <div className="dashboard">
@@ -28,9 +30,9 @@ export default function DashboardContent({ result }) {
       </div>
 
       {/* Main Content */}
-      <TopMatches data={result.topMatches} />
+      <TopMatches data={recommendations} assessmentId={assessmentId} />
 
-      <SkillGap data={result.skillGap} />
+      <SkillGap data={result?.skill_gap_detailed} />
 
       {/* Footer Section */}
       <div className="dashboard-footer">
@@ -39,8 +41,9 @@ export default function DashboardContent({ result }) {
           onClick={() => {
             if (!topCareer) return;
 
-            navigate(`/detail-result/${topCareer.careerId}`);
+            navigate(`/detail-result/${detailId}`);
           }}
+          disabled={!detailId}
         >
           View Detailed Career Path →
         </button>
