@@ -1,14 +1,17 @@
 import "../styles/loadingspinner.css";
 
-export default function LoadingSpinner() {
+export default function LoadingSpinner({
+  title = "Loading Data",
+  message = "Please wait while we prepare your recommendation results...",
+}) {
   return (
     <div className="loading-wrapper">
       <div className="loading-card">
         <div className="spinner"></div>
 
-        <h2>Loading Data</h2>
+        <h2>{title}</h2>
 
-        <p>Please wait while we prepare your recommendation results...</p>
+        <p>{message}</p>
       </div>
     </div>
   );

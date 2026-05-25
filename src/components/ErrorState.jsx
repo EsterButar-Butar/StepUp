@@ -1,7 +1,10 @@
 import { FiAlertTriangle } from "react-icons/fi";
 import "../styles/errorstate.css";
 
-export default function ErrorState({ message = "Something went wrong" }) {
+export default function ErrorState({
+  message = "Something went wrong",
+  onRetry = () => window.location.reload(),
+}) {
   return (
     <div className="error-wrapper">
       <div className="error-card">
@@ -13,7 +16,7 @@ export default function ErrorState({ message = "Something went wrong" }) {
 
         <p>{message}</p>
 
-        <button className="retry-btn" onClick={() => window.location.reload()}>
+        <button className="retry-btn" onClick={onRetry}>
           Try Again
         </button>
       </div>

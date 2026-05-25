@@ -2,6 +2,10 @@ import NavbarDashboard from "../components/NavbarResult";
 
 import Footer from "../components/Footer";
 
+import ErrorState from "../components/ErrorState";
+
+import LoadingSpinner from "../components/LoadingSpinner";
+
 import ProfileHeader from "../components/profile/ProfileHeader";
 
 import AssessmentSummary from "../components/profile/AssessmentSummary";
@@ -16,6 +20,11 @@ import "../styles/profile/profile.css";
 
 export default function Profile() {
   const { data, loading, error } = useProfile();
+  const navbarUser = {
+    fullName: data?.user?.name || data?.user?.fullName,
+    major: data?.user?.role,
+    profileImage: data?.user?.profilePicture || data?.user?.profileImage,
+  };
 
   // LOADING
   if (loading) {
@@ -23,15 +32,10 @@ export default function Profile() {
       <div className="profile-loading-page">
         <NavbarDashboard />
 
-        <div className="profile-loading-container">
-          <div className="profile-loading-card">
-            <div className="loading-spinner"></div>
-
-            <h2>Loading your profile...</h2>
-
-            <p>Preparing your personalized dashboard</p>
-          </div>
-        </div>
+        <LoadingSpinner
+          title="Loading your profile..."
+          message="Preparing your personalized dashboard"
+        />
       </div>
     );
   }
@@ -42,47 +46,31 @@ export default function Profile() {
       <div className="profile-loading-page">
         <NavbarDashboard />
 
-        <div className="profile-loading-container">
-          <div className="profile-loading-card">
-            <h2>{error}</h2>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // EMPTY
-  if (!data) {
-    return (
-      <div className="profile-loading-page">
-        <NavbarDashboard />
-
-        <div className="profile-loading-container">
-          <div className="profile-loading-card">
-            <h2>No profile data found</h2>
-          </div>
-        </div>
+        <ErrorState message={error} />
       </div>
     );
   }
 
   return (
     <div className="profile-page">
-      <NavbarDashboard />
+      <NavbarDashboard user={navbarUser} />
 
       <main className="profile-main">
         <div className="profile-container">
-          <ProfileHeader profile={data.profile} stats={data.stats} />
+          <ProfileHeader
+            user={data?.user}
+            assessmentSummary={data?.assessmentSummary}
+          />
 
           <div className="profile-grid">
             <div className="profile-left">
-              <AssessmentSummary summary={data.summary} />
+              <AssessmentSummary summary={data?.assessmentSummary} />
             </div>
 
             <div className="profile-right">
-              <AssessmentProgress progress={data.progress} />
+              <AssessmentProgress progress={data?.progress} />
 
-              <RecentActivity activities={data.activities} />
+              <RecentActivity activities={data?.recentActivities} />
             </div>
           </div>
         </div>

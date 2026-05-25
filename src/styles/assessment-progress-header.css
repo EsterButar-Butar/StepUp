@@ -1,0 +1,12 @@
+.assessment-progress {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  font-size: 14px;
+  color: #475569;
+}
+
+.assessment-progress span:first-child {
+  font-weight: 600;
+}

@@ -6,6 +6,7 @@ import { FiArrowLeft, FiCheck } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { createAssessment } from "../services/assessmentService";
 import AssessmentLayout from "../layouts/AssessmentLayout";
+import AssessmentProgressHeader from "../components/assessment/AssessmentProgressHeader";
 import ProjectSection from "../components/assessment3/ProjectSection";
 import InternshipSection from "../components/assessment3/InternshipSection";
 import OrganizationSection from "../components/assessment3/OrganizationSection";
@@ -184,6 +185,12 @@ export default function Assessment3() {
     <AssessmentLayout currentStep={3}>
       {/* HEADER */}
       <div className="form-header">
+        <AssessmentProgressHeader
+          currentStep={3}
+          totalSteps={3}
+          progressPercentage={100}
+        />
+
         <h1>Your Experience</h1>
 
         <p>
@@ -193,7 +200,7 @@ export default function Assessment3() {
       </div>
 
       {/* BODY */}
-      <div className="form-body">
+      <div className="form-body motion-stagger">
         <ProjectSection items={projects} setItems={setProjects} />
 
         <InternshipSection items={internships} setItems={setInternships} />

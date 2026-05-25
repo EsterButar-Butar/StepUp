@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Navbar from "../components/NavbarAssessment";
 import Footer from "../components/Footer";
 import AssessmentSidebar from "../components/AssessmentSidebar";
+import AssessmentProgressHeader from "../components/assessment/AssessmentProgressHeader";
 import ImageCropModal from "../components/assessmentcrop/ImageCropModal";
 import UploadPreview from "../components/assessmentcrop/UploadPreview";
 
@@ -176,18 +177,19 @@ export default function Assessment() {
           {/* FORM CONTENT */}
           <section className="form-content">
             {/* HEADER */}
-            <div className="assessment-header">
-              <div className="assessment-progress">
-                <span>Step 1 of 3</span>
-                <span>33% completed</span>
-              </div>
+            <div className="assessment-header form-header">
+              <AssessmentProgressHeader
+                currentStep={1}
+                totalSteps={3}
+                progressPercentage={33}
+              />
 
               <h1>Personal Information</h1>
 
               <p>Tell us about yourself to personalize your career insights.</p>
             </div>
 
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="motion-stagger">
               <div className="top-section">
                 <div className="top-left">
                   <div className="input-field">

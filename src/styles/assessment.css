@@ -1,4 +1,6 @@
 /* CONTAINER & LAYOUT */
+@import "./assessment-animations.css";
+
 .assessment-page {
   width: 100%;
   min-height: 100vh;
@@ -231,19 +233,6 @@
   font-size: 12px;
   color: #64748b;
   text-align: right;
-}
-
-.assessment-progress {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 14px;
-  font-size: 14px;
-  color: #475569;
-}
-
-.assessment-progress span:first-child {
-  font-weight: 600;
 }
 
 .top-section {

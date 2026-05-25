@@ -2,10 +2,13 @@
 import "../styles/navbarassessment.css";
 import { FiSave } from "react-icons/fi";
 import Logo from "../assets/S.png";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function NavbarDashboard() {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const isActiveRoute = (path) => location.pathname === path;
 
   return (
     <nav className="db-navbar-fixed">
@@ -18,22 +21,28 @@ export default function NavbarDashboard() {
         {/* MENU */}
         <div className="db-nav-links">
           <button
-            className="db-link-item"
-            onClick={() => navigate("/Assessment")}
+            className={`db-link-item ${
+              isActiveRoute("/assessment") ? "active" : ""
+            }`}
+            onClick={() => navigate("/assessment")}
           >
             Personal Information
           </button>
 
           <button
-            className="db-link-item"
-            onClick={() => navigate("/Assessment2")}
+            className={`db-link-item ${
+              isActiveRoute("/assessment2") ? "active" : ""
+            }`}
+            onClick={() => navigate("/assessment2")}
           >
             Skills
           </button>
 
           <button
-            className="db-link-item"
-            onClick={() => navigate("/Assessment3")}
+            className={`db-link-item ${
+              isActiveRoute("/assessment3") ? "active" : ""
+            }`}
+            onClick={() => navigate("/assessment3")}
           >
             Experience
           </button>

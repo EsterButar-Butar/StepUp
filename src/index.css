@@ -1,4 +1,3 @@
-/* 1. RESET DASAR & BOX MODEL */
 * {
   margin: 0;
   padding: 0;
@@ -10,7 +9,6 @@ html {
   width: 100%;
 }
 
-/* 2. CONFIG BODY & BACKGROUND GRADIENT */
 body {
   width: 100%;
   min-height: 100vh;
@@ -50,7 +48,6 @@ body {
   background-repeat: no-repeat;
 }
 
-/* 3. ROOT WRAPPER - Memastikan konten memanjang ke bawah */
 #root {
   display: flex;
   flex-direction: column;
@@ -58,7 +55,6 @@ body {
   min-height: 100vh;
 }
 
-/* 4. ELEMENT DEFAULTS */
 a {
   text-decoration: none;
   color: inherit;
@@ -71,7 +67,6 @@ button {
   cursor: pointer;
 }
 
-/* Memastikan gambar responsif */
 img {
   max-width: 100%;
   display: block;

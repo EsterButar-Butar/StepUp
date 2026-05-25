@@ -3,7 +3,6 @@ import {
   FiChevronRight,
   FiClock,
   FiTrendingUp,
-  FiDownload,
   FiFileText,
   FiStar,
   FiActivity,
@@ -12,14 +11,19 @@ import {
 import "../../styles/profile/recent-activity.css";
 
 export default function RecentActivity({ activities = [] }) {
-  // USE BACKEND DATA OR FALLBACK
-  const activityData = activities || [];
+  const activityData = Array.isArray(activities) ? activities : [];
 
   // FORMAT DATE
   const formatDate = (date) => {
     if (!date) return "Unknown date";
 
-    return new Date(date).toLocaleDateString("en-US", {
+    const parsedDate = new Date(date);
+
+    if (Number.isNaN(parsedDate.getTime())) {
+      return "Unknown date";
+    }
+
+    return parsedDate.toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",
       year: "numeric",
@@ -96,8 +100,11 @@ export default function RecentActivity({ activities = [] }) {
         </div>
       ) : (
         <div className="activity-list">
-          {activityData.map((activity) => (
-            <div key={activity?._id || activity?.id} className="activity-item">
+          {activityData.map((activity, index) => (
+            <div
+              key={activity?._id || activity?.id || `activity-${index}`}
+              className="activity-item"
+            >
               {/* LEFT */}
               <div className="activity-left">
                 {/* ICON */}

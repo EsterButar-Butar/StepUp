@@ -10,6 +10,11 @@ import {
 import "../../styles/profile/assessment-summary.css";
 
 export default function AssessmentSummary({ summary = {} }) {
+  const hasSummary = Boolean(summary && Object.keys(summary).length > 0);
+  const completedAssessments = summary?.completedAssessments ?? 0;
+  const topCareer = summary?.topCareer || "Not available";
+  const atsScore = summary?.atsScore ?? 0;
+
   return (
     <section className="assessment-summary-card">
       {/* HEADER */}
@@ -22,7 +27,7 @@ export default function AssessmentSummary({ summary = {} }) {
       </div>
 
       {/* EMPTY */}
-      {!summary ? (
+      {!hasSummary ? (
         <div className="summary-empty-state">
           <p>No assessment summary available.</p>
         </div>
@@ -37,12 +42,12 @@ export default function AssessmentSummary({ summary = {} }) {
 
               <div className="summary-content">
                 <div className="summary-top-row">
-                  <h4>Top Interest</h4>
+                  <h4>Completed Assessments</h4>
 
                   <span className="summary-tag">Primary</span>
                 </div>
 
-                <p>{summary?.topInterest}</p>
+                <p>{completedAssessments}</p>
               </div>
             </div>
 
@@ -53,12 +58,12 @@ export default function AssessmentSummary({ summary = {} }) {
 
               <div className="summary-content">
                 <div className="summary-top-row">
-                  <h4>Preferred Work Style</h4>
+                  <h4>Top Career</h4>
 
-                  <span className="summary-tag">Work Mode</span>
+                  <span className="summary-tag">Recommendation</span>
                 </div>
 
-                <p>{summary?.preferredWorkStyle}</p>
+                <p>{topCareer}</p>
               </div>
             </div>
 
@@ -69,12 +74,12 @@ export default function AssessmentSummary({ summary = {} }) {
 
               <div className="summary-content">
                 <div className="summary-top-row">
-                  <h4>Career Goal</h4>
+                  <h4>ATS Score</h4>
 
-                  <span className="summary-tag">Future Role</span>
+                  <span className="summary-tag">Resume Match</span>
                 </div>
 
-                <p>{summary?.careerGoal}</p>
+                <p>{atsScore}%</p>
               </div>
             </div>
           </div>
@@ -94,7 +99,7 @@ export default function AssessmentSummary({ summary = {} }) {
                   Personality Type
                 </div>
 
-                <p>{summary?.personalityType}</p>
+                <p>{summary?.personalityType || "Not available"}</p>
               </div>
 
               <div className="insight-item">
@@ -103,7 +108,11 @@ export default function AssessmentSummary({ summary = {} }) {
                   Strongest Skill
                 </div>
 
-                <p>{summary?.strength}</p>
+                <p>
+                  {summary?.strength ||
+                    summary?.strongestSkill ||
+                    "Not available"}
+                </p>
               </div>
 
               <div className="insight-item">
@@ -112,7 +121,7 @@ export default function AssessmentSummary({ summary = {} }) {
                   Area to Improve
                 </div>
 
-                <p>{summary?.improvementArea}</p>
+                <p>{summary?.improvementArea || "Not available"}</p>
               </div>
             </div>
           </div>

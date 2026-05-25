@@ -11,11 +11,23 @@ import {
 
 import "../../styles/profile/profile-header.css";
 
-export default function ProfileHeader({ profile = {}, stats = {} }) {
-  // BACKEND IMAGE
+export default function ProfileHeader({ user = {}, assessmentSummary = {} }) {
+  const displayName = user?.name || user?.fullName || "User";
+  const role = user?.role || user?.major || "StepUp Member";
+  const email = user?.email || "Email not provided";
+  const university = user?.university || "University not provided";
+  const location = user?.location || "Location not provided";
+  const phone = user?.phone || "Phone not provided";
+  const linkedin =
+    user?.linkedin || user?.website || "Profile link not provided";
+  const bio = user?.bio || "No profile description available yet.";
+
   const profileImage =
-    profile?.profileImage ||
-    `https://api.dicebear.com/7.x/personas/svg?seed=${profile?.fullName}`;
+    user?.profilePicture ||
+    user?.profileImage ||
+    `https://api.dicebear.com/7.x/personas/svg?seed=${encodeURIComponent(
+      displayName || email,
+    )}`;
 
   return (
     <section className="profile-header-card">
@@ -33,47 +45,45 @@ export default function ProfileHeader({ profile = {}, stats = {} }) {
           {/* TOP */}
           <div className="profile-top-row">
             <div>
-              <h1>{profile?.fullName || "Alex Morgan"}</h1>
+              <h1>{displayName}</h1>
 
-              <p className="profile-major">
-                {profile?.major || "Computer Science"}
-              </p>
+              <p className="profile-major">{role}</p>
             </div>
           </div>
 
           {/* BADGE */}
-          <span className="profile-badge">StepUp Member</span>
+          <span className="profile-badge">{role}</span>
 
           {/* META */}
           <div className="profile-meta">
             <div className="profile-meta-item">
               <FiMail />
 
-              <span>{profile?.email || "example@gmail.com"}</span>
+              <span>{email}</span>
             </div>
 
             <div className="profile-meta-item">
               <FiBookOpen />
 
-              <span>{profile?.university || "Stanford University"}</span>
+              <span>{university}</span>
             </div>
 
             <div className="profile-meta-item">
               <FiMapPin />
 
-              <span>{profile?.location || "Indonesia"}</span>
+              <span>{location}</span>
             </div>
 
             <div className="profile-meta-item">
               <FiPhone />
 
-              <span>{profile?.phone || "+62xxxxxxxx"}</span>
+              <span>{phone}</span>
             </div>
 
             <div className="profile-meta-item">
               <FiGlobe />
 
-              <span>{profile?.linkedin || "linkedin.com/in/profile"}</span>
+              <span>{linkedin}</span>
             </div>
           </div>
 
@@ -81,10 +91,7 @@ export default function ProfileHeader({ profile = {}, stats = {} }) {
           <div className="profile-about">
             <h4>About</h4>
 
-            <p>
-              {profile?.bio ||
-                "Passionate technology learner focused on frontend engineering, AI systems, and digital product development."}
-            </p>
+            <p>{bio}</p>
           </div>
         </div>
       </div>
@@ -98,9 +105,9 @@ export default function ProfileHeader({ profile = {}, stats = {} }) {
           </div>
 
           <div className="stat-content">
-            <h2>{stats?.assessmentsComplete || 0}</h2>
+            <h2>{assessmentSummary?.completedAssessments ?? 0}</h2>
 
-            <p>Assessment Complete</p>
+            <p>Assessments Complete</p>
           </div>
         </div>
 
@@ -111,9 +118,9 @@ export default function ProfileHeader({ profile = {}, stats = {} }) {
           </div>
 
           <div className="stat-content">
-            <h2>{stats?.resultsGenerated || 0}</h2>
+            <h2>{assessmentSummary?.topCareer || "-"}</h2>
 
-            <p>Result Generated</p>
+            <p>Top Career</p>
           </div>
         </div>
 
@@ -124,9 +131,9 @@ export default function ProfileHeader({ profile = {}, stats = {} }) {
           </div>
 
           <div className="stat-content">
-            <h2>{stats?.topMatchAverage || 0}%</h2>
+            <h2>{assessmentSummary?.atsScore ?? 0}%</h2>
 
-            <p>Top Match Average</p>
+            <p>ATS Score</p>
           </div>
         </div>
       </div>

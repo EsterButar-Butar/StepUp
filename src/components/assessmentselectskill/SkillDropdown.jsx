@@ -86,6 +86,7 @@ export default function SkillDropdown({
         <button
           type="button"
           className="dropdown-toggle"
+          aria-expanded={open}
           onClick={() => setOpen((prev) => !prev)}
         >
           <FiChevronDown />

@@ -1,0 +1,15 @@
+.tm-grid-container {
+  width: 100%;
+}
+
+.tm-matches-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+@media (max-width: 900px) {
+  .tm-matches-grid {
+    grid-template-columns: 1fr;
+  }
+}

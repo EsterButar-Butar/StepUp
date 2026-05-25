@@ -1,6 +1,5 @@
 .cv-page {
   min-height: 100vh;
-  background: #f3f4f6;
 }
 
 .cv-main {
@@ -9,7 +8,6 @@
   justify-content: center;
 }
 
-/* MAIN CV */
 .cv-layout {
   width: 100%;
   max-width: 850px;
@@ -18,7 +16,6 @@
   border: 1px solid #d1d5db;
 }
 
-/* EXPORT BUTTON */
 .cv-export-btn {
   border: 1px solid #111827;
   background: #111827;
@@ -35,7 +32,6 @@
   opacity: 0.9;
 }
 
-/* HEADER */
 .cv-header {
   border-bottom: 2px solid #111827;
   padding-bottom: 24px;
@@ -57,7 +53,6 @@
   font-size: 15px;
 }
 
-/* SECTION */
 .cv-section {
   margin-bottom: 36px;
 }
@@ -78,7 +73,6 @@
   font-size: 15px;
 }
 
-/* SKILLS */
 .cv-skills-grid {
   display: flex;
   flex-wrap: wrap;
@@ -102,7 +96,6 @@
   content: "";
 }
 
-/* EXPERIENCE */
 .cv-item {
   margin-bottom: 28px;
 }
@@ -128,7 +121,6 @@
   font-size: 15px;
 }
 
-/* MOBILE */
 @media (max-width: 768px) {
   .cv-main {
     padding: 100px 16px 60px;

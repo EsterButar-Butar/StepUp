@@ -10,9 +10,33 @@ import {
 import "../../styles/profile/assessment-progress.css";
 
 export default function AssessmentProgress({ progress = {} }) {
-  const percentage = progress?.percentage || 0;
+  const percentage = Math.min(
+    Math.max(Number(progress?.percentage) || 0, 0),
+    100,
+  );
+  const currentStep = Number(progress?.currentStep) || 0;
+  const totalSteps = Number(progress?.totalSteps) || 0;
+  const providedItems = Array.isArray(progress?.items)
+    ? progress.items
+    : progress?.steps;
+  const progressItems = Array.isArray(providedItems)
+    ? providedItems
+    : totalSteps > 0
+      ? Array.from({ length: totalSteps }, (_, index) => {
+          const stepNumber = index + 1;
 
-  const progressItems = progress?.items || [];
+          return {
+            id: `step-${stepNumber}`,
+            title: `Step ${stepNumber}`,
+            description:
+              stepNumber <= currentStep
+                ? "Completed"
+                : "Waiting to be completed",
+            completed: stepNumber <= currentStep,
+            score: stepNumber <= currentStep ? 100 : 0,
+          };
+        })
+      : [];
 
   return (
     <section className="assessment-progress-card">
@@ -57,9 +81,9 @@ export default function AssessmentProgress({ progress = {} }) {
             <FiAward />
 
             <div>
-              <h4>{progress?.totalAssessments || 0}</h4>
+              <h4>{currentStep}</h4>
 
-              <p>Assessments</p>
+              <p>Current Step</p>
             </div>
           </div>
 
@@ -67,9 +91,9 @@ export default function AssessmentProgress({ progress = {} }) {
             <FiBarChart2 />
 
             <div>
-              <h4>{progress?.averageScore || 0}%</h4>
+              <h4>{totalSteps}</h4>
 
-              <p>Avg Score</p>
+              <p>Total Steps</p>
             </div>
           </div>
         </div>
@@ -82,9 +106,9 @@ export default function AssessmentProgress({ progress = {} }) {
         </div>
       ) : (
         <div className="progress-list">
-          {progressItems.map((item) => (
+          {progressItems.map((item, index) => (
             <div
-              key={item?._id || item?.id}
+              key={item?._id || item?.id || `progress-item-${index}`}
               className={`progress-item ${
                 item?.completed ? "completed" : "pending"
               }`}
@@ -101,12 +125,12 @@ export default function AssessmentProgress({ progress = {} }) {
 
                 <div className="progress-content">
                   <div className="progress-title-row">
-                    <h4>{item?.title}</h4>
+                    <h4>{item?.title || "Untitled step"}</h4>
 
-                    <span className="progress-score">{item?.score || 0}%</span>
+                    <span className="progress-score">{item?.score ?? 0}%</span>
                   </div>
 
-                  <p>{item?.description}</p>
+                  <p>{item?.description || "No description available."}</p>
                 </div>
               </div>
 

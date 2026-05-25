@@ -1,6 +1,5 @@
 .assessment-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f8faff 0%, #e0e9ff 100%);
   display: flex;
   flex-direction: column;
 }

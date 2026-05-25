@@ -1,13 +1,15 @@
 /* src/styles/navbar.css */
 
+@import "./navbar-shared.css";
+
 .nv-navbar-fixed {
   width: 100%;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  background: rgba(255, 255, 255, 0.8); /* Efek kaca transparan */
-  backdrop-filter: blur(12px); /* Blur mewah */
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   z-index: 9999;
   border-bottom: 1px solid rgba(241, 245, 249, 0.7);
@@ -16,7 +18,7 @@
 .nv-main-wrapper {
   max-width: 1200px;
   margin: 0 auto;
-  height: 72px; /* Tinggi yang lebih elegan */
+  height: 72px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -34,15 +36,15 @@
 }
 
 .nv-logo-image {
-  height: 38px; /* Ukuran yang pas agar terlihat jelas */
+  height: 38px;
   width: auto;
   object-fit: contain;
 }
 
 .nv-nav-links {
   display: flex;
-  gap: 12px;
-  background: #f8fafc; /* Background pill untuk menu */
+  gap: 6px;
+  background: #f1f5f9;
   padding: 6px;
   border-radius: 99px;
 }
@@ -58,9 +60,7 @@
 }
 
 .nv-link-item:hover {
-  background: white;
   color: #2563eb;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .nv-action-area {
@@ -97,14 +97,29 @@
 }
 
 .nv-btn-dark:hover {
-  background: #2563eb; /* Berubah jadi biru saat hover agar konsisten dengan brand */
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.2);
+  background: #2563eb;
 }
 
-/* Responsive: Sembunyikan menu di HP */
+@keyframes nv-dropdown-fade {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 @media (max-width: 900px) {
   .nv-nav-links {
     display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .nv-action-area {
+    gap: 12px;
   }
 }

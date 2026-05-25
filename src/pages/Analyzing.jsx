@@ -57,8 +57,6 @@ const Analyzing = () => {
 
   return (
     <div className="analyzing-page">
-      <Navbar />
-
       <main className="analyzing-main">
         <div className="analyzing-card">
           <div className="loader-container">
@@ -84,8 +82,6 @@ const Analyzing = () => {
           <small>This usually takes about 15–30 seconds.</small>
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 };

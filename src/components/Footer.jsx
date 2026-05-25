@@ -33,7 +33,7 @@ export default function Footer() {
 
             <button>How it Works</button>
 
-            <button onClick={() => navigate("/landing")}>Features</button>
+            <button>Features</button>
           </div>
 
           {/* ASSESSMENT NAVBAR */}

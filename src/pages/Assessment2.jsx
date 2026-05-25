@@ -5,6 +5,7 @@ import { FiArrowRight, FiArrowLeft } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/NavbarAssessment";
 import AssessmentLayout from "../layouts/AssessmentLayout";
+import AssessmentProgressHeader from "../components/assessment/AssessmentProgressHeader";
 import SkillDropdown from "../components/assessmentselectskill/SkillDropdown";
 import "../styles/assessment2.css";
 import {
@@ -108,6 +109,12 @@ export default function Assessment2() {
       <AssessmentLayout currentStep={2}>
         {/* HEADER */}
         <div className="form-header">
+          <AssessmentProgressHeader
+            currentStep={2}
+            totalSteps={3}
+            progressPercentage={66}
+          />
+
           <h1>Select your skills</h1>
 
           <p>
@@ -117,7 +124,7 @@ export default function Assessment2() {
         </div>
 
         {/* CATEGORY */}
-        <div className="category-container">
+        <div className="category-container motion-stagger">
           <label className="skill-label">Category</label>
           <div className="category-grid">
             {categories.map((item) => (
@@ -141,7 +148,7 @@ export default function Assessment2() {
         </div>
 
         {/* FORM BODY */}
-        <div className="form-body">
+        <div className="form-body motion-stagger">
           {/* TECHNICAL */}
           <SkillDropdown
             label="Technical Skills"

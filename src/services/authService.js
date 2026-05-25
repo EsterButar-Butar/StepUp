@@ -5,7 +5,8 @@ import {
 
 export const login = async (userData) => {
   try {
-    const data = await loginUser(userData);
+    const response = await loginUser(userData);
+    const data = response?.data || response;
 
     if (!data?.token || !data?.user) {
       throw new Error("Invalid login response");
@@ -17,6 +18,8 @@ export const login = async (userData) => {
       "user",
       JSON.stringify(data.user)
     );
+
+    window.dispatchEvent(new Event("auth:changed"));
 
     return data;
 
@@ -51,4 +54,6 @@ export const logout = () => {
   localStorage.removeItem("token");
 
   localStorage.removeItem("user");
+
+  window.dispatchEvent(new Event("auth:changed"));
 };

@@ -1,5 +1,7 @@
 /* src/styles/navbardashboard.css */
 
+@import "./navbar-shared.css";
+
 .db-navbar-fixed {
   width: 100%;
   position: fixed;
@@ -42,7 +44,7 @@
 /* CONTAINER MENU PILL */
 .db-nav-links {
   display: flex;
-  gap: 8px; /* Gap lebih rapat untuk efek pill */
+  gap: 6px; /* Gap lebih rapat untuk efek pill */
   background: #f1f5f9; /* Background abu-abu sangat muda */
   padding: 6px;
   border-radius: 99px;
@@ -65,9 +67,7 @@
 }
 
 .db-link-item:hover {
-  background: white; /* Efek tombol yang "pop out" dari pill */
   color: #2563eb;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .db-action-area {
@@ -93,8 +93,6 @@
 
 .db-btn-primary:hover {
   background: #2563eb; /* Berubah biru saat hover */
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.2);
 }
 
 /* Responsive: Sembunyikan menu pill di layar kecil */

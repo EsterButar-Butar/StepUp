@@ -10,8 +10,8 @@
 
 .skill-header-flex {
   display: flex;
-  justify-content: space-between; /* Menendang counter ke kanan */
-  align-items: center; /* Sejajar secara vertikal */
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 10px;
   width: 100%;
 }
@@ -20,14 +20,14 @@
   font-size: 14px;
   font-weight: 700;
   color: #1e293b;
-  margin: 0; /* Reset margin agar tidak berantakan */
+  margin: 0;
 }
 
 .skill-counter {
   font-size: 12px;
   font-weight: 600;
   color: #94a3b8;
-  background: #f8fafc; /* Background halus agar terlihat seperti tag */
+  background: #f8fafc;
   padding: 4px 10px;
   border-radius: 8px;
   transition: all 0.3s ease;
@@ -38,7 +38,6 @@
   background: #fff1f2;
 }
 
-/* Category Helper Text di bawah grid kategori */
 .category-helper-text {
   font-size: 13px;
   color: #64748b;
@@ -46,10 +45,9 @@
   padding: 8px 12px;
   background: #f0f7ff;
   border-radius: 8px;
-  border-left: 4px solid #3b82f6; /* Aksen biru informasi */
+  border-left: 4px solid #3b82f6;
 }
 
-/* --- SELECTED SKILLS (CHIPS) --- */
 .selected-skills {
   display: flex;
   flex-wrap: wrap;
@@ -93,7 +91,6 @@
   background: rgba(37, 99, 235, 0.1);
 }
 
-/* --- SEARCH WRAPPER --- */
 .skill-search-wrapper {
   position: relative;
   display: flex;
@@ -111,7 +108,6 @@
   box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
 }
 
-/* State ketika input di-disable (saat skill penuh) */
 .skill-search-wrapper input:disabled {
   cursor: not-allowed;
   background: transparent;
@@ -142,7 +138,6 @@
   font-size: 18px;
 }
 
-/* --- DROPDOWN MENU --- */
 .skills-dropdown {
   position: absolute;
   top: 100%;
