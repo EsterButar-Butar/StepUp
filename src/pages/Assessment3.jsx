@@ -45,11 +45,21 @@ export default function Assessment3() {
         );
       }
 
+      const normalizeAssessmentItems = (items) => {
+        if (!Array.isArray(items)) return [];
+
+        return items.filter((item) =>
+          Object.values(item).some(
+            (value) => String(value || "").trim() !== "",
+          ),
+        );
+      };
+
       const experience = {
-        projects,
-        internships,
-        organizations,
-        certifications,
+        projects: normalizeAssessmentItems(projects),
+        internships: normalizeAssessmentItems(internships),
+        organizations: normalizeAssessmentItems(organizations),
+        certifications: normalizeAssessmentItems(certifications),
       };
 
       const fullAssessment = {
@@ -177,10 +187,6 @@ export default function Assessment3() {
     );
   }, [certifications]);
 
-  const isProjectValid = projects.some(
-    (project) => project.projectName.trim() !== "",
-  );
-
   return (
     <AssessmentLayout currentStep={3}>
       {/* HEADER */}
@@ -244,7 +250,7 @@ export default function Assessment3() {
           </button>
 
           <button
-            disabled={!isProjectValid || loading}
+            disabled={loading}
             onClick={handleSubmit}
             type="button"
             className="btn-submit"

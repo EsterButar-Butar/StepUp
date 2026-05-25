@@ -31,7 +31,7 @@ export default function ProjectSection({ items, setItems }) {
     <RepeatableFormCard
       title="Project"
       fields={fields}
-      required
+      optional
       items={items}
       setItems={setItems}
     />

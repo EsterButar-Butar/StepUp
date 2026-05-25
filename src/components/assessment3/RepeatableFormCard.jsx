@@ -48,8 +48,6 @@ export default function RepeatableFormCard({
 
   // REMOVE ITEM
   const removeItem = (index) => {
-    if (items.length === 1) return;
-
     const updated = items.filter((_, i) => i !== index);
 
     setItems(updated);
