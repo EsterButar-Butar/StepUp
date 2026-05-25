@@ -2,7 +2,6 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-
 exports.register = async (req, res) => {
     try {
         const { name, email, password } = req.body;
@@ -12,15 +11,10 @@ exports.register = async (req, res) => {
             return res.status(400).json({ message: "Email sudah terdaftar" });
         }
 
-
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        const newUser = new User({
-            name,
-            email,
-            password: hashedPassword
-        });
+        const newUser = new User({ name, email, password: hashedPassword });
         const savedUser = await newUser.save();
 
         const token = jwt.sign(
@@ -47,12 +41,11 @@ exports.register = async (req, res) => {
     }
 };
 
-
-
 exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;
 
+        // Pesan error sengaja sama biar attacker ga tau email mana yang terdaftar
         const user = await User.findOne({ email });
         if (!user) {
             return res.status(400).json({ message: "Email atau password salah" });

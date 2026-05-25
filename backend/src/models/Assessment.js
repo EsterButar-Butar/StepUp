@@ -1,6 +1,14 @@
 const mongoose = require("mongoose");
 
 const assessmentSchema = new mongoose.Schema({
+    // Link ke user yang bikin assessment ini
+    // null untuk assessment lama yang dibuat sebelum fitur ini ada
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        default: null,
+        index: true
+    },
     personalInfo: {
         fullName: { type: String, required: true },
         email: { type: String, required: true },
@@ -20,7 +28,7 @@ const assessmentSchema = new mongoose.Schema({
     skills: {
         hardSkills: { type: [String], required: true },
         softSkills: { type: [String], required: true },
-        experienceLevel: { type: String, enum: ['beginner', 'intermediate', 'advanced'], required: true }
+        experienceLevel: { type: String, enum: ["beginner", "intermediate", "advanced"], required: true }
     },
     experience: {
         projects: [{
