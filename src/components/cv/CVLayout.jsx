@@ -8,6 +8,7 @@ import CVCertifications from "./CVCertifications";
 import CVExportButton from "./CVExportButton";
 
 export default function CVLayout({ data }) {
+  console.log(data);
   return (
     <div className="cv-layout">
       <CVExportButton />
@@ -16,7 +17,11 @@ export default function CVLayout({ data }) {
 
       <CVSummary summary={data.summary} />
 
-      <CVSkills skills={data.skills} />
+      <CVSkills
+        technicalSkills={data?.skills?.technical || data?.technicalSkills}
+        softSkills={data?.skills?.soft || data?.softSkills}
+        skills={data?.skills}
+      />
 
       <CVProjects projects={data.projects} />
 

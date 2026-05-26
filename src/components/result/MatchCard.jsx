@@ -4,6 +4,7 @@ import { ChevronRight, Code2 } from "lucide-react";
 
 export default function MatchCard({
   careerId,
+  career,
   title,
   match,
   description,
@@ -20,7 +21,10 @@ export default function MatchCard({
     text: "#2563eb",
   };
   const safeMatch = Number(match || 0);
-  const safeProgress = Math.max(0, Math.min(Number(progress || safeMatch), 100));
+  const safeProgress = Math.max(
+    0,
+    Math.min(Number(progress || safeMatch), 100),
+  );
 
   return (
     <div className="tm-match-card">
@@ -45,7 +49,10 @@ export default function MatchCard({
       <div className="tm-readiness-section">
         <div className="tm-readiness-label">
           <span>Readiness</span>
-          <span className="tm-readiness-value" style={{ color: safeColor.text }}>
+          <span
+            className="tm-readiness-value"
+            style={{ color: safeColor.text }}
+          >
             {readiness}
           </span>
         </div>
@@ -67,6 +74,7 @@ export default function MatchCard({
           onClick={() => {
             if (!careerId) return;
 
+            console.log("Career clicked:", career);
             navigate(`/detail-result/${careerId}`);
           }}
         >

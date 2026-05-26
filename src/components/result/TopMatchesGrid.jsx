@@ -8,6 +8,9 @@ export default function TopMatchesGrid({ data = [], assessmentId }) {
     design: PenTool,
     product: BarChart3,
   };
+
+  const getCareerId = (item) => item.careerId || item.id || item.slug;
+
   return (
     <section className="tm-grid-container">
       <div className="tm-matches-grid">
@@ -18,7 +21,8 @@ export default function TopMatchesGrid({ data = [], assessmentId }) {
             <MatchCard
               key={`${item.title || "career"}-${index}`}
               {...item}
-              careerId={item.careerId || assessmentId}
+              careerId={getCareerId(item)}
+              career={item}
               Icon={iconMap[item.icon] || Code2}
             />
           ))

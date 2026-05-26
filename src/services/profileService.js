@@ -4,6 +4,8 @@ export const fetchProfileData = async () => {
   const response = await getProfileData();
   const payload = response?.data || response || {};
 
+  console.log("Profile API payload:", payload);
+
   return {
     user: payload?.user || payload?.profile || {},
     assessmentSummary:

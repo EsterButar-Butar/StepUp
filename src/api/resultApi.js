@@ -28,7 +28,7 @@ export const normalizeRecommendationResult = (data, assessmentId) => {
 
         return {
             ...career,
-            careerId: career.careerId || career.id || assessmentId,
+            careerId: career.careerId || career.id || career.slug,
             title: career.title || "Career Recommendation",
             match,
             score: Number(career.score ?? match),

@@ -251,13 +251,13 @@
 
 @media (max-width: 1024px) {
   .form-content {
-    padding: 32px;
+    padding: 50px;
   }
 }
 
 @media (max-width: 900px) {
   .assessment-card {
-    flex-direction: column; /* Sidebar pindah ke atas/hilang tergantung layout */
+    flex-direction: column;
     border-radius: 24px;
   }
 
@@ -280,7 +280,7 @@
   }
 
   .level-options-card {
-    flex-direction: column; /* Tombol level jadi stack vertikal */
+    flex-direction: column;
     padding: 12px;
   }
 
@@ -290,7 +290,7 @@
   }
 
   .foot-nav {
-    flex-direction: column-reverse; /* Tombol Continue di atas Back */
+    flex-direction: column-reverse;
     gap: 16px;
     padding-top: 20px;
   }

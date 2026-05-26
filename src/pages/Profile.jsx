@@ -1,21 +1,13 @@
 import NavbarDashboard from "../components/NavbarResult";
-
 import Footer from "../components/Footer";
-
 import ErrorState from "../components/ErrorState";
-
 import LoadingSpinner from "../components/LoadingSpinner";
-
 import ProfileHeader from "../components/profile/ProfileHeader";
-
 import AssessmentSummary from "../components/profile/AssessmentSummary";
-
 import AssessmentProgress from "../components/profile/AssessmentProgress";
-
 import RecentActivity from "../components/profile/RecentActivity";
-
+import AssessmentChart from "../components/profile/AssessmentChart";
 import useProfile from "../hooks/profile";
-
 import "../styles/profile/profile.css";
 
 export default function Profile() {
@@ -51,6 +43,8 @@ export default function Profile() {
     );
   }
 
+  console.log("profileData:", data);
+
   return (
     <div className="profile-page">
       <NavbarDashboard user={navbarUser} />
@@ -69,6 +63,8 @@ export default function Profile() {
 
             <div className="profile-right">
               <AssessmentProgress progress={data?.progress} />
+
+              <AssessmentChart activities={data?.recentActivities} />
 
               <RecentActivity activities={data?.recentActivities} />
             </div>

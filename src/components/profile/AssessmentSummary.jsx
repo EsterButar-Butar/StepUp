@@ -12,8 +12,9 @@ import "../../styles/profile/assessment-summary.css";
 export default function AssessmentSummary({ summary = {} }) {
   const hasSummary = Boolean(summary && Object.keys(summary).length > 0);
   const completedAssessments = summary?.completedAssessments ?? 0;
-  const topCareer = summary?.topCareer || "Not available";
-  const atsScore = summary?.atsScore ?? 0;
+  const highestScore = summary?.highestScore ?? summary?.topScore ?? null;
+  const atsScore = summary?.atsScore ?? null;
+  const averageScore = summary?.averageScore ?? null;
 
   return (
     <section className="assessment-summary-card">
@@ -50,7 +51,6 @@ export default function AssessmentSummary({ summary = {} }) {
                 <p>{completedAssessments}</p>
               </div>
             </div>
-
             <div className="summary-item">
               <div className="summary-icon orange">
                 <FiBriefcase />
@@ -58,12 +58,11 @@ export default function AssessmentSummary({ summary = {} }) {
 
               <div className="summary-content">
                 <div className="summary-top-row">
-                  <h4>Top Career</h4>
-
-                  <span className="summary-tag">Recommendation</span>
+                  <h4>Highest Score</h4>
+                  <span className="summary-tag">Personal Best</span>
                 </div>
 
-                <p>{topCareer}</p>
+                <p>{highestScore !== null ? `${highestScore}%` : "-"}</p>
               </div>
             </div>
 
@@ -74,12 +73,17 @@ export default function AssessmentSummary({ summary = {} }) {
 
               <div className="summary-content">
                 <div className="summary-top-row">
-                  <h4>ATS Score</h4>
-
-                  <span className="summary-tag">Resume Match</span>
+                  <h4>{averageScore ? "Average Score" : "ATS Score"}</h4>
+                  <span className="summary-tag">Overview</span>
                 </div>
 
-                <p>{atsScore}%</p>
+                <p>
+                  {averageScore
+                    ? `${averageScore}%`
+                    : atsScore !== null
+                      ? `${atsScore}%`
+                      : "-"}
+                </p>
               </div>
             </div>
           </div>

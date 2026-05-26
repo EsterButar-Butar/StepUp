@@ -8,7 +8,7 @@ export default function DashboardContent({ result, assessmentId }) {
   const navigate = useNavigate();
   const recommendations = result?.career_recommendations || [];
   const topCareer = recommendations[0];
-  const detailId = topCareer?.careerId || assessmentId;
+  const detailId = topCareer?.careerId;
 
   return (
     <div className="dashboard">

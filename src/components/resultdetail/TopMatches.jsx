@@ -9,6 +9,16 @@ import "react-circular-progressbar/dist/styles.css";
 import "../../styles/detailresult/topmatches.css";
 
 export default function TopMatches({ career = {} }) {
+  console.log("DetailResult TopMatches career:", career);
+  const tagGroups = [
+    { items: career?.insights || [], Icon: FiTrendingUp },
+    { items: career?.marketTags || [], Icon: FiGlobe },
+    { items: career?.tags || [], Icon: FiMonitor },
+  ];
+
+  const tags = tagGroups.flatMap(({ items, Icon }) =>
+    (items || []).map((t, i) => ({ text: t, Icon, key: `${t}-${i}` })),
+  );
   return (
     <section className="topmatches">
       {/* LEFT */}
@@ -27,23 +37,17 @@ export default function TopMatches({ career = {} }) {
         {/* DESC */}
         <p className="career-description">{career?.description}</p>
 
-        {/* TAGS */}
-        <div className="career-tags">
-          <div className="career-tag">
-            <FiTrendingUp />
-            High Demand
+        {/* TAGS (dynamic from backend) */}
+        {tags.length > 0 && (
+          <div className="career-tags">
+            {tags.map(({ text, Icon, key }) => (
+              <div className="career-tag" key={key}>
+                <Icon />
+                {text}
+              </div>
+            ))}
           </div>
-
-          <div className="career-tag">
-            <FiGlobe />
-            Tech, Finance, Healthcare
-          </div>
-
-          <div className="career-tag">
-            <FiMonitor />
-            Remote Friendly
-          </div>
-        </div>
+        )}
       </div>
 
       {/* RIGHT */}

@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 export default function Footer() {
   const navigate = useNavigate();
 
+  const latestCareerId = localStorage.getItem("selectedCareerId");
+
   return (
     <footer className="ft-main">
       <div className="ft-container">
@@ -55,7 +57,11 @@ export default function Footer() {
 
             <button onClick={() => navigate("/result")}>Result</button>
 
-            <button onClick={() => navigate("/detail-result")}>
+            <button
+              onClick={() =>
+                latestCareerId && navigate(`/detail-result/${latestCareerId}`)
+              }
+            >
               Detail Result
             </button>
 
