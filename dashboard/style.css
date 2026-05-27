@@ -12,15 +12,28 @@
     --border: #CFE0FF;
 }
 
-.stApp {
-    background: linear-gradient(135deg, #EEF4FF 0%, #E5EEFF 100%);
+html, body, [class*="css"] {
+    font-family: 'Inter', sans-serif;
+}
+
+[data-testid="stAppViewContainer"] {
+    background: linear-gradient(135deg, #EEF4FF 0%, #EAF1FF 50%, #E5EEFF 100%);
+}
+
+[data-testid="stHeader"] {
+    background: transparent;
+}
+
+[data-testid="stToolbar"] {
+    right: 1rem;
 }
 
 .block-container {
-    padding-top: 1.5rem;
-    padding-left: 2.4rem;
-    padding-right: 2.4rem;
-    max-width: 1500px;
+    max-width: 100%;
+    padding-top: 1rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-bottom: 2rem;
 }
 
 h1 {
@@ -32,8 +45,8 @@ h1 {
 }
 
 .logo-wrapper {
-    margin-top: -20px;
-    margin-bottom: -70px;
+    margin-top: -10px;
+    margin-bottom: -60px;
 }
 
 section[data-testid="stSidebar"] {
@@ -44,6 +57,12 @@ section[data-testid="stSidebar"] {
 
 section[data-testid="stSidebar"] * {
     color: #FFFFFF !important;
+}
+
+section[data-testid="stSidebar"] img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 section[data-testid="stSidebar"] label,
@@ -95,6 +114,12 @@ div[data-testid="stMetric"] {
     border-radius: 20px !important;
     padding: 22px !important;
     box-shadow: 0 8px 22px rgba(37, 99, 235, 0.12);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+div[data-testid="stMetric"]:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(37, 99, 235, 0.18);
 }
 
 [data-testid="stMetricLabel"] {
@@ -113,18 +138,57 @@ div[data-testid="stMetric"] {
     color: #1D5FE8 !important;
 }
 
+.nav-wrapper {
+    background: rgba(255,255,255,0.55);
+    border: 1px solid #D9E6FF;
+    padding: 16px;
+    border-radius: 24px;
+    margin-bottom: 26px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 22px rgba(37,99,235,0.08);
+}
+
+div.stButton > button {
+    width: 100%;
+    height: 58px;
+    border-radius: 18px;
+    font-size: 15px;
+    font-weight: 750;
+    border: 1px solid #D6E4FF;
+    background-color: #FFFFFF;
+    color: #0F3D91;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    transition: all 0.25s ease;
+}
+
+div.stButton > button:hover {
+    border: 1px solid #1D5FE8;
+    color: #1D5FE8;
+    background-color: #EAF2FF;
+    transform: translateY(-2px);
+}
+
+div.stButton > button[kind="primary"] {
+    background: linear-gradient(135deg, #1D5FE8, #0F3D91) !important;
+    color: #FFFFFF !important;
+    border: none !important;
+    box-shadow: 0 8px 18px rgba(29,95,232,0.28);
+}
+
+div.stButton > button[kind="primary"] p {
+    color: #FFFFFF !important;
+}
+
 [data-testid="stVerticalBlockBorderWrapper"] {
     background-color: #FFFFFF !important;
     border: 1px solid var(--border) !important;
     border-radius: 22px !important;
     padding: 20px !important;
     box-shadow: 0 8px 22px rgba(37, 99, 235, 0.10) !important;
-    animation: fadeInUp 0.4s ease-in-out;
     transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-[data-testid="stVerticalBlockBorderWrapper"]:hover,
-div[data-testid="stMetric"]:hover {
+[data-testid="stVerticalBlockBorderWrapper"]:hover {
     transform: translateY(-3px);
     box-shadow: 0 12px 28px rgba(37, 99, 235, 0.18) !important;
 }
@@ -140,19 +204,6 @@ div[data-testid="stMetric"]:hover {
     height: 1px;
     background-color: var(--border);
     margin-bottom: 18px;
-}
-
-.business-question {
-    background: #FFFFFF;
-    border: 1px solid #CFE0FF;
-    border-left: 6px solid #1D5FE8;
-    border-radius: 16px;
-    padding: 16px 20px;
-    margin: 28px 0 16px 0;
-    color: #0F2A66;
-    font-size: 20px;
-    font-weight: 850;
-    box-shadow: 0 6px 18px rgba(37, 99, 235, 0.08);
 }
 
 .insight-card {
@@ -195,7 +246,6 @@ div[data-testid="stMetric"]:hover {
 
 .custom-table thead tr {
     background-color: #1D5FE8;
-    color: #FFFFFF;
 }
 
 .custom-table th {
@@ -220,14 +270,18 @@ div[data-testid="stMetric"]:hover {
     background-color: #EAF2FF;
 }
 
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(12px);
+@media screen and (max-width: 768px) {
+    .block-container {
+        padding-left: 1rem;
+        padding-right: 1rem;
     }
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
+    h1 {
+        font-size: 30px !important;
+    }
+
+    section[data-testid="stSidebar"] {
+        width: 100% !important;
+        min-width: 100% !important;
     }
 }
