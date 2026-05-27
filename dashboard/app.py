@@ -1,553 +1,495 @@
-# =========================================================
-# IMPORT LIBRARY
-# =========================================================
-import streamlit as st
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
-import plotly.express as px
+import ast
+from pathlib import Path
 
-# =========================================================
-# PAGE CONFIG
-# =========================================================
+import pandas as pd
+import plotly.express as px
+import streamlit as st
+
+
 st.set_page_config(
     page_title="Dashboard Analisis Kesesuaian Pekerjaan",
     page_icon="📊",
     layout="wide"
 )
 
-# =========================================================
-# COLOR VARIABLE
-# =========================================================
-CARD_COLOR = "#F8FAFF"
-APP_BACKGROUND = "#E7ECFA"
-BORDER_COLOR = "#D6E4FF"
-TITLE_COLOR = "#1E3A8A"
+base_dir = Path(__file__).parent
+data_path = base_dir / "dataset_with_features.csv"
+css_path = base_dir / "style.css"
 
-# =========================================================
-# CUSTOM CSS
-# =========================================================
-st.markdown(f"""
-<style>
+if css_path.exists():
+    with open(css_path, "r", encoding="utf-8") as file:
+        st.markdown(f"<style>{file.read()}</style>", unsafe_allow_html=True)
 
-/* =====================================================
-APP BACKGROUND
-===================================================== */
-.stApp {{
-    background-color: {APP_BACKGROUND};
-}}
+blue_palette = ["#0F3D91", "#1D5FE8", "#3B82F6", "#60A5FA", "#93C5FD", "#C7DBFF"]
+card_color = "#FFFFFF"
 
-/* =====================================================
-MAIN CONTAINER
-===================================================== */
-.block-container {{
-    padding-top: 2rem;
-    padding-left: 3rem;
-    padding-right: 3rem;
-    max-width: 1400px;
-}}
 
-/* =====================================================
-TITLE
-===================================================== */
-h1 {{
-    text-align: center;
-    font-size: 52px !important;
-    font-weight: 800 !important;
-    color: #111827;
-    margin-bottom: 40px;
-}}
+@st.cache_data
+def load_data():
+    df = pd.read_csv(data_path)
 
-/* =====================================================
-METRIC CARD
-===================================================== */
-div[data-testid="stMetric"] {{
-    background-color: #FFFFFF !important;
-    border: 1px solid {BORDER_COLOR} !important;
-    border-radius: 20px !important;
-    padding: 25px !important;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-}}
+    list_columns = [
+        "soft_skills_user",
+        "required_soft_skills",
+        "hard_skills_user",
+        "required_hard_skills_user",
+        "matched_skills",
+        "skill_gap"
+    ]
 
-div.stMetric {{
-    background-color: #FFFFFF !important;
-}}
+    for col in list_columns:
+        if col in df.columns:
+            df[col] = df[col].apply(
+                lambda x: ast.literal_eval(x) if isinstance(x, str) else x
+            )
 
-/* =====================================================
-METRIC LABEL
-===================================================== */
-[data-testid="stMetricLabel"] {{
-    color: #374151 !important;
-    font-size: 15px !important;
-    font-weight: 700 !important;
-}}
+    df["total_user_skills"] = df["soft_skills_user"].apply(len) + df["hard_skills_user"].apply(len)
+    df["total_required_skills"] = df["required_soft_skills"].apply(len) + df["required_hard_skills_user"].apply(len)
+    df["total_matched_skills"] = df["matched_skills"].apply(len)
+    df["total_skill_gap"] = df["skill_gap"].apply(len)
 
-/* =====================================================
-METRIC VALUE
-===================================================== */
-[data-testid="stMetricValue"] {{
-    color: #111827 !important;
-    font-size: 46px !important;
-    font-weight: 800 !important;
-}}
+    return df
 
-/* =====================================================
-CHART CONTAINER
-===================================================== */
-[data-testid="stVerticalBlockBorderWrapper"] {{
-    background-color: {CARD_COLOR} !important;
-    border-radius: 20px !important;
-    padding: 20px !important;
-    border: 1px solid {BORDER_COLOR} !important;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.06) !important;
-    overflow: hidden;
-}}
 
-/* =====================================================
-CHART TITLE
-===================================================== */
-.chart-title {{
-    color: {TITLE_COLOR};
-    font-size: 30px;
-    font-weight: 700;
-    margin-bottom: 15px;
-}}
+def bar_chart(data, x_col, y_col, height=500):
+    fig = px.bar(
+        data,
+        x=x_col,
+        y=y_col,
+        orientation="h",
+        text=x_col,
+        color=x_col,
+        color_continuous_scale=["#DBEAFE", "#60A5FA", "#1D5FE8"]
+    )
 
-/* =====================================================
-DIVIDER
-===================================================== */
-.divider {{
-    height: 1px;
-    background-color: {BORDER_COLOR};
-    margin-bottom: 20px;
-}}
+    fig.update_traces(
+        textposition="inside",
+        insidetextfont=dict(color="#FFFFFF", size=12)
+    )
 
-</style>
-""", unsafe_allow_html=True)
+    fig.update_layout(
+        height=height,
+        yaxis=dict(categoryorder="total ascending", tickfont=dict(color="#0F172A", size=12)),
+        xaxis=dict(title="Jumlah", tickfont=dict(color="#0F172A"), gridcolor="#E5EAF5"),
+        paper_bgcolor=card_color,
+        plot_bgcolor=card_color,
+        font=dict(color="#0F172A", size=13),
+        coloraxis_showscale=False,
+        margin=dict(t=25, b=45, l=160, r=35),
+        transition_duration=500
+    )
 
-# =========================================================
-# STYLE
-# =========================================================
-sns.set_style("white")
+    return fig
 
-# =========================================================
-# DATA
-# =========================================================
-kategori = [
-    "Engineering",
-    "Economy",
-    "Technology",
-    "Creative Design",
-    "Law & Public"
-]
 
-persentase = [21.1, 20.6, 18.3, 19.5, 20.6]
+df = load_data()
 
-min_score = [0.40, 0.35, 0.30, 0.25, 0.38]
-avg_score = [0.75, 0.72, 0.68, 0.65, 0.70]
-max_score = [1.00, 0.95, 0.98, 0.92, 0.99]
+with st.sidebar:
 
-hard_skill = [
-    "excel",
-    "graphic design",
-    "adobe creative suite",
-    "sql",
-    "cad",
-    "matlab",
-    "legal research",
-    "process design",
-    "python",
-    "policy knowledge"
-]
+    st.markdown('<div class="logo-wrapper">', unsafe_allow_html=True)
 
-hard_count = [900, 820, 810, 770, 740, 630, 625, 620, 590, 570]
+    st.image(
+        "logo.png",
+        width=180
+    )
 
-soft_skill = [
-    "problem solving",
-    "communication",
-    "critical thinking",
-    "analysis",
-    "attention to detail",
-    "adaptability",
-    "collaboration",
-    "research",
-    "precision",
-    "planning"
-]
+    st.markdown('</div>', unsafe_allow_html=True)
 
-soft_count = [2020, 1980, 1600, 1590, 1320, 1290, 1280, 1280, 1260, 1210]
+    st.markdown("## 🔎 Filter Dashboard")
+    st.markdown("Gunakan filter untuk menjelajahi data.")
 
-# =========================================================
-# TITLE
-# =========================================================
+    selected_category = st.multiselect(
+        "Pilih Kategori",
+        options=sorted(df["category"].unique()),
+        default=sorted(df["category"].unique())
+    )
+
+    role_options = sorted(
+        df[df["category"].isin(selected_category)]["job_role"].unique()
+    )
+
+    selected_role = st.multiselect(
+        "Pilih Job Role",
+        options=role_options,
+        default=role_options
+    )
+
+    min_score = st.slider(
+        "Minimum Match Score",
+        0.0,
+        1.0,
+        0.0,
+        0.05
+    )
+
+    top_n = st.slider(
+        "Top N Skills",
+        5,
+        30,
+        10
+    )
+
+    st.info(
+        "Filter otomatis memperbarui seluruh visualisasi."
+    )
+
+
+filtered_df = df[
+    (df["category"].isin(selected_category)) &
+    (df["job_role"].isin(selected_role)) &
+    (df["match_score"] >= min_score)
+].copy()
+
+
 st.title("Dashboard Analisis Kesesuaian Pekerjaan")
 
-# =========================================================
-# METRICS
-# =========================================================
+
 col1, col2, col3, col4 = st.columns(4)
 
 with col1:
-    st.metric(
-        "TOTAL DATA",
-        "9.888",
-        "Resume dianalisis"
-    )
+    st.metric("Total Data", f"{len(filtered_df):,}", "Resume dianalisis")
 
 with col2:
-    st.metric(
-        "SKOR RATA-RATA",
-        "0.72",
-        "Match score"
-    )
+    avg_score = round(filtered_df["match_score"].mean(), 2) if len(filtered_df) else 0
+    st.metric("Skor Rata-rata", avg_score, "Match score")
 
 with col3:
-    st.metric(
-        "KATEGORI UTAMA",
-        "Engineering",
-        "21.3% dari total"
-    )
+    top_category = filtered_df["category"].mode()[0] if len(filtered_df) else "-"
+    st.metric("Kategori Dominan", top_category, "Berdasarkan filter")
 
 with col4:
-    st.metric(
-        "POSISI UNIK",
-        "116",
-        "Job roles"
-    )
+    st.metric("Posisi Unik", filtered_df["job_role"].nunique(), "Job roles")
+
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-# =========================================================
-# ROW 1
-# =========================================================
-chart1, chart2 = st.columns(2)
 
-# =========================================================
-# PIE CHART
-# =========================================================
-with chart1:
+row1_col1, row1_col2 = st.columns(2)
 
+with row1_col1:
     with st.container(border=True):
+        st.markdown('<div class="chart-title">Hard Skill yang Dimiliki Pengguna</div>', unsafe_allow_html=True)
+        st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
 
-        st.markdown(
-            '<div class="chart-title">Distribusi Kategori Pekerjaan</div>',
-            unsafe_allow_html=True
+        user_hard = (
+            filtered_df["hard_skills_user"]
+            .explode()
+            .dropna()
+            .value_counts()
+            .head(top_n)
+            .reset_index()
         )
+        user_hard.columns = ["skill", "count"]
 
-        st.markdown(
-            '<div class="divider"></div>',
-            unsafe_allow_html=True
-        )
+        fig = bar_chart(user_hard, "count", "skill")
+        st.plotly_chart(fig, width="stretch", config={"displayModeBar": False})
 
-        plt.style.use("default")
-
-        fig1, ax1 = plt.subplots(
-            figsize=(6,5),
-            facecolor="#F8FAFF"
-        )
-
-        fig1.patch.set_facecolor("#F8FAFF")
-        ax1.set_facecolor("#F8FAFF")
-
-        colors = [
-            "#2F63D8",
-            "#5C95E5",
-            "#82AEE6",
-            "#A8C1E6",
-            "#C3D1E6"
-        ]
-
-        explode = [0.06, 0, 0, 0, 0]
-
-        ax1.pie(
-            persentase,
-            labels=kategori,
-            autopct='%1.1f%%',
-            startangle=90,
-            explode=explode,
-            colors=colors,
-            wedgeprops={
-                "edgecolor": "#F8FAFF",
-                "linewidth": 2
-            },
-            textprops={
-                "fontsize": 10,
-                "color": "#111827"
-            }
-        )
-
-        ax1.axis("equal")
-        ax1.grid(False)
-
-        for spine in ax1.spines.values():
-            spine.set_visible(False)
-
-        plt.tight_layout()
-
-        st.pyplot(
-            fig1,
-            use_container_width=True
-        )
-
-# =========================================================
-# SCORE CHART
-# =========================================================
-with chart2:
-
+with row1_col2:
     with st.container(border=True):
+        st.markdown('<div class="chart-title">Soft Skill yang Dimiliki Pengguna</div>', unsafe_allow_html=True)
+        st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
 
-        st.markdown(
-            '<div class="chart-title">Distribusi Skor Kesesuaian per Kategori</div>',
-            unsafe_allow_html=True
+        user_soft = (
+            filtered_df["soft_skills_user"]
+            .explode()
+            .dropna()
+            .value_counts()
+            .head(top_n)
+            .reset_index()
         )
+        user_soft.columns = ["skill", "count"]
 
-        st.markdown(
-            '<div class="divider"></div>',
-            unsafe_allow_html=True
-        )
+        fig = bar_chart(user_soft, "count", "skill")
+        st.plotly_chart(fig, width="stretch", config={"displayModeBar": False})
 
-        df = pd.DataFrame({
-            "Kategori": kategori,
-            "Min": min_score,
-            "Average": avg_score,
-            "Max": max_score
-        })
 
-        fig_score = px.bar(
-            df,
-            x="Kategori",
-            y=["Min", "Average", "Max"],
-            barmode="group",
-            color_discrete_sequence=[
-                "#D6E6FF",
-                "#2F63D8",
-                "#5C95E5"
-            ]
-        )
+row2_col1, row2_col2 = st.columns(2)
 
-        fig_score.update_layout(
-
-            paper_bgcolor="#F8FAFF",
-            plot_bgcolor="#F8FAFF",
-
-            font=dict(
-                color="#111827",
-                size=14
-            ),
-
-            margin=dict(
-                t=10,
-                b=10,
-                l=10,
-                r=10
-            ),
-
-            xaxis=dict(
-                title="",
-                showgrid=False
-            ),
-
-            yaxis=dict(
-                title="",
-                showgrid=False
-            ),
-
-            legend=dict(
-                orientation="h",
-                y=1.1
-            )
-        )
-
-        st.plotly_chart(
-            fig_score,
-            use_container_width=True,
-            config={
-                "displayModeBar": False
-            }
-        )
-
-# =========================================================
-# ROW 2
-# =========================================================
-skill1, skill2 = st.columns(2)
-
-# =========================================================
-# HARD SKILL
-# =========================================================
-with skill1:
-
+with row2_col1:
     with st.container(border=True):
+        st.markdown('<div class="chart-title">Required Hard Skill Paling Dibutuhkan</div>', unsafe_allow_html=True)
+        st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
 
-        st.markdown(
-            '<div class="chart-title">Required Hard Skill</div>',
-            unsafe_allow_html=True
+        required_hard = (
+            filtered_df["required_hard_skills_user"]
+            .explode()
+            .dropna()
+            .value_counts()
+            .head(top_n)
+            .reset_index()
         )
+        required_hard.columns = ["skill", "count"]
 
-        st.markdown(
-            '<div class="divider"></div>',
-            unsafe_allow_html=True
-        )
+        fig = bar_chart(required_hard, "count", "skill")
+        st.plotly_chart(fig, width="stretch", config={"displayModeBar": False})
 
-        hard_df = pd.DataFrame({
-            "Hard Skill": hard_skill,
-            "Count": hard_count
-        })
-
-        fig_hard = px.bar(
-            hard_df,
-            x="Count",
-            y="Hard Skill",
-            orientation='h',
-            color="Count",
-            color_continuous_scale=[
-                "#D6E6FF",
-                "#82AEE6",
-                "#2F63D8"
-            ],
-            text="Count"
-        )
-
-        fig_hard.update_traces(
-            textposition="outside"
-        )
-
-        fig_hard.update_layout(
-
-            paper_bgcolor="#F8FAFF",
-            plot_bgcolor="#F8FAFF",
-
-            font=dict(
-                color="#111827",
-                size=14
-            ),
-
-            margin=dict(
-                t=10,
-                b=10,
-                l=10,
-                r=10
-            ),
-
-            xaxis=dict(
-                title="",
-                showgrid=False
-            ),
-
-            yaxis=dict(
-                title="",
-                categoryorder='total ascending',
-                showgrid=False
-            ),
-
-            coloraxis_showscale=False
-        )
-
-        st.plotly_chart(
-            fig_hard,
-            use_container_width=True,
-            config={
-                "displayModeBar": False
-            }
-        )
-
-# =========================================================
-# SOFT SKILL
-# =========================================================
-with skill2:
-
+with row2_col2:
     with st.container(border=True):
+        st.markdown('<div class="chart-title">Required Soft Skill Paling Dibutuhkan</div>', unsafe_allow_html=True)
+        st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
 
-        st.markdown(
-            '<div class="chart-title">Required Soft Skill</div>',
-            unsafe_allow_html=True
+        required_soft = (
+            filtered_df["required_soft_skills"]
+            .explode()
+            .dropna()
+            .value_counts()
+            .head(top_n)
+            .reset_index()
+        )
+        required_soft.columns = ["skill", "count"]
+
+        fig = bar_chart(required_soft, "count", "skill")
+        st.plotly_chart(fig, width="stretch", config={"displayModeBar": False})
+
+
+row3_col1, row3_col2 = st.columns(2)
+
+with row3_col1:
+    with st.container(border=True):
+        st.markdown('<div class="chart-title">Rata-rata Kebutuhan Skill per Kategori</div>', unsafe_allow_html=True)
+        st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
+
+        skill_need = (
+            filtered_df.groupby("category")["total_required_skills"]
+            .mean()
+            .reset_index()
+            .sort_values("total_required_skills", ascending=False)
         )
 
-        st.markdown(
-            '<div class="divider"></div>',
-            unsafe_allow_html=True
+        fig = px.bar(
+            skill_need,
+            x="category",
+            y="total_required_skills",
+            text="total_required_skills",
+            color="total_required_skills",
+            color_continuous_scale=["#DBEAFE", "#60A5FA", "#1D5FE8"]
         )
 
-        soft_df = pd.DataFrame({
-            "Soft Skill": soft_skill,
-            "Count": soft_count
-        })
+        fig.update_traces(texttemplate="%{text:.2f}", textposition="outside")
 
-        fig_soft = px.bar(
-            soft_df,
-            x="Count",
-            y="Soft Skill",
-            orientation='h',
-            color="Count",
-            color_continuous_scale=[
-                "#D6E6FF",
-                "#82AEE6",
-                "#2F63D8"
-            ],
-            text="Count"
-        )
-
-        fig_soft.update_traces(
-
-            marker=dict(
-                line=dict(
-                    width=0
-                )
-            ),
-
-            textposition="outside",
-
-            hovertemplate=
-            "<b>%{y}</b><br>" +
-            "Count: %{x}<extra></extra>"
-        )
-
-        fig_soft.update_layout(
-
-            paper_bgcolor="#F8FAFF",
-            plot_bgcolor="#F8FAFF",
-
-            font=dict(
-                color="#111827",
-                size=14
-            ),
-
-            margin=dict(
-                t=10,
-                b=10,
-                l=10,
-                r=10
-            ),
-
-            xaxis=dict(
-                title="",
-                showgrid=False,
-                zeroline=False,
-                showline=False
-            ),
-
-            yaxis=dict(
-                title="",
-                categoryorder='total ascending',
-                showgrid=False,
-                zeroline=False,
-                showline=False
-            ),
-
+        fig.update_layout(
+            height=460,
+            paper_bgcolor=card_color,
+            plot_bgcolor=card_color,
+            font=dict(color="#0F172A", size=13),
+            xaxis=dict(title="", tickfont=dict(color="#0F172A"), gridcolor="#E5EAF5"),
+            yaxis=dict(title="Rata-rata Jumlah Skill", tickfont=dict(color="#0F172A"), gridcolor="#E5EAF5"),
             coloraxis_showscale=False,
-
-            hoverlabel=dict(
-                bgcolor="#FFFFFF",
-                font_size=14,
-                font_color="#111827"
-            ),
-
-            height=500
+            margin=dict(t=35, b=45, l=60, r=30)
         )
 
-        st.plotly_chart(
-            fig_soft,
-            use_container_width=True,
-            config={
-                "displayModeBar": False
-            }
+        st.plotly_chart(fig, width="stretch", config={"displayModeBar": False})
+
+with row3_col2:
+    with st.container(border=True):
+        st.markdown('<div class="chart-title">Perbedaan Skill Requirement Antar Kategori</div>', unsafe_allow_html=True)
+        st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
+
+        fig = px.box(
+            filtered_df,
+            x="category",
+            y="total_required_skills",
+            color="category",
+            color_discrete_sequence=blue_palette
         )
+
+        fig.update_layout(
+            height=460,
+            paper_bgcolor=card_color,
+            plot_bgcolor=card_color,
+            font=dict(color="#0F172A", size=13),
+            xaxis=dict(title="", tickfont=dict(color="#0F172A"), gridcolor="#E5EAF5"),
+            yaxis=dict(title="Jumlah Required Skills", tickfont=dict(color="#0F172A"), gridcolor="#E5EAF5"),
+            showlegend=False,
+            margin=dict(t=30, b=45, l=60, r=30)
+        )
+
+        st.plotly_chart(fig, width="stretch", config={"displayModeBar": False})
+
+
+with st.container(border=True):
+    st.markdown('<div class="chart-title">Skill Gap Paling Sering Dialami</div>', unsafe_allow_html=True)
+    st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
+
+    gap_count = (
+        filtered_df["skill_gap"]
+        .explode()
+        .dropna()
+        .value_counts()
+        .head(top_n)
+        .reset_index()
+    )
+    gap_count.columns = ["skill", "count"]
+
+    fig = bar_chart(gap_count, "count", "skill", height=520)
+    st.plotly_chart(fig, width="stretch", config={"displayModeBar": False})
+
+
+row5_col1, row5_col2 = st.columns(2)
+
+with row5_col1:
+    with st.container(border=True):
+        st.markdown('<div class="chart-title">Distribusi Match Score</div>', unsafe_allow_html=True)
+        st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
+
+        fig = px.histogram(
+            filtered_df,
+            x="match_score",
+            nbins=20,
+            color_discrete_sequence=["#1D5FE8"]
+        )
+
+        fig.update_layout(
+            height=460,
+            paper_bgcolor=card_color,
+            plot_bgcolor=card_color,
+            font=dict(color="#0F172A", size=13),
+            xaxis=dict(title="Match Score", tickfont=dict(color="#0F172A"), gridcolor="#E5EAF5"),
+            yaxis=dict(title="Total Data", tickfont=dict(color="#0F172A"), gridcolor="#E5EAF5"),
+            margin=dict(t=30, b=55, l=65, r=35),
+            bargap=0.12
+        )
+
+        st.plotly_chart(fig, width="stretch", config={"displayModeBar": False})
+
+with row5_col2:
+    with st.container(border=True):
+        st.markdown('<div class="chart-title">Jumlah Skill Pengguna vs Match Score</div>', unsafe_allow_html=True)
+        st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
+
+        corr_value = filtered_df["total_user_skills"].corr(filtered_df["match_score"]) if len(filtered_df) > 1 else 0
+
+        fig = px.scatter(
+            filtered_df,
+            x="total_user_skills",
+            y="match_score",
+            color="category",
+            color_discrete_sequence=blue_palette,
+            hover_data=["job_role"]
+        )
+        
+
+        fig.update_layout(
+            height=460,
+            paper_bgcolor=card_color,
+            plot_bgcolor=card_color,
+            font=dict(color="#0F172A", size=13),
+            xaxis=dict(title="Jumlah Skill Pengguna", tickfont=dict(color="#0F172A"), gridcolor="#E5EAF5"),
+            yaxis=dict(title="Match Score", tickfont=dict(color="#0F172A"), gridcolor="#E5EAF5"),
+            margin=dict(t=30, b=55, l=65, r=35),
+            legend=dict(font=dict(color="#0F172A"))
+        )
+
+        st.plotly_chart(fig, width="stretch", config={"displayModeBar": False})
+
+        st.markdown(
+            f"""
+            <div class="insight-card">
+                <div class="insight-label">Korelasi jumlah skill dan match score</div>
+                <div class="insight-value">{corr_value:.2f}</div>
+                <div class="insight-score">Nilai mendekati 1 berarti hubungan semakin kuat</div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+
+row6_col1, row6_col2 = st.columns(2)
+
+with row6_col1:
+    with st.container(border=True):
+        st.markdown('<div class="chart-title">Rata-rata Match Score per Kategori</div>', unsafe_allow_html=True)
+        st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
+
+        avg_score_category = (
+            filtered_df.groupby("category")["match_score"]
+            .mean()
+            .reset_index()
+            .sort_values("match_score", ascending=False)
+        )
+
+        fig = px.bar(
+            avg_score_category,
+            x="category",
+            y="match_score",
+            text="match_score",
+            color="match_score",
+            color_continuous_scale=["#DBEAFE", "#60A5FA", "#1D5FE8"]
+        )
+
+        fig.update_traces(texttemplate="%{text:.2f}", textposition="outside")
+
+        fig.update_layout(
+            height=460,
+            paper_bgcolor=card_color,
+            plot_bgcolor=card_color,
+            font=dict(color="#0F172A", size=13),
+            xaxis=dict(title="", tickfont=dict(color="#0F172A"), gridcolor="#E5EAF5"),
+            yaxis=dict(title="Match Score", tickfont=dict(color="#0F172A"), gridcolor="#E5EAF5", range=[0, 1.1]),
+            coloraxis_showscale=False,
+            margin=dict(t=35, b=45, l=55, r=25)
+        )
+
+        st.plotly_chart(fig, width="stretch", config={"displayModeBar": False})
+
+with row6_col2:
+    with st.container(border=True):
+        st.markdown('<div class="chart-title">Kategori dengan Match Score Tertinggi dan Terendah</div>', unsafe_allow_html=True)
+        st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
+
+        if len(avg_score_category) > 0:
+            best_category = avg_score_category.iloc[0]
+            lowest_category = avg_score_category.iloc[-1]
+
+            st.markdown(
+                f"""
+                <div class="insight-card">
+                    <div class="insight-label">Kategori dengan kecocokan tertinggi</div>
+                    <div class="insight-value">{best_category['category']}</div>
+                    <div class="insight-score">Rata-rata match score: {best_category['match_score']:.2f}</div>
+                </div>
+
+                <div class="insight-card">
+                    <div class="insight-label">Kategori dengan kecocokan terendah</div>
+                    <div class="insight-value">{lowest_category['category']}</div>
+                    <div class="insight-score">Rata-rata match score: {lowest_category['match_score']:.2f}</div>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+
+with st.container(border=True):
+    st.markdown('<div class="chart-title">Data Hasil Pencocokan</div>', unsafe_allow_html=True)
+    st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
+
+    table_df = filtered_df[
+        [
+            "job_role",
+            "category",
+            "education",
+            "education_requirement",
+            "required_hard_skills_user",
+            "required_soft_skills",
+            "matched_skills",
+            "skill_gap",
+            "match_score"
+        ]
+    ].head(25).copy()
+
+    list_columns = [
+        "required_hard_skills_user",
+        "required_soft_skills",
+        "matched_skills",
+        "skill_gap"
+    ]
+
+    for col in list_columns:
+        table_df[col] = table_df[col].apply(
+            lambda x: ", ".join(x) if isinstance(x, list) else x
+        )
+
+    st.markdown(
+        table_df.to_html(index=False, classes="custom-table", escape=False),
+        unsafe_allow_html=True
+    )
