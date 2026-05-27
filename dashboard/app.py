@@ -114,13 +114,10 @@ df = load_data()
 
 
 with st.sidebar:
-    st.markdown('<div class="logo-wrapper">', unsafe_allow_html=True)
 
     if logo_path.exists():
         logo = Image.open(logo_path)
         st.image(logo, width=180)
-
-    st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown("## 🔎 Filter Dashboard")
     st.markdown("Gunakan filter untuk menjelajahi data.")
