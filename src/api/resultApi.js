@@ -41,6 +41,17 @@ export const normalizeRecommendationResult = (data, assessmentId) => {
     });
 
     const skillGapDetailed = data?.skill_gap_detailed || {};
+    const techHave = skillGapDetailed.tech?.have || [];
+    const techImprove = skillGapDetailed.tech?.improve || [];
+    const techMissing = skillGapDetailed.tech?.missing || [];
+
+    const softHave = skillGapDetailed.soft?.have || [];
+    const softImprove = skillGapDetailed.soft?.improve || [];
+    const softMissing = skillGapDetailed.soft?.missing || [];
+
+    const aggregatedHave = [...techHave, ...softHave];
+    const aggregatedImprove = [...techImprove, ...softImprove];
+    const aggregatedMissing = [...techMissing, ...softMissing];
 
     return {
         ...data,
@@ -52,17 +63,30 @@ export const normalizeRecommendationResult = (data, assessmentId) => {
                 title: "Tech Skills",
                 have: skillGapDetailed.tech?.have || [],
                 improve: skillGapDetailed.tech?.improve || [],
+                missing: skillGapDetailed.tech?.missing || [],
             },
             soft: {
                 type: "soft",
                 title: "Soft Skills",
                 have: skillGapDetailed.soft?.have || [],
                 improve: skillGapDetailed.soft?.improve || [],
+                missing: skillGapDetailed.soft?.missing || [],
             },
+            // legacy/aggregated shape for older components
+            skillsHave: aggregatedHave,
+            skillsImprove: aggregatedImprove,
+            missingSkills: aggregatedMissing,
         },
         match_breakdown: Array.isArray(data?.match_breakdown)
             ? data.match_breakdown
             : [],
+        genai_explanation:
+            typeof data?.genai_explanation === "string"
+                ? data.genai_explanation
+                : data?.genai_explanation?.text ||
+                (Array.isArray(data?.genai_explanation)
+                    ? data.genai_explanation.join("\n\n")
+                    : JSON.stringify(data?.genai_explanation) || ""),
         skill_gap: data?.skill_gap || null,
     };
 };

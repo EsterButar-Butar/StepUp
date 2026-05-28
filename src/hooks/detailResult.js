@@ -22,9 +22,7 @@ export default function useCareerDetail(careerId) {
         setLoading(true);
         setError(null);
 
-        const result =
-          await fetchCareerDetail(careerId);
-
+        const result = await fetchCareerDetail(careerId);
         setData(result);
 
       } catch (err) {
