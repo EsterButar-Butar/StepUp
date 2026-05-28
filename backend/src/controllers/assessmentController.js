@@ -1,65 +1,28 @@
+/**
+ * Assessment Controller — Mengelola CRUD data assessment dan integrasi dengan AI service.
+ *
+ * Alur utama createAssessment:
+ * 1. Simpan data mentah dari Frontend ke MongoDB
+ * 2. Transform data ke format yang diterima AI (via aiTransformer)
+ * 3. Kirim ke AI service dan simpan hasilnya
+ * 4. Kembalikan response ke Frontend
+ */
+
 const Assessment = require("../models/Assessment");
 const axios = require("axios");
+const { transformToAIPayload } = require("../utils/aiTransformer");
 
-// Mapping dari format MongoDB ke format yang diminta AI service (FastAPI)
-// AI service (main.py) expects: { "resume_text": "...", "top_k": 5 }
-function transformToAIPayload(assessment) {
-    const { personalInfo, education, skills, experience } = assessment;
-
-    // Build a simple string representation of the assessment to act as a resume
-    let resumeText = `${personalInfo.fullName || ""} ${personalInfo.bio || ""}. `;
-    
-    if (education.university || education.major) {
-        resumeText += `Education: ${education.university || ""} ${education.major || ""}. `;
-    }
-
-    if (skills.hardSkills && skills.hardSkills.length > 0) {
-        resumeText += `Skills: ${skills.hardSkills.join(", ")}. `;
-    }
-    
-    // Tidak memasukkan softSkills ke resumeText agar tidak merusak akurasi AI (bias ke profesi non-tech)
-    // AI team/model lebih akurat jika hanya mencocokkan Hard Skills / Technical Skills.
-    // if (skills.softSkills && skills.softSkills.length > 0) {
-    //     resumeText += `Soft Skills: ${skills.softSkills.join(", ")}. `;
-    // }
-
-    if (experience.projects && experience.projects.length > 0) {
-        resumeText += `Projects: ${experience.projects.map(p => 
-            `${p.projectName || ""} (${p.role || ""}): ${p.description || ""} ${p.issuesSolved || ""}`
-        ).join(", ")}. `;
-    }
-
-    if (experience.internships && experience.internships.length > 0) {
-        resumeText += `Experience: ${experience.internships.map(i => 
-            `${i.position || ""} at ${i.company || ""} (${i.duration || ""}): ${i.responsibilities || ""}`
-        ).join(", ")}. `;
-    }
-
-    if (experience.organizations && experience.organizations.length > 0) {
-        resumeText += `Organizations: ${experience.organizations.map(o => 
-            `${o.role || ""} at ${o.organizationName || ""} (${o.duration || ""})`
-        ).join(", ")}. `;
-    }
-
-    if (experience.certifications && experience.certifications.length > 0) {
-        resumeText += `Certifications: ${experience.certifications.map(c => 
-            `${c.certificateName || ""} from ${c.issuer || ""} (${c.year || ""})`
-        ).join(", ")}. `;
-    }
-
-    return {
-        resume_text: resumeText.trim(),
-        top_k: 50
-    };
-}
-
+/**
+ * GET /api/assessment
+ * Mengambil semua assessment milik user yang sedang login (paginated).
+ */
 exports.getAllAssessments = async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 10;
         const skip = (page - 1) * limit;
 
-        // Kalau user login, tampilkan miliknya saja. Kalau tidak, tampilkan semua (backward compat)
+        // Tampilkan assessment milik user yang login saja
         const filter = req.userId ? { userId: req.userId } : {};
 
         const [assessments, total] = await Promise.all([
@@ -85,6 +48,10 @@ exports.getAllAssessments = async (req, res) => {
     }
 };
 
+/**
+ * GET /api/assessment/:id
+ * Mengambil satu assessment berdasarkan ID. Cek kepemilikan user.
+ */
 exports.getAssessmentById = async (req, res) => {
     try {
         const assessment = await Assessment.findById(req.params.id);
@@ -93,7 +60,7 @@ exports.getAssessmentById = async (req, res) => {
             return res.status(404).json({ message: "Assessment tidak ditemukan" });
         }
 
-        // Cek ownership — kalau punya userId, harus cocok dengan user yang request
+        // Cek ownership — assessment dengan userId harus cocok dengan user yang request
         if (assessment.userId && req.userId && assessment.userId.toString() !== req.userId) {
             return res.status(403).json({ message: "Tidak punya akses ke assessment ini" });
         }
@@ -107,11 +74,16 @@ exports.getAssessmentById = async (req, res) => {
     }
 };
 
+/**
+ * POST /api/assessment
+ * Menyimpan assessment baru dan mengirimnya ke AI service untuk dianalisis.
+ * Assessment tetap tersimpan di database meskipun AI service gagal dihubungi.
+ */
 exports.createAssessment = async (req, res) => {
     try {
         const { personalInfo, education, experience, skills } = req.body;
 
-        // Simpan dulu ke DB sebelum panggil AI, biar data ga hilang kalau AI down
+        // Simpan dulu ke DB sebelum panggil AI — data aman meskipun AI down
         const newAssessment = new Assessment({
             userId: req.userId || null,
             personalInfo,
@@ -121,33 +93,37 @@ exports.createAssessment = async (req, res) => {
         });
         const savedAssessment = await newAssessment.save();
 
+        // Transform data MongoDB ke format AI service
         const aiPayload = transformToAIPayload(savedAssessment);
 
         // Panggil AI service — kalau gagal, assessment tetap tersimpan
         let aiResult = null;
-        const aiApiUrl = process.env.AI_API_URL || "http://TUNGGU_LINK_DARI_TIM_AI/predict";
+        const aiApiUrl = process.env.AI_API_URL || "http://localhost:8000/predict";
 
         try {
             console.log("Mengirim data ke AI:", aiApiUrl);
             const aiResponse = await axios.post(aiApiUrl, aiPayload, {
-                timeout: 60000
+                timeout: 60000 // 60 detik timeout (model AI butuh waktu)
             });
             aiResult = aiResponse.data;
             console.log("AI Response diterima!");
 
+            // Simpan hasil AI ke assessment yang sama
             savedAssessment.aiResult = aiResult;
             await savedAssessment.save();
         } catch (aiError) {
-            // FIXME: harusnya simpan error ini ke DB juga biar bisa di-retry nanti
-            console.error("Warning: Gagal menghubungi API AI -", aiError.message);
+            console.error("Warning: Gagal menghubungi AI service —", aiError.message);
+            // Assessment tetap tersimpan tanpa aiResult, bisa di-retry nanti
         }
 
         res.status(201).json({
             message: "Assessment saved successfully",
+            assessmentId: savedAssessment._id,
             data: {
-                data: savedAssessment
+                data: savedAssessment,
+                ...savedAssessment.toObject()
             },
-            ai_recommendation: aiResult
+            ai_status: aiResult ? "completed" : "pending"
         });
 
     } catch (error) {
@@ -158,6 +134,10 @@ exports.createAssessment = async (req, res) => {
     }
 };
 
+/**
+ * DELETE /api/assessment/:id
+ * Menghapus assessment berdasarkan ID. Cek kepemilikan user.
+ */
 exports.deleteAssessment = async (req, res) => {
     try {
         const assessment = await Assessment.findById(req.params.id);
