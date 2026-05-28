@@ -2,6 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "../components/NavbarResult";
 import Footer from "../components/Footer";
 import TopMatches from "../components/resultdetail/TopMatches";
+import GenAIExplanation from "../components/resultdetail/GenAIExplanation";
 import MatchBreakdown from "../components/resultdetail/MatchBreakdown";
 import SkillGapAnalysis from "../components/resultdetail/SkillGapAnalysis";
 import useCareerDetail from "../hooks/detailResult";
@@ -22,6 +23,8 @@ export default function DetailResult() {
       score: Number(item.score ?? item.value ?? 0),
       color: item.color || "#2563eb",
     })) || [];
+  console.log(data?.skill_gap_detailed);
+  console.log(data?.genai_explanation);
   const normalizeSkills = (items = []) =>
     items.map((item, index) =>
       typeof item === "string"
@@ -32,16 +35,15 @@ export default function DetailResult() {
     technical: {
       have: normalizeSkills(data?.skill_gap_detailed?.tech?.have),
       improve: normalizeSkills(data?.skill_gap_detailed?.tech?.improve),
-      missing: normalizeSkills(data?.skill_gap?.missingSkills),
+      missing: normalizeSkills(data?.skill_gap_detailed?.tech?.missing),
     },
     soft: {
       have: normalizeSkills(data?.skill_gap_detailed?.soft?.have),
       improve: normalizeSkills(data?.skill_gap_detailed?.soft?.improve),
-      missing: [],
+      missing: normalizeSkills(data?.skill_gap_detailed?.soft?.missing),
     },
   };
 
-  // LOADING
   if (loading) {
     return (
       <div className="detail-loading">
@@ -50,7 +52,6 @@ export default function DetailResult() {
     );
   }
 
-  // ERROR
   if (error) {
     return (
       <div className="detail-error">
@@ -61,7 +62,6 @@ export default function DetailResult() {
     );
   }
 
-  // EMPTY
   if (!data || !career) {
     return (
       <div className="detail-error">
@@ -83,6 +83,8 @@ export default function DetailResult() {
         </div>
 
         <TopMatches career={career} />
+
+        <GenAIExplanation explanation={data?.genai_explanation} />
 
         <section className="detail-grid">
           <MatchBreakdown breakdown={breakdown} />

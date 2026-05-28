@@ -1,4 +1,3 @@
-/* --- MODAL OVERLAY --- */
 .crop-modal-overlay {
   position: fixed;
   top: 0;
@@ -60,21 +59,18 @@
   color: #0f172a;
 }
 
-/* --- CROP AREA (react-easy-crop container) --- */
 .crop-container {
   position: relative;
   width: 100%;
-  height: 350px; /* Tinggi area potong */
+  height: 350px;
   background: #334155;
 }
 
-/* --- CONTROLS SECTION --- */
 .crop-controls {
   padding: 24px;
   background: white;
 }
 
-/* Slider Zoom */
 .zoom-control {
   display: flex;
   align-items: center;
@@ -145,7 +141,6 @@
   box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
 }
 
-/* --- UPLOAD PREVIEW COMPONENT --- */
 .profile-upload-wrapper {
   display: flex;
   flex-direction: column;

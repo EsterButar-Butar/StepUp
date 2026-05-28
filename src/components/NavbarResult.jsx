@@ -3,19 +3,76 @@ import "../styles/navbarresult.css";
 import Logo from "../assets/S.png";
 
 import { useNavigate, useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 
-export default function NavbarResult({ user = {}, selectedCareerId }) {
+function safeParse(item) {
+  try {
+    return JSON.parse(item);
+  } catch (e) {
+    return null;
+  }
+}
+
+export default function NavbarResult({
+  user: propUser = {},
+  selectedCareerId,
+}) {
   const navigate = useNavigate();
 
   const location = useLocation();
 
-  const avatarSeed = user?.fullName || "Guest";
+  const [user, setUser] = useState(() => {
+    const stored = safeParse(localStorage.getItem("user")) || {};
+    return Object.keys(stored).length ? stored : propUser || {};
+  });
+
+  // Refresh user from localStorage when location changes or storage events fire
+  useEffect(() => {
+    const refresh = () => {
+      const stored = safeParse(localStorage.getItem("user")) || {};
+      setUser(Object.keys(stored).length ? stored : propUser || {});
+    };
+
+    refresh();
+
+    const onStorage = (e) => {
+      if (e.key === "user") refresh();
+    };
+
+    window.addEventListener("storage", onStorage);
+
+    return () => window.removeEventListener("storage", onStorage);
+  }, [location.pathname, propUser]);
+
+  const displayName =
+    user?.fullName ||
+    user?.name ||
+    propUser?.fullName ||
+    propUser?.name ||
+    "User";
+  const subtitle =
+    user?.major ||
+    user?.role ||
+    user?.email ||
+    propUser?.major ||
+    propUser?.role ||
+    propUser?.email ||
+    "StepUp User";
+
+  const avatarSource =
+    user?.profilePicture ||
+    user?.profileImage ||
+    user?.avatar ||
+    propUser?.profilePicture ||
+    propUser?.profileImage ||
+    propUser?.avatar ||
+    null;
+
+  const avatarSeed = displayName || "Guest";
 
   const profileImage =
-    user?.profileImage ||
-    `https://api.dicebear.com/7.x/personas/svg?seed=${encodeURIComponent(
-      avatarSeed,
-    )}`;
+    avatarSource ||
+    `https://api.dicebear.com/7.x/personas/svg?seed=${encodeURIComponent(avatarSeed)}`;
 
   return (
     <nav className="result-navbar-fixed">
@@ -77,14 +134,14 @@ export default function NavbarResult({ user = {}, selectedCareerId }) {
         >
           <img
             src={profileImage}
-            alt="Profile"
+            alt={displayName}
             className="result-profile-image"
           />
 
           <div className="result-profile-info">
-            <h4>{user?.fullName || "-"}</h4>
+            <h4>{displayName}</h4>
 
-            <p>{user?.major || "-"}</p>
+            <p>{subtitle}</p>
           </div>
         </div>
       </div>

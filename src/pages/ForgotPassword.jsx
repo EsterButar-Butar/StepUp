@@ -12,7 +12,6 @@ import "../styles/forgotPassword.css";
 export default function ForgotPassword() {
   const navigate = useNavigate();
 
-  // STATES
   const [email, setEmail] = useState("");
 
   const [loading, setLoading] = useState(false);
@@ -21,14 +20,12 @@ export default function ForgotPassword() {
 
   const [success, setSuccess] = useState("");
 
-  // HANDLE SUBMIT
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     setError("");
     setSuccess("");
 
-    // VALIDATION
     if (!email.includes("@")) {
       setError("Please enter a valid email address.");
       return;
@@ -37,7 +34,6 @@ export default function ForgotPassword() {
     try {
       setLoading(true);
 
-      // DUMMY DELAY
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
       console.log("Reset password for:", email);

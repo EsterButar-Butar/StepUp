@@ -40,7 +40,8 @@ export default function ProfileHeader({ user = {}, assessmentSummary = {} }) {
           <div className="profile-top-row">
             <div>
               {displayName ? <h1>{displayName}</h1> : null}
-              {user?.role ? <p className="profile-major">{user.role}</p> : null}
+              {user?.role ? <p className="profile-role">{user.role}</p> : null}
+              <span className="profile-major">StepUp Member</span>
             </div>
           </div>
 
