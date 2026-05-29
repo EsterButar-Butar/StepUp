@@ -69,6 +69,7 @@ export default function MatchCard({
 
       <div className="tm-card-footer">
         <button
+          type="button"
           className="tm-btn-view"
           disabled={!careerId}
           onClick={() => {

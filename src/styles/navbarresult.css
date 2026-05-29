@@ -8,8 +8,8 @@
   top: 0;
   left: 0;
   right: 0;
-  background: rgba(255, 255, 255, 0.8); /* Efek kaca transparan */
-  backdrop-filter: blur(12px); /* Blur mewah */
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   z-index: 9999;
   border-bottom: 1px solid rgba(241, 245, 249, 0.7);
@@ -18,7 +18,7 @@
 .result-main-wrapper {
   max-width: 1200px;
   margin: 0 auto;
-  height: 72px; /* Tinggi proporsional */
+  height: 72px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -43,21 +43,18 @@
   object-fit: contain;
 }
 
-/* Hapus teks StepUp karena logo sudah ada teksnya */
 .result-logo-text {
   display: none;
 }
 
-/* MENU PILL NAVIGATION */
 .result-nav-links {
   display: flex;
   gap: 6px;
-  background: #f1f5f9; /* Wadah abu-abu muda */
+  background: #f1f5f9;
   padding: 6px;
   border-radius: 99px;
 }
 
-/* Tombol Navigasi */
 .result-link-item {
   background: transparent;
   border: none;
@@ -76,7 +73,6 @@
   color: #2563eb;
 }
 
-/* Style Aktif (Menu yang sedang dibuka) */
 .result-link-item.active {
   background: white;
   color: #2563eb;
@@ -84,7 +80,6 @@
   font-weight: 600;
 }
 
-/* PROFILE AREA */
 .result-profile-area {
   display: flex;
   align-items: center;
@@ -129,15 +124,14 @@
   font-weight: 400;
 }
 
-/* RESPONSIVE */
 @media (max-width: 900px) {
   .result-nav-links {
-    display: none; /* Sembunyikan menu pill di mobile */
+    display: none;
   }
 }
 
 @media (max-width: 600px) {
   .result-profile-info {
-    display: none; /* Hanya foto di layar sangat kecil */
+    display: none;
   }
 }

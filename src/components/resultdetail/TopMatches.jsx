@@ -6,9 +6,10 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 
 import "react-circular-progressbar/dist/styles.css";
 
+import GenAIExplanation from "./GenAIExplanation";
 import "../../styles/detailresult/topmatches.css";
 
-export default function TopMatches({ career = {} }) {
+export default function TopMatches({ career = {}, explanation }) {
   console.log("DetailResult TopMatches career:", career);
   const tagGroups = [
     { items: career?.insights || [], Icon: FiTrendingUp },
@@ -19,6 +20,11 @@ export default function TopMatches({ career = {} }) {
   const tags = tagGroups.flatMap(({ items, Icon }) =>
     (items || []).map((t, i) => ({ text: t, Icon, key: `${t}-${i}` })),
   );
+
+  const careerDescription =
+    career?.description ||
+    "A concise career summary is not available. Explore AI insights for the latest guidance.";
+
   return (
     <section className="topmatches">
       {/* LEFT */}
@@ -29,13 +35,13 @@ export default function TopMatches({ career = {} }) {
             <FiMonitor />
           </div>
 
-          <h1>{career?.title}</h1>
+          <h1>{career?.title || "Career Recommendation"}</h1>
 
           <span className="top-badge">TOP MATCH</span>
         </div>
 
         {/* DESC */}
-        <p className="career-description">{career?.description}</p>
+        <p className="career-description">{careerDescription}</p>
 
         {/* TAGS (dynamic from backend) */}
         {tags.length > 0 && (
@@ -48,6 +54,8 @@ export default function TopMatches({ career = {} }) {
             ))}
           </div>
         )}
+
+        <GenAIExplanation explanation={explanation} />
       </div>
 
       {/* RIGHT */}

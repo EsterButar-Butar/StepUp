@@ -2,7 +2,7 @@ import "../styles/navbarresult.css";
 
 import Logo from "../assets/S.png";
 
-import { useNavigate, useLocation } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 
 function safeParse(item) {
@@ -26,7 +26,6 @@ export default function NavbarResult({
     return Object.keys(stored).length ? stored : propUser || {};
   });
 
-  // Refresh user from localStorage when location changes or storage events fire
   useEffect(() => {
     const refresh = () => {
       const stored = safeParse(localStorage.getItem("user")) || {};
@@ -87,44 +86,50 @@ export default function NavbarResult({
         {/* MENU */}
         <div className="result-nav-links">
           {/* RESULT */}
-          <button
-            className={`result-link-item ${
-              location.pathname.includes("/result") ? "active" : ""
-            }`}
-            onClick={() => navigate("/result")}
+          <NavLink
+            to="/result"
+            end
+            className={({ isActive }) =>
+              `result-link-item ${isActive ? "active" : ""}`
+            }
           >
             Result
-          </button>
+          </NavLink>
 
           {/* DETAIL */}
           <button
+            type="button"
             className={`result-link-item ${
               location.pathname.includes("/detail-result") ? "active" : ""
             }`}
-            onClick={() => navigate(`/detail-result/${selectedCareerId}`)}
+            onClick={() => {
+              if (!selectedCareerId) return;
+              navigate(`/detail-result/${selectedCareerId}`);
+            }}
+            disabled={!selectedCareerId}
           >
             Detail Result
           </button>
 
           {/* CV */}
-          <button
-            className={`result-link-item ${
-              location.pathname.includes("/cvresult") ? "active" : ""
-            }`}
-            onClick={() => navigate("/cvresult")}
+          <NavLink
+            to="/cvresult"
+            className={({ isActive }) =>
+              `result-link-item ${isActive ? "active" : ""}`
+            }
           >
             CV Result
-          </button>
+          </NavLink>
 
           {/* PROFILE */}
-          <button
-            className={`result-link-item ${
-              location.pathname.includes("/profile") ? "active" : ""
-            }`}
-            onClick={() => navigate("/profile")}
+          <NavLink
+            to="/profile"
+            className={({ isActive }) =>
+              `result-link-item ${isActive ? "active" : ""}`
+            }
           >
             History & Profile
-          </button>
+          </NavLink>
         </div>
 
         {/* PROFILE */}

@@ -66,9 +66,18 @@ export default function Result() {
     return <ErrorState message="No career recommendations available yet." />;
   }
 
+  const selectedCareerId =
+    result.career_recommendations?.[0]?.careerId || result.assessmentId;
+
+  useEffect(() => {
+    if (selectedCareerId) {
+      localStorage.setItem("selectedCareerId", selectedCareerId);
+    }
+  }, [selectedCareerId]);
+
   return (
     <div className="result-page">
-      <Navbar selectedCareerId={result.assessmentId} />
+      <Navbar selectedCareerId={selectedCareerId} />
 
       <main className="result-main">
         <DashboardContent result={result} assessmentId={result.assessmentId} />

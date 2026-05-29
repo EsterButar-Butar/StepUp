@@ -37,6 +37,7 @@ export default function DashboardContent({ result, assessmentId }) {
       {/* Footer Section */}
       <div className="dashboard-footer">
         <button
+          type="button"
           className="btn-primary-dark"
           onClick={() => {
             if (!topCareer) return;
