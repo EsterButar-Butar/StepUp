@@ -28,8 +28,12 @@ export default function NavbarResult({
 
   useEffect(() => {
     const refresh = () => {
-      const stored = safeParse(localStorage.getItem("user")) || {};
-      setUser(Object.keys(stored).length ? stored : propUser || {});
+      const stored = safeParse(localStorage.getItem("user"));
+      if (stored && Object.keys(stored).length) {
+        setUser(stored);
+      } else if (propUser && Object.keys(propUser).length) {
+        setUser(propUser);
+      }
     };
 
     refresh();
@@ -41,7 +45,7 @@ export default function NavbarResult({
     window.addEventListener("storage", onStorage);
 
     return () => window.removeEventListener("storage", onStorage);
-  }, [location.pathname, propUser]);
+  }, [location.pathname]); // Removed propUser to prevent infinite loop
 
   const displayName =
     user?.fullName ||

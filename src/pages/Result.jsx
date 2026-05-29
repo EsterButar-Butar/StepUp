@@ -50,6 +50,15 @@ export default function Result() {
     fetchResult();
   }, [assessmentId]);
 
+  const selectedCareerId =
+    result?.career_recommendations?.[0]?.careerId || result?.assessmentId;
+
+  useEffect(() => {
+    if (selectedCareerId) {
+      localStorage.setItem("selectedCareerId", selectedCareerId);
+    }
+  }, [selectedCareerId]);
+
   if (loading) {
     return <LoadingSpinner />;
   }
@@ -65,15 +74,6 @@ export default function Result() {
   ) {
     return <ErrorState message="No career recommendations available yet." />;
   }
-
-  const selectedCareerId =
-    result.career_recommendations?.[0]?.careerId || result.assessmentId;
-
-  useEffect(() => {
-    if (selectedCareerId) {
-      localStorage.setItem("selectedCareerId", selectedCareerId);
-    }
-  }, [selectedCareerId]);
 
   return (
     <div className="result-page">
