@@ -127,6 +127,9 @@ function transformAItoFrontend(aiResult, assessment, selectedIndex = 0) {
             improve: hardMissing.map(s => ({
                 name: capitalize(s),
                 desc: "Skill yang perlu dipelajari"
+            })),
+            missing: hardMissing.map(s => ({
+                name: capitalize(s)
             }))
         },
         soft: {
@@ -138,6 +141,9 @@ function transformAItoFrontend(aiResult, assessment, selectedIndex = 0) {
             improve: softMissing.map(s => ({
                 name: capitalize(s),
                 desc: "Perlu ditingkatkan"
+            })),
+            missing: softMissing.map(s => ({
+                name: capitalize(s)
             }))
         }
     };

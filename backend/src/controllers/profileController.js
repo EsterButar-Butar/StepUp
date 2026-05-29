@@ -172,6 +172,7 @@ function countUserSkills(assessments) {
 /**
  * GET /api/cv-result
  * Mengambil data ATS CV berdasarkan assessment terbaru user.
+ * Menormalkan format data dari AI agar sesuai dengan komponen CV di Frontend.
  */
 exports.getCVResult = async (req, res, next) => {
     try {
@@ -185,8 +186,9 @@ exports.getCVResult = async (req, res, next) => {
         const { buildAtsCvFromProfile } = require("../utils/aiTransformer");
 
         let cvData = {};
-        if (latestAssessment.aiResult) {
-            cvData = latestAssessment.aiResult.ats_cv || buildAtsCvFromProfile(latestAssessment);
+        if (latestAssessment.aiResult && latestAssessment.aiResult.ats_cv) {
+            // Transform format AI ke format yang diharapkan Frontend
+            cvData = normalizeAtsCv(latestAssessment.aiResult.ats_cv, latestAssessment);
         } else {
             cvData = buildAtsCvFromProfile(latestAssessment);
         }
@@ -196,6 +198,96 @@ exports.getCVResult = async (req, res, next) => {
         next(error);
     }
 };
+
+/**
+ * Menormalkan data ats_cv dari format AI service ke format komponen CV Frontend.
+ * AI mengirim: header, professional_summary, internship_experience, organizational_experience
+ * Frontend mengharapkan: user, summary, experience, organizations
+ *
+ * @param {Object} atsCv - Data ats_cv dari AI service
+ * @param {Object} assessment - Document assessment dari MongoDB (fallback data)
+ * @returns {Object} Data CV siap render di Frontend
+ */
+function normalizeAtsCv(atsCv, assessment) {
+    const header = atsCv.header || {};
+    const p = assessment.personalInfo || {};
+    const e = assessment.education || {};
+    const s = assessment.skills || {};
+    const exp = assessment.experience || {};
+
+    // Transform "header" → "user" (format CVHeader.jsx)
+    const user = {
+        name: header.name || p.fullName || "User",
+        email: header.email || p.email || "",
+        phone: header.phone || p.phone || "",
+        location: header.location || p.location || "",
+        linkedin: header.linkedin || p.linkedin || "",
+        github: ""
+    };
+
+    // Transform "professional_summary" → "summary" (format CVSummary.jsx)
+    const summary = atsCv.professional_summary
+        || p.bio
+        || `A driven student from ${e.university || "University"} majoring in ${e.major || "their field"}.`;
+
+    // Transform skills dari AI format ke flat array (format CVSkills.jsx)
+    let skills = [];
+    if (atsCv.skills) {
+        if (Array.isArray(atsCv.skills)) {
+            skills = atsCv.skills;
+        } else {
+            // AI mengirim { tech_skill: [], soft_skill: [] }
+            const techSkills = atsCv.skills.tech_skill || atsCv.skills.technical || [];
+            const softSkills = atsCv.skills.soft_skill || atsCv.skills.soft || [];
+            skills = [...techSkills, ...softSkills];
+        }
+    }
+    if (skills.length === 0) {
+        skills = [...(s.hardSkills || []), ...(s.softSkills || [])];
+    }
+
+    // Transform projects — AI mengirim string mentah, perlu fallback ke assessment
+    let projects = [];
+    if (Array.isArray(atsCv.projects) && atsCv.projects.length > 0) {
+        if (typeof atsCv.projects[0] === "object" && atsCv.projects[0].projectName) {
+            projects = atsCv.projects;
+        } else {
+            // AI mengirim array of string, fallback ke data assessment
+            projects = exp.projects || [];
+        }
+    } else {
+        projects = exp.projects || [];
+    }
+
+    // Transform "internship_experience" → "experience" (format CVExperience.jsx)
+    let experience = atsCv.internship_experience || atsCv.experience || exp.internships || [];
+
+    // Transform "organizational_experience" → "organizations" (format CVOrganizations.jsx)
+    let organizations = atsCv.organizational_experience || atsCv.organizations || exp.organizations || [];
+
+    // Certifications — fallback ke assessment jika AI kirim string mentah
+    let certifications = [];
+    if (Array.isArray(atsCv.certifications) && atsCv.certifications.length > 0) {
+        if (typeof atsCv.certifications[0] === "object" && atsCv.certifications[0].certificateName) {
+            certifications = atsCv.certifications;
+        } else {
+            certifications = exp.certifications || [];
+        }
+    } else {
+        certifications = exp.certifications || [];
+    }
+
+    return {
+        user,
+        summary,
+        skills,
+        projects,
+        experience,
+        organizations,
+        certifications
+    };
+}
+
 
 /**
  * Mengubah huruf pertama setiap kata menjadi kapital.
