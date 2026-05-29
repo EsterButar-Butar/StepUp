@@ -8,7 +8,7 @@
 }
 
 .how-container {
-  max-width: 1100px; /* Sedikit lebih ramping agar proporsional */
+  max-width: 1100px; 
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -48,11 +48,11 @@
 
 .how-connecting-line {
   position: absolute;
-  top: 45px; /* Tengah-tengah icon box */
+  top: 45px; 
   left: 20%;
   right: 20%;
   height: 1px;
-  border-top: 2px dashed #f1f5f9; /* Garis putus-putus tipis */
+  border-top: 2px dashed #f1f5f9; 
   z-index: 1;
 }
 
@@ -75,10 +75,9 @@
   justify-content: center;
   margin-bottom: 24px;
   position: relative;
-  background: #ffffff; /* Agar menutupi garis di belakangnya */
+  background: #ffffff; 
 }
 
-/* Warna spesifik sesuai image_3c3f61.png */
 .how-blue {
   background-color: #eff6ff;
   color: #2563eb;

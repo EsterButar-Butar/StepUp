@@ -27,7 +27,7 @@ export default function GenAIExplanation({ explanation }) {
           </div>
           <h3>GenAI Explanation</h3>
         </div>
-        <div className="genai-badge">Gemini</div>
+        <div className="genai-badge">Step Up</div>
       </header>
 
       <div className="genai-body">

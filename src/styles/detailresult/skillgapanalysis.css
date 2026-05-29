@@ -3,7 +3,7 @@
 .skill-gap-analysis {
   width: 100%;
   background: white;
-  border-radius: 24px; /* Lebih membulat sesuai mockup */
+  border-radius: 24px; 
   border: 1px solid rgba(226, 232, 240, 0.8);
   padding: 32px;
   display: flex;
@@ -44,7 +44,7 @@
   gap: 12px;
   font-size: 14px;
   font-weight: 700;
-  color: #64748b; /* Warna teks judul section lebih muted */
+  color: #64748b; 
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -61,7 +61,7 @@
 }
 
 .skill-card {
-  background: #f8fafc; /* Latar belakang kolom abu-abu sangat muda */
+  background: #f8fafc; 
   border: 1px solid #f1f5f9;
   border-radius: 18px;
   padding: 20px;
@@ -119,7 +119,7 @@
   font-size: 14px;
   font-weight: 500;
   color: #334155;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02); /* Shadow halus pada item */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02); 
   transition: transform 0.2s ease;
 }
 
@@ -128,7 +128,6 @@
   border-color: #e2e8f0;
 }
 
-/* Badge Styling sesuai mockup */
 .badge {
   padding: 4px 10px;
   border-radius: 6px;
@@ -149,13 +148,11 @@
   border: 1px solid #fef3c7;
 }
 
-/* Missing icon styling */
 .missing-icon {
   color: #cbd5e1;
   font-size: 14px;
 }
 
-/* Penyesuaian responsif */
 @media (max-width: 1200px) {
   .skill-columns {
     gap: 16px;

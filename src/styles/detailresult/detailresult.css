@@ -3,7 +3,6 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  /* Background mengikuti index.css sesuai instruksi */
 }
 
 .detail-main {
@@ -16,7 +15,6 @@
   gap: 24px;
 }
 
-/* Tombol Back */
 .back-wrapper {
   margin-bottom: 8px;
 }
@@ -52,12 +50,10 @@
   }
 
   .detail-grid {
-    grid-template-columns: 1fr; /* Tumpuk jadi satu kolom di mobile */
+    grid-template-columns: 1fr; 
   }
 }
 
-/* Konsistensi untuk Card (Shared Classes) */
-/* Pastikan di komponen MatchBreakdown dan SkillGapAnalysis menggunakan class .card */
 .card {
   background: #ffffff;
   border-radius: 16px;

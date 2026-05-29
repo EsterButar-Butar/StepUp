@@ -27,15 +27,6 @@ export default function PasswordField({ password, setPassword, navigate }) {
           {showPassword ? <FiEyeOff /> : <FiEye />}
         </button>
       </div>
-
-      <div className="forgot-container">
-        <span
-          className="link-blue"
-          onClick={() => navigate("/forgot-password")}
-        >
-          Forgot Password?
-        </span>
-      </div>
     </div>
   );
 }

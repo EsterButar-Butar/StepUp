@@ -1,5 +1,6 @@
 .dashboard {
   display: flex;
+  margin-top: 70px;
   flex-direction: column;
   gap: 28px;
 }

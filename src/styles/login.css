@@ -125,13 +125,6 @@
   color: #1e293b;
 }
 
-.forgot-container {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 10px;
-  font-size: smaller;
-}
-
 .btn-login-main {
   width: 100%;
   padding: 16px;
