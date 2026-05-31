@@ -23,10 +23,10 @@ class L2NormalizeLayer(tf.keras.layers.Layer):
 app = FastAPI(title="StepUp AI Recommendation API")
 
 
-MODEL_PATH = "stepup_artifacts/stepup_match_score_model.keras"
-TFIDF_PATH = "stepup_artifacts/tfidf_vectorizer_dl.pkl"
-NUMERIC_MAX_PATH = "stepup_artifacts/numeric_max.pkl"
-JOB_CATALOG_PATH = "stepup_artifacts/job_catalog.pkl"
+MODEL_PATH = "stepup_ai/stepup_artifacts/stepup_match_score_model.keras"
+TFIDF_PATH = "stepup_ai/stepup_artifacts/tfidf_vectorizer_dl.pkl"
+NUMERIC_MAX_PATH = "stepup_ai/stepup_artifacts/numeric_max.pkl"
+JOB_CATALOG_PATH = "stepup_ai/stepup_artifacts/job_catalog.pkl"
 
 
 model = tf.keras.models.load_model(
