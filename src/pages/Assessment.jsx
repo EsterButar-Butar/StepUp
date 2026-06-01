@@ -12,6 +12,7 @@ import {
   getProfileImageFromUser,
   persistProfileImage,
 } from "../utils/profileImage";
+import { getStoredDraft, saveDraft } from "../utils/draftStorage";
 
 import { FiChevronDown, FiArrowRight } from "react-icons/fi";
 
@@ -63,13 +64,12 @@ export default function Assessment() {
   const [tempImage, setTempImage] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const isFormValid =
-    [
-      formData.fullName,
-      formData.email,
-      formData.university,
-      formData.major,
-    ].every((field) => field.trim() !== "");
+  const isFormValid = [
+    formData.fullName,
+    formData.email,
+    formData.university,
+    formData.major,
+  ].every((field) => field.trim() !== "");
 
   useEffect(() => {
     localStorage.setItem("assessmentStep1", JSON.stringify(formData));
@@ -130,6 +130,19 @@ export default function Assessment() {
     persistProfileImage(croppedImage, formData);
   };
 
+  const handleSaveDraft = () => {
+    const existingDraft = getStoredDraft();
+
+    saveDraft({
+      ...existingDraft,
+      step1: {
+        ...formData,
+        profileImage: previewImage,
+      },
+      profileImage: previewImage,
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -174,7 +187,7 @@ export default function Assessment() {
 
   return (
     <div className="assessment-page">
-      <Navbar />
+      <Navbar onSaveDraft={handleSaveDraft} />
 
       <main className="assessment-main">
         <div className="assessment-card">

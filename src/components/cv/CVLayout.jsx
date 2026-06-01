@@ -7,29 +7,61 @@ import CVOrganizations from "./CVOrganizations";
 import CVCertifications from "./CVCertifications";
 import CVExportButton from "./CVExportButton";
 
+const ensureArray = (value) => {
+  if (Array.isArray(value)) return value;
+  if (!value) return [];
+  return [];
+};
+
 export default function CVLayout({ data }) {
-  console.log(data);
+  const normalizedData = data || {};
+  const projects = ensureArray(
+    normalizedData.projects ||
+      normalizedData.ats_cv?.projects ||
+      normalizedData.experience?.projects,
+  );
+  const experience = ensureArray(
+    normalizedData.experience ||
+      normalizedData.internships ||
+      normalizedData.ats_cv?.internship_experience ||
+      normalizedData.ats_cv?.experience,
+  );
+  const organizations = ensureArray(
+    normalizedData.organizations ||
+      normalizedData.ats_cv?.organizational_experience ||
+      normalizedData.ats_cv?.organizations,
+  );
+  const certifications = ensureArray(
+    normalizedData.certifications || normalizedData.ats_cv?.certifications,
+  );
+
   return (
     <div className="cv-layout">
       <CVExportButton />
 
-      <CVHeader user={data.user} />
+      <CVHeader user={normalizedData.user} />
 
-      <CVSummary summary={data.summary} />
+      <CVSummary summary={normalizedData.summary} />
 
       <CVSkills
-        technicalSkills={data?.skills?.technical || data?.technicalSkills}
-        softSkills={data?.skills?.soft || data?.softSkills}
-        skills={data?.skills}
+        technicalSkills={
+          normalizedData?.skills?.technical || normalizedData?.technicalSkills
+        }
+        softSkills={normalizedData?.skills?.soft || normalizedData?.softSkills}
+        skills={normalizedData?.skills}
       />
 
-      <CVProjects projects={data.projects} />
+      {projects.length > 0 && <CVProjects projects={projects} />}
 
-      <CVExperience experience={data.experience} />
+      {experience.length > 0 && <CVExperience experience={experience} />}
 
-      <CVOrganizations organizations={data.organizations} />
+      {organizations.length > 0 && (
+        <CVOrganizations organizations={organizations} />
+      )}
 
-      <CVCertifications certifications={data.certifications} />
+      {certifications.length > 0 && (
+        <CVCertifications certifications={certifications} />
+      )}
     </div>
   );
 }

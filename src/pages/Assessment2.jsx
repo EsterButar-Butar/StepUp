@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { FiArrowRight, FiArrowLeft } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../components/NavbarAssessment";
 import AssessmentLayout from "../layouts/AssessmentLayout";
 import AssessmentProgressHeader from "../components/assessment/AssessmentProgressHeader";
 import SkillDropdown from "../components/assessmentselectskill/SkillDropdown";
@@ -13,6 +12,7 @@ import {
   hardSkillsByCategory,
   softSkills,
 } from "../data/skillsData";
+import { getStoredDraft, saveDraft } from "../utils/draftStorage";
 
 export default function Assessment2() {
   const navigate = useNavigate();
@@ -54,6 +54,25 @@ export default function Assessment2() {
   const [loading, setLoading] = useState(false);
 
   const technicalSkills = hardSkillsByCategory[category] || [];
+
+  const handleSaveDraft = () => {
+    const existingDraft = getStoredDraft();
+    const payload = {
+      category,
+      technicalSkills: selectedTechnicalSkills,
+      softSkills: selectedSoftSkills,
+      level,
+    };
+
+    saveDraft({
+      ...existingDraft,
+      step2: payload,
+      category,
+      technicalSkills: selectedTechnicalSkills,
+      softSkills: selectedSoftSkills,
+      level,
+    });
+  };
 
   const handleContinue = async () => {
     try {
@@ -105,8 +124,7 @@ export default function Assessment2() {
 
   return (
     <div className="assessment-page">
-      <Navbar />
-      <AssessmentLayout currentStep={2}>
+      <AssessmentLayout currentStep={2} onSaveDraft={handleSaveDraft}>
         {/* HEADER */}
         <div className="form-header">
           <AssessmentProgressHeader

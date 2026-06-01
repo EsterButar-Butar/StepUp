@@ -7,10 +7,10 @@ export default function CVOrganizations({ organizations = [] }) {
 
       {organizations.map((org, index) => (
         <div key={index} className="cv-item">
-          <h3>{org.organizationName}</h3>
+          <h3>{org.organizationName || org.name || org.group}</h3>
 
           <span>
-            {org.role} • {org.duration}
+            {org.role || org.position} • {org.duration}
           </span>
         </div>
       ))}

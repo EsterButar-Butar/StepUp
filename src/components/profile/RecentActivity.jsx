@@ -1,6 +1,6 @@
 import {
   FiCheckCircle,
-  FiChevronRight,
+  FiBookmark,
   FiClock,
   FiTrendingUp,
   FiFileText,
@@ -137,7 +137,7 @@ export default function RecentActivity({ activities = [] }) {
                 </span>
 
                 <button type="button" className="activity-action-btn">
-                  <FiChevronRight />
+                  <FiBookmark />
                 </button>
               </div>
             </div>

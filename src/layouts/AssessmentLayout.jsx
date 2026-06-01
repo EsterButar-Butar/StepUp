@@ -2,10 +2,14 @@ import Navbar from "../components/NavbarAssessment";
 import Footer from "../components/Footer";
 import AssessmentSidebar from "../components/AssessmentSidebar";
 
-export default function AssessmentLayout({ children, currentStep }) {
+export default function AssessmentLayout({
+  children,
+  currentStep,
+  onSaveDraft,
+}) {
   return (
     <div className="assessment-page">
-      <Navbar />
+      <Navbar onSaveDraft={onSaveDraft} />
 
       <main className="assessment-main">
         <div className="assessment-card">

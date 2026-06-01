@@ -23,9 +23,10 @@ export default function CVResult() {
     const loadCV = async () => {
       try {
         const data = await fetchCVResult();
+        const cvPayload = data?.data || data;
 
-        console.log("CV backend response:", data);
-        setCvData(data);
+        console.log("CV backend response:", cvPayload);
+        setCvData(cvPayload);
       } catch (error) {
         console.error(error);
 

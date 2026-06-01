@@ -1,6 +1,6 @@
 import {
   FiCheckCircle,
-  FiChevronRight,
+  FiBookmark,
   FiClock,
   FiTrendingUp,
   FiAward,
@@ -136,7 +136,7 @@ export default function AssessmentProgress({ progress = {} }) {
 
               {/* RIGHT */}
               <div className="progress-action">
-                <FiChevronRight />
+                <FiBookmark />
               </div>
             </div>
           ))}
