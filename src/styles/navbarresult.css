@@ -124,14 +124,21 @@
   font-weight: 400;
 }
 
-@media (max-width: 900px) {
-  .result-nav-links {
-    display: none;
+@media (max-width: 768px) {
+  .result-brand-area,
+  .result-profile-area {
+    display: none !important;
   }
-}
 
-@media (max-width: 600px) {
-  .result-profile-info {
-    display: none;
+  .result-main-wrapper {
+    justify-content: center;
+    padding: 0 16px;
+  }
+
+  .result-nav-links {
+    display: flex;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 }

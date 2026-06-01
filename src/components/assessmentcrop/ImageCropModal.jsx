@@ -42,8 +42,13 @@ export default function ImageCropModal({ image, onClose, onSave }) {
 
     const ctx = canvas.getContext("2d");
 
-    canvas.width = pixelCrop.width;
-    canvas.height = pixelCrop.height;
+    const maxAvatarSize = 512;
+    const scale = Math.min(1, maxAvatarSize / pixelCrop.width);
+    const outputWidth = Math.round(pixelCrop.width * scale);
+    const outputHeight = Math.round(pixelCrop.height * scale);
+
+    canvas.width = outputWidth;
+    canvas.height = outputHeight;
 
     ctx.drawImage(
       image,
@@ -53,17 +58,11 @@ export default function ImageCropModal({ image, onClose, onSave }) {
       pixelCrop.height,
       0,
       0,
-      pixelCrop.width,
-      pixelCrop.height,
+      outputWidth,
+      outputHeight,
     );
 
-    return new Promise((resolve) => {
-      canvas.toBlob((blob) => {
-        const fileUrl = URL.createObjectURL(blob);
-
-        resolve(fileUrl);
-      }, "image/jpeg");
-    });
+    return canvas.toDataURL("image/jpeg", 0.9);
   };
 
   // HANDLE SAVE

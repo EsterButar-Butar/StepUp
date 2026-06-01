@@ -4,14 +4,13 @@ import Logo from "../assets/S.png";
 
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-
-function safeParse(item) {
-  try {
-    return JSON.parse(item);
-  } catch (e) {
-    return null;
-  }
-}
+import { getProfileImageWithFallback } from "../utils/profileImage";
+import { fetchProfileData } from "../services/profileService";
+import {
+  AUTH_CHANGED_EVENT,
+  AUTH_USER_STORAGE_KEY,
+  getStoredUser,
+} from "../utils/authStorage";
 
 export default function NavbarResult({
   user: propUser = {},
@@ -22,13 +21,13 @@ export default function NavbarResult({
   const location = useLocation();
 
   const [user, setUser] = useState(() => {
-    const stored = safeParse(localStorage.getItem("user")) || {};
+    const stored = getStoredUser() || {};
     return Object.keys(stored).length ? stored : propUser || {};
   });
 
   useEffect(() => {
     const refresh = () => {
-      const stored = safeParse(localStorage.getItem("user"));
+      const stored = getStoredUser();
       if (stored && Object.keys(stored).length) {
         setUser(stored);
       } else if (propUser && Object.keys(propUser).length) {
@@ -39,13 +38,41 @@ export default function NavbarResult({
     refresh();
 
     const onStorage = (e) => {
-      if (e.key === "user") refresh();
+      if (e.key === AUTH_USER_STORAGE_KEY) refresh();
     };
 
     window.addEventListener("storage", onStorage);
+    window.addEventListener("profile:image-changed", refresh);
+    window.addEventListener(AUTH_CHANGED_EVENT, refresh);
 
-    return () => window.removeEventListener("storage", onStorage);
+    return () => {
+      window.removeEventListener("storage", onStorage);
+      window.removeEventListener("profile:image-changed", refresh);
+      window.removeEventListener(AUTH_CHANGED_EVENT, refresh);
+    };
   }, [location.pathname]); // Removed propUser to prevent infinite loop
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const hydrateProfile = async () => {
+      try {
+        const profile = await fetchProfileData();
+
+        if (!cancelled && profile?.user) {
+          setUser(profile.user);
+        }
+      } catch (error) {
+        console.error("Failed to hydrate navbar profile:", error);
+      }
+    };
+
+    hydrateProfile();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const displayName =
     user?.fullName ||
@@ -62,20 +89,12 @@ export default function NavbarResult({
     propUser?.email ||
     "StepUp User";
 
-  const avatarSource =
-    user?.profilePicture ||
-    user?.profileImage ||
-    user?.avatar ||
-    propUser?.profilePicture ||
-    propUser?.profileImage ||
-    propUser?.avatar ||
-    null;
-
   const avatarSeed = displayName || "Guest";
 
-  const profileImage =
-    avatarSource ||
-    `https://api.dicebear.com/7.x/personas/svg?seed=${encodeURIComponent(avatarSeed)}`;
+  const profileImage = getProfileImageWithFallback(
+    { ...propUser, ...user },
+    avatarSeed,
+  );
 
   return (
     <nav className="result-navbar-fixed">

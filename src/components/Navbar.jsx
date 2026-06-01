@@ -4,42 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import { FiArrowRight } from "react-icons/fi";
 import { useLocation, useNavigate } from "react-router-dom";
 import Logo from "../assets/S.png";
-
-const parseStoredJson = (key) => {
-  try {
-    const storedValue = localStorage.getItem(key);
-
-    if (!storedValue) return null;
-
-    // Treat literal strings 'null' and 'undefined' as empty
-    if (storedValue === "null" || storedValue === "undefined") return null;
-
-    return JSON.parse(storedValue);
-  } catch {
-    return null;
-  }
-};
-
-const normalizeStoredUser = (value) => {
-  if (!value || typeof value !== "object") {
-    return null;
-  }
-
-  // Support several possible shapes: { user }, { data: { user } }, or the user object itself
-  return value.user || value.data?.user || value;
-};
-
-const getStoredAuth = () => {
-  const rawToken = localStorage.getItem("token");
-  const token =
-    rawToken && rawToken !== "null" && rawToken !== "undefined"
-      ? rawToken
-      : null;
-
-  const user = normalizeStoredUser(parseStoredJson("user"));
-
-  return { token, user };
-};
+import {
+  AUTH_CHANGED_EVENT,
+  clearAuth,
+  getStoredAuth,
+} from "../utils/authStorage";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -84,12 +53,12 @@ export default function Navbar() {
 
     window.addEventListener("storage", handleAuthChange);
     window.addEventListener("focus", handleAuthChange);
-    window.addEventListener("auth:changed", handleAuthChange);
+    window.addEventListener(AUTH_CHANGED_EVENT, handleAuthChange);
 
     return () => {
       window.removeEventListener("storage", handleAuthChange);
       window.removeEventListener("focus", handleAuthChange);
-      window.removeEventListener("auth:changed", handleAuthChange);
+      window.removeEventListener(AUTH_CHANGED_EVENT, handleAuthChange);
     };
   }, []);
 
@@ -111,11 +80,9 @@ export default function Navbar() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    clearAuth();
     setAuth({ token: null, user: null });
     setIsProfileOpen(false);
-    window.dispatchEvent(new Event("auth:changed"));
     navigate("/login");
   };
 

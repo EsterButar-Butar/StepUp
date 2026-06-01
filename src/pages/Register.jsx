@@ -8,7 +8,6 @@ import ErrorMessage from "../components/ErrorMessage";
 import RegisterInput from "../components/register/RegisterInput";
 import RegisterButton from "../components/register/RegisterButton";
 import Divider from "../components/register/Divider";
-import GoogleButton from "../components/register/GoogleButton";
 
 import { register } from "../services/authService";
 
@@ -127,8 +126,6 @@ export default function Register() {
             </form>
 
             <Divider />
-
-            <GoogleButton />
 
             <footer className="su-card-footer">
               <p>

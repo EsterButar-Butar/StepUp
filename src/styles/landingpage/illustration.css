@@ -59,27 +59,6 @@
   margin-bottom: 40px;
 }
 
-.cta-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 26px;
-  border-radius: 999px;
-  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-  color: #ffffff;
-  font-weight: 600;
-  font-size: 15px;
-  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
-  width: fit-content;
-  user-select: none;
-  pointer-events: none;
-}
-
-.cta-tag-arrow {
-  font-size: 16px;
-  transition: transform 0.3s ease;
-}
-
 .cta-visual {
   display: flex;
   align-items: center;

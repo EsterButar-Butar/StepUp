@@ -6,7 +6,7 @@ import {
   FiAlertCircle,
   FiCode,
   FiUsers,
-  FiSearch,
+  FiStar,
 } from "react-icons/fi";
 
 import "../../styles/detailresult/skillgapanalysis.css";
@@ -18,7 +18,7 @@ export default function SkillGapAnalysis({ skills = {} }) {
       <div className="sga-header">
         <h3>Skill Gap Analysis</h3>
 
-        <FiSearch className="header-icon" />
+        <FiStar className="header-icon" />
       </div>
 
       {/* TECHNICAL */}

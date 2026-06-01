@@ -1,21 +1,22 @@
 import { createContext, useContext, useState } from "react";
+import {
+  clearAuth,
+  getStoredUser,
+  setStoredUser,
+} from "../utils/authStorage";
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(
-    JSON.parse(localStorage.getItem("user")) || null,
-  );
+  const [user, setUser] = useState(getStoredUser);
 
   const login = (userData) => {
-    localStorage.setItem("user", JSON.stringify(userData));
-
+    setStoredUser(userData);
     setUser(userData);
   };
 
   const logout = () => {
-    localStorage.removeItem("user");
-
+    clearAuth();
     setUser(null);
   };
 

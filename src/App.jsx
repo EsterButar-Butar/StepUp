@@ -14,24 +14,83 @@ import Result from "./pages/Result";
 import Profile from "./pages/Profile";
 import DetailResult from "./pages/DetailResult.jsx";
 import CVResult from "./pages/CVResult.jsx";
+import ProtectedRoute from "./routes/ProtectedRoute";
 
 function App() {
   return (
     <Router>
       <Routes>
-        {/* LOGIN */}
+        {/* PUBLIC */}
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/landing" element={<Landing />} />
-        <Route path="/assessment" element={<Assessment />} />
-        <Route path="/assessment2" element={<Assessment2 />} />
-        <Route path="/assessment3" element={<Assessment3 />} />
-        <Route path="/analyzing" element={<Analyzing />} />
-        <Route path="/result" element={<Result />} />
-        <Route path="/detail-result/:id" element={<DetailResult />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/cvresult" element={<CVResult />} />
+
+        {/* PROTECTED */}
+        <Route
+          path="/assessment"
+          element={
+            <ProtectedRoute>
+              <Assessment />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/assessment2"
+          element={
+            <ProtectedRoute>
+              <Assessment2 />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/assessment3"
+          element={
+            <ProtectedRoute>
+              <Assessment3 />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/analyzing"
+          element={
+            <ProtectedRoute>
+              <Analyzing />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/result"
+          element={
+            <ProtectedRoute>
+              <Result />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/detail-result/:id"
+          element={
+            <ProtectedRoute>
+              <DetailResult />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/cvresult"
+          element={
+            <ProtectedRoute>
+              <CVResult />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </Router>
   );

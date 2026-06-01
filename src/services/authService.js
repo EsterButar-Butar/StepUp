@@ -2,26 +2,25 @@ import {
   loginUser,
   registerUser,
 } from "../api/authApi";
+import {
+  clearAuth,
+  normalizeAuthPayload,
+  persistAuth,
+} from "../utils/authStorage";
 
 export const login = async (userData) => {
   try {
     const response = await loginUser(userData);
     const data = response?.data || response;
+    const { token, user, body } = normalizeAuthPayload(data);
 
-    if (!data?.token || !data?.user) {
+    if (!token) {
       throw new Error("Invalid login response");
     }
 
-    localStorage.setItem("token", data.token);
+    persistAuth({ token, user });
 
-    localStorage.setItem(
-      "user",
-      JSON.stringify(data.user)
-    );
-
-    window.dispatchEvent(new Event("auth:changed"));
-
-    return data;
+    return body;
 
   } catch (error) {
     const message =
@@ -51,9 +50,5 @@ export const register = async (userData) => {
 };
 
 export const logout = () => {
-  localStorage.removeItem("token");
-
-  localStorage.removeItem("user");
-
-  window.dispatchEvent(new Event("auth:changed"));
+  clearAuth();
 };

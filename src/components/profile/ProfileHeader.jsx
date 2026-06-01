@@ -10,19 +10,13 @@ import {
 } from "react-icons/fi";
 
 import "../../styles/profile/profile-header.css";
+import { getProfileImageWithFallback } from "../../utils/profileImage";
 
 export default function ProfileHeader({ user = {}, assessmentSummary = {} }) {
   const displayName = user?.name || user?.fullName || "";
   const email = user?.email || "";
 
-  const profileImage =
-    user?.profilePicture ||
-    user?.profileImage ||
-    (displayName || email
-      ? `https://api.dicebear.com/7.x/personas/svg?seed=${encodeURIComponent(
-          displayName || email,
-        )}`
-      : null);
+  const profileImage = getProfileImageWithFallback(user, displayName || email);
 
   return (
     <section className="profile-header-card">
