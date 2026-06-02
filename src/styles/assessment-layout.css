@@ -1,0 +1,82 @@
+.assessment-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.assessment-main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 20px;
+}
+
+.assessment-card {
+  width: 100%;
+  max-width: 1000px;
+  display: flex;
+  border-radius: 32px;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
+}
+
+.form-content {
+  flex: 1;
+  padding: 50px 60px;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 1024px) {
+  .assessment-card {
+    max-width: 900px;
+  }
+
+  .form-content {
+    padding: 40px; /* Mengurangi padding sedikit */
+  }
+}
+
+/* Tablet / Mobile Landscape */
+@media (max-width: 900px) {
+  .assessment-main {
+    padding: 40px 15px;
+    align-items: flex-start; /* Agar tidak terlalu 'nempel' ke atas di layar pendek */
+  }
+
+  .assessment-card {
+    flex-direction: column; /* Sidebar pindah ke atas */
+    border-radius: 24px;
+    min-height: auto;
+  }
+
+  .form-content {
+    padding: 30px;
+  }
+}
+
+/* Mobile Portrait (Smartphone) */
+@media (max-width: 640px) {
+  .assessment-main {
+    padding: 20px 12px;
+  }
+
+  .assessment-card {
+    border-radius: 20px; /* Radius lebih kecil di layar kecil */
+  }
+
+  .form-content {
+    padding: 32px 20px; /* Padding lebih sempit agar konten maksimal */
+  }
+
+  /* Penyesuaian Header agar teks tidak terlalu besar di HP */
+  .form-header h1 {
+    font-size: 24px;
+  }
+
+  .form-header p {
+    font-size: 14px;
+  }
+}

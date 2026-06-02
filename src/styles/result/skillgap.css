@@ -1,0 +1,131 @@
+.sg-container {
+  background: white;
+  border-radius: 28px;
+  padding: 32px;
+  border: 1px solid #f1f5f9;
+}
+
+.sg-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #f8fafc;
+}
+
+/* Divider Label */
+.sg-section-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f8fafc;
+  padding: 8px 16px;
+  border-radius: 10px;
+  width: fit-content;
+  font-weight: 700;
+  font-size: 14px;
+  color: #475569;
+  margin-bottom: 24px;
+}
+
+.sg-main-section {
+  margin-bottom: 40px;
+}
+
+.sg-spacer {
+  height: 1px;
+  background: #f1f5f9;
+  margin: 20px 0 40px 0;
+}
+
+.sg-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+/* Status Titles */
+.sg-status-title {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sg-status-title.success {
+  color: #10b981;
+}
+.sg-status-title.warning {
+  color: #f59e0b;
+}
+
+.dot {
+  font-size: 7px;
+}
+
+/* Item styling */
+.sg-item-plain {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.sg-card-improve {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fffbeb;
+  padding: 14px 18px;
+  border-radius: 16px;
+  margin-bottom: 10px;
+  border: 1px solid #fef3c7;
+}
+
+.sg-card-content {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.sg-icon-circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sg-icon-circle.success {
+  background: #dcfce7;
+  color: #10b981;
+}
+.sg-icon-circle.warning {
+  background: #fef3c7;
+  color: #f59e0b;
+}
+
+.sg-item-name {
+  font-weight: 700;
+  font-size: 14px;
+  color: #1e293b;
+  margin: 0;
+}
+.sg-item-sub {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.sg-btn-learn {
+  background: transparent;
+  border: none;
+  color: #2563eb;
+  font-weight: 700;
+  font-size: 12px;
+  cursor: pointer;
+}

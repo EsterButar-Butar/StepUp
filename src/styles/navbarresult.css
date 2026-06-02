@@ -1,0 +1,144 @@
+/* src/styles/navbarresult.css */
+
+@import "./navbar-shared.css";
+
+.result-navbar-fixed {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 9999;
+  border-bottom: 1px solid rgba(241, 245, 249, 0.7);
+}
+
+.result-main-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+}
+
+/* LOGO AREA */
+.result-brand-area {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.result-brand-area:hover {
+  transform: scale(1.05);
+}
+
+.result-logo-image {
+  height: 38px;
+  width: auto;
+  object-fit: contain;
+}
+
+.result-logo-text {
+  display: none;
+}
+
+.result-nav-links {
+  display: flex;
+  gap: 6px;
+  background: #f1f5f9;
+  padding: 6px;
+  border-radius: 99px;
+}
+
+.result-link-item {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  padding: 8px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 99px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.result-link-item:hover {
+  color: #2563eb;
+}
+
+.result-link-item.active {
+  background: white;
+  color: #2563eb;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  font-weight: 600;
+}
+
+.result-profile-area {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 12px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.result-profile-area:hover {
+  background: rgba(241, 245, 249, 0.6);
+}
+
+.result-profile-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 1px #e2e8f0;
+}
+
+.result-profile-info {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.result-profile-info h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.result-profile-info p {
+  font-size: 12px;
+  color: #64748b;
+  margin: 0;
+  font-weight: 400;
+}
+
+@media (max-width: 768px) {
+  .result-brand-area,
+  .result-profile-area {
+    display: none !important;
+  }
+
+  .result-main-wrapper {
+    justify-content: center;
+    padding: 0 16px;
+  }
+
+  .result-nav-links {
+    display: flex;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}

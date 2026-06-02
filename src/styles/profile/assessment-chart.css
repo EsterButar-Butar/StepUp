@@ -1,0 +1,80 @@
+/* Container Utama */
+.assessment-chart-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.05),
+    0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  margin-bottom: 20px;
+  border: 1px solid #f1f5f9;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+}
+
+.assessment-chart-card h3 {
+  margin: 0 0 20px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #0f172a;
+  letter-spacing: -0.01em;
+}
+
+.chart-wrapper {
+  overflow-x: auto;
+  padding: 12px 4px;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+.chart-svg {
+  width: 100%;
+  height: 140px;
+  display: block;
+}
+
+.chart-bar {
+  fill: #3b82f6;
+  transition:
+    fill 0.25s ease,
+    y 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    height 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.chart-bar:hover {
+  fill: #1d4ed8;
+  cursor: pointer;
+  filter: drop-shadow(0px 4px 6px rgba(37, 99, 235, 0.2));
+}
+
+.chart-value {
+  font-size: 10px;
+  font-weight: 600;
+  fill: #2563eb;
+  opacity: 0.85;
+  transition:
+    opacity 0.2s ease,
+    font-size 0.2s ease;
+}
+
+.g:hover .chart-value {
+  opacity: 1;
+  font-size: 11px;
+}
+
+.chart-label {
+  font-size: 9px;
+  font-weight: 500;
+  fill: #64748b;
+}
+
+.chart-empty {
+  padding: 40px 24px;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 14px;
+  border: 2px dashed #e2e8f0;
+  border-radius: 12px;
+  background: #f8fafc;
+}

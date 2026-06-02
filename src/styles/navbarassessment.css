@@ -1,0 +1,140 @@
+/* src/styles/navbarassessment.css */
+
+@import "./navbar-shared.css";
+
+.db-navbar-fixed {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 9999;
+  border-bottom: 1px solid rgba(241, 245, 249, 0.7);
+}
+
+.db-main-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+}
+
+.db-brand-area {
+  display: flex;
+  align-items: center;
+  transition: transform 0.2s ease;
+}
+
+.db-brand-area:hover {
+  transform: scale(1.05);
+}
+
+.db-logo-image {
+  height: 38px;
+  width: auto;
+  object-fit: contain;
+}
+
+.db-nav-links {
+  display: flex;
+  gap: 6px;
+  background: #f1f5f9;
+  padding: 6px;
+  border-radius: 99px;
+}
+
+.db-link-item {
+  background: transparent;
+  border: none;
+  text-decoration: none;
+  color: #64748b;
+  padding: 8px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 99px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.db-link-item:hover {
+  color: #2563eb;
+}
+
+/* Tambahkan class active jika belum ada untuk menandai menu aktif */
+.db-link-item.active {
+  background: white;
+  color: #2563eb;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  font-weight: 600;
+}
+
+.db-action-area {
+  display: flex;
+  align-items: center;
+}
+
+/* TOMBOL SAVE DRAFT */
+.db-btn-primary {
+  background: #0f172a;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.db-btn-primary:hover {
+  background: #2563eb;
+}
+
+.draft-toast {
+  position: absolute;
+  top: 84px;
+  right: 24px;
+  background: rgba(15, 23, 42, 0.95);
+  color: #f8fafc;
+  border-radius: 14px;
+  padding: 10px 16px;
+  font-size: 14px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.24);
+  z-index: 10001;
+  min-width: 220px;
+  text-align: center;
+}
+
+.draft-toast.error {
+  background: rgba(194, 65, 12, 0.95);
+}
+
+@media (max-width: 900px) {
+  .db-brand-area,
+  .db-action-area {
+    display: none !important;
+  }
+
+  .db-main-wrapper {
+    justify-content: center;
+    padding: 0 16px;
+  }
+
+  .db-nav-links {
+    display: flex;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}

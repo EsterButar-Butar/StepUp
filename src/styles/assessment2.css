@@ -1,0 +1,233 @@
+/* src/styles/assessment2.css */
+
+@import "./assessment-animations.css";
+
+.assessment-page {
+  padding-top: 30px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* HEADER */
+.form-header {
+  margin-bottom: 32px;
+}
+
+.form-header h1 {
+  font-size: 28px;
+  color: #1e293b;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.form-header p {
+  color: #64748b;
+  line-height: 1.6;
+  font-size: 15px;
+  max-width: 550px;
+}
+
+/* --- CATEGORY SECTION --- */
+.category-container {
+  margin-bottom: 32px;
+}
+
+.category-helper-text {
+  font-size: 13px;
+  color: #64748b;
+  margin-top: 12px;
+  padding-left: 4px;
+  border-left: 2px solid #e2e8f0; /* Memberi kesan kutipan/info penting */
+}
+
+.category-helper-text strong {
+  color: #2563eb; /* Highlight teks Technical Skills */
+  font-weight: 600;
+}
+
+.skill-label {
+  display: block;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 12px;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 12px;
+}
+
+.category-btn {
+  padding: 12px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  text-transform: capitalize;
+  transition: all 0.2s ease;
+}
+
+.category-btn:hover {
+  border-color: #3b82f6;
+  background: #eff6ff;
+  color: #3b82f6;
+}
+
+.category-btn.active {
+  background: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+}
+
+/* FORM BODY & SPACING */
+.form-body {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* EXPERIENCE LEVEL */
+.experience-level-container {
+  background: #f8fafc;
+  padding: 32px 24px;
+  border-radius: 24px;
+  text-align: center;
+  border: 1px solid #f1f5f9;
+}
+
+.level-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 20px;
+}
+
+.level-options-card {
+  display: flex;
+  background: white;
+  padding: 6px;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  gap: 8px;
+}
+
+.level-btn {
+  flex: 1;
+  padding: 14px;
+  border: none;
+  background: transparent;
+  border-radius: 12px;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.level-btn.active {
+  background: #3b82f6;
+  color: white;
+  box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3);
+}
+
+/* FOOTER NAVIGATION */
+.foot-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.btn-back {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  transition: all 0.2s;
+}
+
+.btn-back:hover {
+  color: #475569;
+  transform: translateX(-4px);
+}
+
+.btn-continue {
+  background: #2563eb;
+  color: white;
+  padding: 14px 32px;
+  border-radius: 14px;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  font-size: 15px;
+  box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.25);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-continue:hover:not(:disabled) {
+  background: #1d4ed8;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px -5px rgba(37, 99, 235, 0.35);
+}
+
+.btn-continue:disabled {
+  background: #cbd5e1;
+  color: #94a3b8;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+/* RESPONSIVE UPDATES */
+@media (max-width: 900px) {
+  /* Style sidebar yang sudah kamu buat tetap di sini */
+
+  .category-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .category-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .level-options-card {
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  .foot-nav {
+    flex-direction: column-reverse;
+    gap: 16px;
+  }
+
+  .btn-continue,
+  .btn-back {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .category-grid {
+    grid-template-columns: 1fr;
+  }
+}

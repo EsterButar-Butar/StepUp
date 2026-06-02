@@ -1,0 +1,107 @@
+/* Shared navbar interaction system */
+:where(.nv-navbar-fixed, .db-navbar-fixed, .result-navbar-fixed) {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 9999;
+  border-bottom: 1px solid rgba(241, 245, 249, 0.7);
+}
+
+:where(.nv-main-wrapper, .db-main-wrapper, .result-main-wrapper) {
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+}
+
+:where(.nv-brand-area, .db-brand-area, .result-brand-area) {
+  display: flex;
+  align-items: center;
+  transition: transform 0.2s ease;
+}
+
+:where(.nv-brand-area, .db-brand-area, .result-brand-area):hover {
+  transform: scale(1.05);
+}
+
+:where(.nv-logo-image, .db-logo-image, .result-logo-image) {
+  height: 38px;
+  width: auto;
+  object-fit: contain;
+}
+
+:where(.nv-nav-links, .db-nav-links, .result-nav-links) {
+  display: flex;
+  gap: 6px;
+  background: #f1f5f9;
+  padding: 6px;
+  border-radius: 99px;
+}
+
+:where(.nv-link-item, .db-link-item, .result-link-item) {
+  background: transparent;
+  border: none;
+  text-decoration: none;
+  color: #64748b;
+  padding: 8px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 99px;
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+  font-family: inherit;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+:where(.nv-link-item, .db-link-item, .result-link-item):hover {
+  background: rgba(255, 255, 255, 0.86);
+  color: #2563eb;
+  transform: translateY(-1px) scale(1.02);
+  box-shadow:
+    0 8px 18px rgba(15, 23, 42, 0.08),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.7);
+}
+
+:where(.nv-link-item, .db-link-item, .result-link-item).active {
+  background: #ffffff;
+  color: #2563eb;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  font-weight: 600;
+}
+
+:where(.nv-btn-dark, .db-btn-primary) {
+  background: #0f172a;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition:
+    background 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+:where(.nv-btn-dark, .db-btn-primary):hover {
+  background: #2563eb;
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.2);
+}

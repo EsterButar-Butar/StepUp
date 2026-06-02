@@ -1,0 +1,172 @@
+.cv-page {
+  min-height: 100vh;
+}
+
+.cv-main {
+  padding: 120px 24px 80px;
+  display: flex;
+  justify-content: center;
+}
+
+.cv-layout {
+  width: 100%;
+  max-width: 850px;
+  background: #ffffff;
+  padding: 56px;
+  border: 1px solid #d1d5db;
+}
+
+.cv-export-btn {
+  border: 1px solid #111827;
+  background: #111827;
+  color: #ffffff;
+  padding: 12px 22px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 36px;
+  transition: 0.2s ease;
+}
+
+.cv-export-btn:hover {
+  opacity: 0.9;
+}
+
+.cv-header {
+  border-bottom: 2px solid #111827;
+  padding-bottom: 24px;
+  margin-bottom: 36px;
+}
+
+.cv-header h1 {
+  margin: 0;
+  font-size: 36px;
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: 0.5px;
+}
+
+.cv-header p {
+  margin: 6px 0;
+  color: #374151;
+  line-height: 1.7;
+  font-size: 15px;
+}
+
+.cv-section {
+  margin-bottom: 36px;
+}
+
+.cv-section h2 {
+  font-size: 18px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #111827;
+  margin-bottom: 18px;
+  border-bottom: 1px solid #d1d5db;
+  padding-bottom: 10px;
+}
+
+.cv-section p {
+  line-height: 1.8;
+  color: #374151;
+  font-size: 15px;
+}
+
+.cv-skills-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  line-height: 1.8;
+}
+
+.cv-skill-chip {
+  font-size: 15px;
+  color: #374151;
+  font-weight: 400;
+}
+
+.cv-skill-chip::after {
+  content: "•";
+  margin-left: 8px;
+  color: #9ca3af;
+}
+
+.cv-skill-chip:last-child::after {
+  content: "";
+}
+
+.cv-item {
+  margin-bottom: 28px;
+}
+
+.cv-item h3 {
+  margin: 0;
+  font-size: 17px;
+  color: #111827;
+  font-weight: 600;
+}
+
+.cv-item span {
+  display: block;
+  margin: 6px 0 10px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.cv-item p {
+  margin: 0;
+  line-height: 1.8;
+  color: #374151;
+  font-size: 15px;
+}
+
+@media (max-width: 768px) {
+  .cv-main {
+    padding: 100px 16px 60px;
+  }
+
+  .cv-layout {
+    padding: 32px;
+  }
+
+  .cv-header h1 {
+    font-size: 28px;
+  }
+
+  .cv-section h2 {
+    font-size: 16px;
+  }
+}
+
+/* PRINT */
+@media print {
+  body {
+    background: white;
+  }
+
+  .cv-export-btn,
+  nav,
+  footer,
+  .footer,
+  .ft-main,
+  .navbar,
+  .navbar-dashboard {
+    display: none !important;
+  }
+
+  .cv-page {
+    background: white;
+  }
+
+  .cv-main {
+    padding: 0;
+  }
+
+  .cv-layout {
+    border: none;
+    box-shadow: none;
+    max-width: 100%;
+    padding: 0;
+  }
+}

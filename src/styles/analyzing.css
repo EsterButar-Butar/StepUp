@@ -1,0 +1,78 @@
+.analyzing-page {
+  min-height: 40vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.analyzing-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 24px 48px;
+}
+
+.analyzing-card {
+  width: min(100%, 460px);
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 28px;
+  padding: 40px;
+  text-align: center;
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
+}
+
+.loader-container {
+  width: 92px;
+  height: 92px;
+  position: relative;
+  margin: 0 auto 24px;
+}
+
+.loader {
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  border: 8px solid #dbeafe;
+  border-top-color: #2563eb;
+  animation: spin 1s linear infinite;
+}
+
+.loader-icon {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.analyzing-card h2 {
+  color: #0f172a;
+  margin-bottom: 12px;
+}
+
+.status,
+.privacy p,
+.analyzing-card small {
+  color: #64748b;
+}
+
+.divider {
+  height: 1px;
+  background: #e2e8f0;
+  margin: 28px 0;
+}
+
+.privacy {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
