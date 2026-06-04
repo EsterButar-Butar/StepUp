@@ -13,8 +13,7 @@ import "../../styles/profile/recent-activity.css";
 export default function RecentActivity({ activities = [] }) {
   const activityData = Array.isArray(activities) ? activities : [];
 
-  // FORMAT DATE
-  const formatDate = (date) => {
+  const formatDateTime = (date) => {
     if (!date) return "Unknown date";
 
     const parsedDate = new Date(date);
@@ -23,11 +22,19 @@ export default function RecentActivity({ activities = [] }) {
       return "Unknown date";
     }
 
-    return parsedDate.toLocaleDateString("en-US", {
+    const formattedDate = parsedDate.toLocaleDateString("en-US", {
       month: "short",
-      day: "numeric",
+      day: "2-digit",
       year: "numeric",
     });
+
+    const formattedTime = parsedDate.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
+
+    return `${formattedDate} • ${formattedTime}`;
   };
 
   // ICONS
@@ -126,16 +133,12 @@ export default function RecentActivity({ activities = [] }) {
                     </span>
                   </div>
 
-                  <p>{activity?.description || "No description available."}</p>
+                  <p>{formatDateTime(activity?.date)}</p>
                 </div>
               </div>
 
               {/* RIGHT */}
               <div className="activity-right">
-                <span className="activity-date">
-                  {formatDate(activity?.date)}
-                </span>
-
                 <button type="button" className="activity-action-btn">
                   <FiBookmark />
                 </button>

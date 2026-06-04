@@ -1,5 +1,5 @@
 import "../../styles/landingpage/how.css";
-import { FiEdit3, FiCpu, FiMap } from "react-icons/fi"; // Icon disesuaikan mockup
+import { FiEdit3, FiCpu, FiMap } from "react-icons/fi";
 
 export default function HowItWorks() {
   const steps = [
@@ -27,7 +27,7 @@ export default function HowItWorks() {
   ];
 
   return (
-    <section className="how-section">
+    <section id="how" className="how-section">
       <div className="how-container">
         {/* HEADER */}
         <div className="how-header">

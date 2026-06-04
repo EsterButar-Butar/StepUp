@@ -2,7 +2,6 @@ import {
   FiMail,
   FiBookOpen,
   FiClipboard,
-  FiTrendingUp,
   FiAward,
   FiMapPin,
   FiPhone,
@@ -20,16 +19,13 @@ export default function ProfileHeader({ user = {}, assessmentSummary = {} }) {
 
   return (
     <section className="profile-header-card">
-      {/* LEFT */}
       <div className="profile-user-section">
-        {/* AVATAR */}
         <div className="profile-avatar-wrapper">
           <div className="profile-avatar">
             {profileImage ? <img src={profileImage} alt="Profile" /> : null}
           </div>
         </div>
 
-        {/* USER INFO */}
         <div className="profile-user-info">
           <div className="profile-top-row">
             <div>
@@ -39,7 +35,6 @@ export default function ProfileHeader({ user = {}, assessmentSummary = {} }) {
             </div>
           </div>
 
-          {/* META */}
           <div className="profile-meta">
             {email ? (
               <div className="profile-meta-item">
@@ -77,7 +72,6 @@ export default function ProfileHeader({ user = {}, assessmentSummary = {} }) {
             ) : null}
           </div>
 
-          {/* ABOUT */}
           {user?.bio ? (
             <div className="profile-about">
               <h4>About</h4>
@@ -87,9 +81,7 @@ export default function ProfileHeader({ user = {}, assessmentSummary = {} }) {
         </div>
       </div>
 
-      {/* RIGHT STATS */}
       <div className="profile-stats">
-        {/* CARD 1 */}
         <div className="profile-stat-card">
           <div className="stat-icon purple">
             <FiClipboard />
@@ -101,23 +93,6 @@ export default function ProfileHeader({ user = {}, assessmentSummary = {} }) {
           </div>
         </div>
 
-        {/* CARD 2 - Highest Score */}
-        <div className="profile-stat-card">
-          <div className="stat-icon green">
-            <FiTrendingUp />
-          </div>
-
-          <div className="stat-content">
-            <h2>
-              {assessmentSummary?.highestScore ??
-                assessmentSummary?.topScore ??
-                "-"}
-            </h2>
-            <p>Highest Score</p>
-          </div>
-        </div>
-
-        {/* CARD 3 (optional average/ATS) */}
         {assessmentSummary?.averageScore || assessmentSummary?.atsScore ? (
           <div className="profile-stat-card">
             <div className="stat-icon yellow">

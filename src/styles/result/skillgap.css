@@ -14,7 +14,6 @@
   border-bottom: 1px solid #f8fafc;
 }
 
-/* Divider Label */
 .sg-section-divider {
   display: flex;
   align-items: center;
@@ -128,4 +127,31 @@
   font-weight: 700;
   font-size: 12px;
   cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .sg-content {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .sg-column {
+    margin-bottom: 10px;
+  }
+
+  .sg-container {
+    padding: 20px;
+    border-radius: 20px;
+  }
+
+  .sg-header {
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+  }
+
+  .sg-card-improve {
+    padding: 12px 14px;
+    gap: 10px;
+  }
 }

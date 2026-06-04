@@ -56,7 +56,7 @@ export default function Benefits() {
   };
 
   return (
-    <section className="bn-section">
+    <section id="features" className="bn-section">
       <div className="bn-container">
         <div className="bn-header-flex">
           <div className="bn-header-text">

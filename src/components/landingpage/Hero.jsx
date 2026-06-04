@@ -5,7 +5,7 @@ import { FiArrowRight } from "react-icons/fi";
 
 export default function Hero() {
   return (
-    <div className="hero">
+    <div id="hero" className="hero">
       {/* BACKGROUND */}
       <div className="hero-bg">
         <div className="blur" />
