@@ -23,20 +23,32 @@ class L2NormalizeLayer(tf.keras.layers.Layer):
 app = FastAPI(title="StepUp AI Recommendation API")
 
 
-MODEL_PATH = "stepup_ai/stepup_artifacts/stepup_match_score_model.keras"
-TFIDF_PATH = "stepup_ai/stepup_artifacts/tfidf_vectorizer_dl.pkl"
-NUMERIC_MAX_PATH = "stepup_ai/stepup_artifacts/numeric_max.pkl"
-JOB_CATALOG_PATH = "stepup_ai/stepup_artifacts/job_catalog.pkl"
+MODEL_PATH = "stepup_artifacts/stepup_match_score_model.keras"
+TFIDF_PATH = "stepup_artifacts/tfidf_vectorizer_core.pkl"
+TFIDF_DL_PATH = "stepup_artifacts/tfidf_vectorizer_dl.pkl"
+NUMERIC_MAX_PATH = "stepup_artifacts/numeric_max.pkl"
+JOB_CATALOG_PATH = "stepup_artifacts/job_catalog.pkl"
 
 
-model = tf.keras.models.load_model(
-    MODEL_PATH,
-    compile=False,
-    custom_objects={"L2NormalizeLayer": L2NormalizeLayer}
-)
+try:
+    model = tf.keras.models.load_model(
+        MODEL_PATH,
+        compile=False,
+        custom_objects={"L2NormalizeLayer": L2NormalizeLayer},
+        safe_mode=False
+    )
+    MODEL_LOADED = True
+    print("MODEL LOADED SUCCESSFULLY")
+except Exception as e:
+    model = None
+    MODEL_LOADED = False
+    print("MODEL LOAD FAILED:", e)
 
 with open(TFIDF_PATH, "rb") as f:
     tfidf_vectorizer = pickle.load(f)
+
+with open(TFIDF_DL_PATH, "rb") as f:
+    tfidf_vectorizer_dl = pickle.load(f)
 
 with open(NUMERIC_MAX_PATH, "rb") as f:
     numeric_max = pickle.load(f)
@@ -180,37 +192,43 @@ def calculate_skill_coverage(profile, row):
 
 def predict_final_recommendation(profile):
     user_text = build_user_text(profile)
-    user_vector = tfidf_vectorizer.transform([user_text]).toarray()
+    user_vector_core = tfidf_vectorizer.transform([user_text]).toarray()
+    user_vector_dl = tfidf_vectorizer_dl.transform([user_text]).toarray()
     user_numeric = make_numeric_features(profile)
 
     recommendations = []
 
     for _, row in job_catalog.iterrows():
         job_text = build_job_text(row)
-        job_vector = tfidf_vectorizer.transform([job_text]).toarray()
+        job_vector_core = tfidf_vectorizer.transform([job_text]).toarray()
+        job_vector_dl = tfidf_vectorizer_dl.transform([job_text]).toarray()
 
-        dl_score = model.predict(
-            [user_vector, job_vector, user_numeric],
-            verbose=0
-        )
-        dl_score = float(dl_score[0][0])
-        dl_score = max(0.0, min(dl_score, 1.0))
+        if MODEL_LOADED and model is not None:
+            dl_score = model.predict(
+                [user_vector_dl, job_vector_dl, user_numeric],
+                verbose=0
+            )
+            dl_score = float(dl_score[0][0])
+        else:
+            dl_score = float(cosine_similarity(user_vector_core, job_vector_core)[0][0])
 
-        cosine_score = cosine_similarity(user_vector, job_vector)[0][0]
+            dl_score = max(0.0, min(dl_score, 1.0))
+
+        cosine_score = cosine_similarity(user_vector_core, job_vector_core)[0][0]
         cosine_score = max(0.0, min(float(cosine_score), 1.0))
 
         user_words = set(user_text.split())
         job_words = set(job_text.split())
         matched_keywords = user_words.intersection(job_words)
 
-        keyword_bonus = min(len(matched_keywords) * 0.025, 0.15)
+        keyword_bonus = min(len(matched_keywords) * 0.035, 0.20)
 
         skill_coverage_score = calculate_skill_coverage(profile, row)
 
         final_score = (
-            cosine_score * 0.45 +
+            cosine_score * 0.25 +
             dl_score * 0.20 +
-            skill_coverage_score * 0.25 +
+            skill_coverage_score * 0.45 +
             keyword_bonus
         )
 
@@ -370,47 +388,77 @@ def generate_ats_cv(profile, recommendations, skill_gap):
 
 def generate_genai_explanation(profile, recommendations, skill_gap, ats_cv):
     try:
-        import google.generativeai as genai
+        from groq import Groq
 
-        api_key = os.getenv("GEMINI_API_KEY")
+        api_key = os.getenv("GROQ_API_KEY")
 
         if not api_key:
-            raise ValueError("GEMINI_API_KEY belum diset.")
+            raise ValueError("GROQ_API_KEY belum terbaca di server.")
 
-        genai.configure(api_key=api_key)
-
-        gemini_model = genai.GenerativeModel("gemini-1.5-flash")
+        client = Groq(api_key=api_key)
 
         prompt = (
             "Kamu adalah career advisor untuk mahasiswa Indonesia. "
-            "Buat penjelasan singkat, jelas, dan actionable. "
-            "Jelaskan top-3 career recommendation, hard skill gap, soft skill gap, "
-            "learning path, dan saran ATS CV. Jangan mengarang pengalaman baru.\n\n"
+            "Buat penjelasan rekomendasi karier dalam Bahasa Indonesia. "
+            "Gunakan bahasa singkat, jelas, natural, dan actionable. "
+            "Jangan gunakan format Markdown. Jangan gunakan tanda **, #, -, atau bullet simbol. "
+            "Gunakan teks biasa dengan paragraf rapi dan penomoran biasa 1), 2), 3). "
+            "Jangan mengarang pengalaman baru di luar data user. "
+            "Jelaskan rekomendasi utama, top-3 career recommendation, "
+            "alasan kecocokan, hard skill gap, soft skill gap, learning path singkat, "
+            "dan saran ATS CV.\n\n"
             f"USER_PROFILE:\n{json.dumps(profile, indent=2, ensure_ascii=False)}\n\n"
             f"RECOMMENDATIONS:\n{json.dumps(recommendations, indent=2, ensure_ascii=False)}\n\n"
             f"SKILL_GAP:\n{json.dumps(skill_gap, indent=2, ensure_ascii=False)}\n\n"
             f"ATS_CV:\n{json.dumps(ats_cv, indent=2, ensure_ascii=False)}"
         )
 
-        response = gemini_model.generate_content(prompt)
+        response = client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[
+                {
+                    "role": "system",
+                    "content": "Kamu adalah career advisor profesional untuk mahasiswa Indonesia."
+                },
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ],
+            temperature=0.4,
+            max_tokens=700
+        )
 
-        return response.text
+        return response.choices[0].message.content
 
-    except Exception:
+    except Exception as e:
+        print("GROQ ERROR:", repr(e))
+
         if not recommendations:
             return "Belum ada rekomendasi karier."
 
         top = recommendations[0]
 
-        return (
-            f"Rekomendasi utama adalah {top['job_role']} dengan match score "
-            f"{top['match_score']}%. "
-            f"Hard skill yang perlu ditingkatkan: "
-            f"{', '.join(skill_gap.get('hard_skill_gap', {}).get('missing', [])) or '-'}. "
-            f"Soft skill yang perlu ditingkatkan: "
-            f"{', '.join(skill_gap.get('soft_skill_gap', {}).get('missing', [])) or '-'}."
-        )
+        hard_matched = skill_gap.get("hard_skill_gap", {}).get("matched", [])
+        hard_missing = skill_gap.get("hard_skill_gap", {}).get("missing", [])
+        soft_matched = skill_gap.get("soft_skill_gap", {}).get("matched", [])
+        soft_missing = skill_gap.get("soft_skill_gap", {}).get("missing", [])
 
+        return (
+            f"Berdasarkan hasil analisis StepUp, rekomendasi karier utama adalah "
+            f"{top['job_role']} dengan tingkat kecocokan {top['match_score']}%. "
+            f"Profil pengguna sudah memiliki hard skill yang relevan seperti "
+            f"{', '.join(hard_matched) if hard_matched else '-'}. "
+            f"Hard skill yang perlu ditingkatkan yaitu "
+            f"{', '.join(hard_missing) if hard_missing else 'tidak ada yang terlalu kurang'}. "
+            f"Soft skill yang sudah sesuai adalah "
+            f"{', '.join(soft_matched) if soft_matched else '-'}. "
+            f"Soft skill yang perlu dikembangkan yaitu "
+            f"{', '.join(soft_missing) if soft_missing else 'tidak ada yang terlalu kurang'}. "
+            f"Learning path yang disarankan adalah memperkuat skill yang masih kurang, "
+            f"mengerjakan proyek yang relevan dengan {top['job_role']}, dan menambahkan keyword penting "
+            f"pada ATS CV agar lebih sesuai dengan kebutuhan rekrutmen."
+        )
 
 @app.get("/")
 def root():
